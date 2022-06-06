@@ -9,3 +9,6 @@ lwb_solarmyroof/data_samples/
 .env
 *.tif
 *.zip
+
+.vscode
+.gitignore
