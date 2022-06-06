@@ -1,5 +1,5 @@
 # Data analysis
-- Document here the project: lwb_smr
+- Document here the project: lwb_solarmyroof
 - Description: Project Description
 - Data Source:
 - Type of analysis:
@@ -22,15 +22,15 @@ Unittest test:
 make clean install test
 ```
 
-Check for lwb_smr in gitlab.com/{group}.
+Check for lwb_solarmyroof in gitlab.com/{group}.
 If your project is not set please add it:
 
-- Create a new project on `gitlab.com/{group}/lwb_smr`
+- Create a new project on `gitlab.com/{group}/lwb_solarmyroof`
 - Then populate it:
 
 ```bash
-##   e.g. if group is "{group}" and project_name is "lwb_smr"
-git remote add origin git@github.com:{group}/lwb_smr.git
+##   e.g. if group is "{group}" and project_name is "lwb_solarmyroof"
+git remote add origin git@github.com:{group}/lwb_solarmyroof.git
 git push -u origin master
 git push -u origin --tags
 ```
@@ -41,12 +41,12 @@ Functionnal test with a script:
 cd
 mkdir tmp
 cd tmp
-lwb_smr-run
+lwb_solarmyroof-run
 ```
 
 # Install
 
-Go to `https://github.com/{group}/lwb_smr` to see the project, manage issues,
+Go to `https://github.com/{group}/lwb_solarmyroof` to see the project, manage issues,
 setup you ssh public key, ...
 
 Create a python3 virtualenv and activate it:
@@ -59,8 +59,8 @@ deactivate; virtualenv -ppython3 ~/venv ; source ~/venv/bin/activate
 Clone the project and install it:
 
 ```bash
-git clone git@github.com:{group}/lwb_smr.git
-cd lwb_smr
+git clone git@github.com:{group}/lwb_solarmyroof.git
+cd lwb_solarmyroof
 pip install -r requirements.txt
 make clean install test                # install and test
 ```
@@ -70,5 +70,5 @@ Functionnal test with a script:
 cd
 mkdir tmp
 cd tmp
-lwb_smr-run
+lwb_solarmyroof-run
 ```

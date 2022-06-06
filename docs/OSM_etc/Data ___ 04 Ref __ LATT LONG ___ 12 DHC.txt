@@ -1,0 +1,18 @@
+in full from google maps:
+			51.43665283070916, -0.056553430464976504
+			
+reduced decimal places(!)
+
+to 5: (didn't work)
+51.43665, -0.05655
+
+
+QGIS uses these the other way around!
+so for a greater london map, these will be 'way off the map'!
+								51.43665, -0.05655
+								
+TRY INSTEAD:
+-0.05655, 51.43665
+
+this is at least on the map!
+BUT  12 DERBY HILL CRESCENT - well, the whole cresent! isn't there!

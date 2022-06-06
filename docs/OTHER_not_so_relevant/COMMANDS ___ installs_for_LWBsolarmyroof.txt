@@ -1,0 +1,27 @@
+# install for LWB solar project:
+
+# pyosmium
+# fiona
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~
+# commands to run:
+
+sudo apt update
+
+sudo apt-get install build-essential cmake libboost-dev \
+                     libexpat1-dev zlib1g-dev libbz2-dev
+
+pip install osmium
+# pip install fiona
+pip install geopandas
+## https://geopandas.org/en/stable/getting_started/introduction.html
+## https://geopandas.org/en/stable/getting_started/introduction.html#Simple-accessors-and-methods
+
+
+
+# find the installations in:
+##
+##
+#
+# PYENV:
+#     /versions/3.8.12/envs/lewagon/lib/python3.8/site-packages/osmium

@@ -8,12 +8,14 @@ wheel>=0.29
 numpy
 pandas
 scikit-learn
+tensorflow
 
 # tests/linter
 black
 coverage
 flake8
 pytest
+pytest-bdd
 yapf
 
 # API

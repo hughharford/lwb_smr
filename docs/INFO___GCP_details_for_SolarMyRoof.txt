@@ -1,0 +1,18 @@
+## GCP_details_for_SolarMyRoof
+
+# GCP project name
+lwb-solar-my-roof
+
+# GCP project url
+https://console.cloud.google.com/home/dashboard?project=lwb-solar-my-roof
+
+# GCP cloud storage buckets
+lwb-solar-my-roof
+
+
+
+
+
+# 
+# HSTH login
+ee-hugh-harford

@@ -1,0 +1,19 @@
+
+FOCUS HERE:
+
+INRIA Aerial Image Labeling dataset
+https://paperswithcode.com/dataset/inria-aerial-image-labeling
+https://project.inria.fr/aerialimagelabeling/
+
+
+
+OTHERS FOUND THAT COULD BE USEFUL
+
+https://github.com/llorz/SGA21_roofOptimization/tree/main/RoofGraphDataset
+
+
+SHOULD BE USEFUL BUT NOT CURRENTLY AVAILABLE:
+https://paperswithcode.com/paper/aerial-imagery-for-roof-segmentation-a-large
+
+AIRS dataset 220k buildings
+https://www.airs-dataset.com/

@@ -3,6 +3,9 @@
 .ipynb_checkpoints
 .DS_Store
 raw_data/
+lwb_solarmyroof/data_samples/
 *.csv
 **/__pycache__/
 .env
+*.tif
+*.zip

@@ -1,0 +1,8 @@
+# https://spatialreference.org/
+#
+## for spatial mappings:
+https://spatialreference.org/ref/epsg/4326/
+# see also:
+#         https://geopandas.org/en/stable/docs/user_guide/projections.html
+# this might be useful...
+# https://pyproj4.github.io/pyproj/stable/api/crs/crs.html#pyproj.crs.CRS.from_user_input
