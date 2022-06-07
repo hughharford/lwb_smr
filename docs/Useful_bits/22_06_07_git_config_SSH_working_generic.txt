@@ -1,0 +1,99 @@
+
+
+git config --global user.name "username"
+git config --global user.email "username@email_provider.com"
+
+# fatal: --local can only be used inside a git repository
+# 210127_postgres  algs4  condorsetup2  easycut-smartbench  ExternalJars  katas-python  Lean  LivingCell  postgres  postgresjdbc
+
+cd easycut-smartbench
+
+git config --local user.name "other_username"
+git config --local user.email "other_username@other_email_provider.com"
+
+
+# to reset username
+git config --global --replace-all user.name "user_name"
+git config --global --replace-all user.email "username@email_provider.com"
+
+# OR
+git config --local --replace-all user.name "user_name"
+git config --local --replace-all user.email "username@email_provider.com"
+
+# TO PUBLISH A NEW REPO:
+git remote set-url add origin git@github.com:user/repo_name.git
+
+adapt username and repo name, of course
+
+
+
+# RESET GIT authentication
+
+gh auth refresh -h github.com
+
+
+# TO GENERATE A NEW new NEW new NEW ssh key
+
+# REF:
+	https://linuxhint.com/generate-ssh-key-ubuntu/
+	check first:
+		ls -l ~/.ssh/id_*.pub
+		or
+		ls -l ~/.ssh/*.pub
+	then create:
+		ssh-keygen -t rsa -b 4096 -C "username@email_provider.com"
+		or
+		ssh-keygen
+
+		the filename is needed etc
+
+# git SSH COMMAND usage ____ for LINUX ___
+# for ___ Windows 10 ___ use GIT GUI to generate the SSH and then works nicely, once .pub added to github
+###
+#
+#####
+#    CONFIRMING IF GIT AND SSH ARE SETUP AND WORKING
+#
+#       see: 	https://docs.github.com/en/authentication/connecting-to-github-with-ssh/testing-your-ssh-connection
+#           RUN this to confirm ssh working. it doesn't do anything, but checks
+                ssh -T git@github.com
+#           add to local .git/config this line:
+				sshCommand = ssh -i ~/.ssh/21_01_09
+				or
+				sshCommand = ssh -i ~/.ssh/22_04_12_ThinkPad
+#
+#
+#
+#
+############# THIS IS WHAT WORKS TO SPECIFY A REPOSITORIES SSH KEY
+#
+#
+####
+##
+#
+#      ADD THE FILENAME OF THE SSH PRIVATE KEY TO the below, and run in the repo folder...
+#
+git config core.sshCommand 'ssh -i ~/.ssh/filename_of_private_key'
+#
+##
+# HERE >>>> HERE >>>> HERE >>>> HERE >>>> HERE >>>> HERE >>>> HERE >>>> HERE >>>> HERE >>>> HERE
+##
+# HERE >>>> HERE >>>> HERE >>>> HERE >>>> HERE >>>> HERE >>>> HERE >>>> HERE >>>> HERE >>>> HERE
+
+# e.g.:
+git config core.sshCommand 'ssh -i ~/.ssh/21_01_09'
+
+OR SEE THE EXAMPLE .git/.config once the command is run:
+
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = false
+	logallrefupdates = true
+	sshCommand = ssh -i ~/.ssh/21_01_09
+[remote "origin"]
+	url = git@github.com:username/repo_name.git
+	fetch = +refs/heads/*:refs/remotes/origin/*
+[branch "main"]
+	remote = origin
+	merge = refs/heads/main
