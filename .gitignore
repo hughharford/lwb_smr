@@ -8,7 +8,6 @@ lwb_solarmyroof/data_samples/
 **/__pycache__/
 .env
 *.tif
+*.tiff
 *.zip
-
 .vscode
-.gitignore
