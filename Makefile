@@ -64,6 +64,7 @@ SAMPLE_FOLDER_FILE_NAME=$(shell basename ${SAMPLE_FOLDER_FILE})
 upload_sample_data:
 		@gsutil cp ${SAMPLE_FOLDER_FILE} gs://${BUCKET_NAME}/${BUCKET_FOLDER}/${BUCKET_TRAIN_DATA_FOLDER}/${SAMPLE_FOLDER_FILE_NAME}
 
+#EG:  gsutil cp ~/.ssh/id_rsa_gpu_solar.pub gs://lwb-solar-my-roof/admin/ssh/id_rsa_gpu_solar.pub
 
 upload_train_data:
 		@gsutil cp ${AERIAL_SH_FILE} gs://${BUCKET_NAME}/${BUCKET_FOLDER}/${BUCKET_TRAIN_DATA_FOLDER}/${BUCKET_TRAIN_FILE_NAME}
