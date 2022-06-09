@@ -46,9 +46,7 @@ class CustomDataLoader(keras.utils.Sequence):
         xl = []
         for i, ximg in enumerate(batch_x):
             img = tf.io.read_file(self.x_path+batch_x[i])
-            img = tfio.experimental.image.decode_tiff(img, index=0)
-            #print(img.shape)
-            img = img[:, :, :-1]  # [:,:,:]
+            img = tf.io.decode_jpeg(img, channels=3)
             # resizing
             input_img =  tf.image.resize(img, [self.resized_size[0], self.resized_size[1]])
             # normalise
@@ -58,12 +56,11 @@ class CustomDataLoader(keras.utils.Sequence):
 
         # create a list for the tensorflow objects then read in images
         # and convert to tensorflow objects.
+        # mask images are single channel
         yl = []
         for j, yimg in enumerate(batch_y):
             mask = tf.io.read_file(self.y_path+batch_y[i])
-            mask = tfio.experimental.image.decode_tiff(mask, index=0)
-            mask = mask[:, :, :-1]
-            mask = tf.image.rgb_to_grayscale(mask)
+            mask = tf.io.decode_jpeg(mask, channels=1)
             # resizing
             mask_img =  tf.image.resize(mask, [self.resized_size[0], self.resized_size[1]])
             # normalise
