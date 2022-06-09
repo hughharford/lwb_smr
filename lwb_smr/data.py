@@ -27,11 +27,18 @@ class GetData():
         '''
         Create a dataframe of all available images in the train and test paths
         '''
+        # this file causes problems so check if present and delete if so
+        self.cleanup = '.ipynb_checkpoints'
+
         train_list = os.listdir(self.train_path)
         train_list.sort()
+        if self.cleanup in train_list:
+            train_list.remove(self.cleanup)
 
         test_list  = os.listdir(self.test_path)
         test_list.sort()
+        if self.cleanup in test_list:
+            test_list.remove(self.cleanup)
 
         self.data_df = pd.DataFrame(list(zip(train_list,test_list)), columns=['x_data','y_data'])
         return self.data_df
@@ -69,13 +76,13 @@ class GetData():
 
         # create the train df and then remove the train rows:
         self.data_train_df = data_split.sample(n=n_train,random_state=42)
-        data_split.drop(data_split.index[[tuple(self.data_train_df.index)]])
+        data_split = data_split.drop(list(self.data_train_df.index))
 
         # create the validation df and then remove the val rows
         # still checks to see if a test set is being requested
         if self.test_pc > 0.0:
             self.data_val_df = data_split.sample(n=n_val,random_state=42)
-            data_split.drop(data_split.index[[tuple(self.data_val_df.index)]])
+            data_split = data_split.drop(list(self.data_val_df.index))
             # test df takes what is remaining
             self.data_test_df = data_split.copy()
         else:
