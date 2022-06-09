@@ -11,11 +11,14 @@ from tensorflow.keras.optimizers import Adam
 from lwb_smr.CustomDataLoader import CustomDataLoader
 from lwb_smr.model import SMR_Model
 from lwb_smr.utils_class.MLFlowPush import PushMLFlow
-from lwb_smr.params import VM_path_dict
-### test_trainer.py params
-BATCH_SIZE = 32
-EPOCHS = 1
+from lwb_smr.params import VM_path_dict, csv_path_dict
+from lwb_smr.data import GetData, LoadDataSets
 
+### DATALOADER PARAMETERS
+INPUT_IMAGE_SIZE = (250, 250) # add to global variables
+BATCH_SIZE = 64
+
+### MLFLOW PARAMETERS
 EXPERIMENT_NAME = "UK Lon lwb_smr vertex_run_01"
 EXPERIMENT_TAGS = {
     'USER': 'jhjhjhjh',
@@ -24,48 +27,67 @@ EXPERIMENT_TAGS = {
     'DESCRIPTION': '''Model_02 UNET VGG-16, 1 epoch, 3 images'''
 }
 
+### MODEL PARAMETERS
 LOSS='binary_crossentropy'
+OUR_INPUT_SHAPE = (224, 224, 3)
+METRICS = ['accuracy']
+EPOCHS = 1
 
 class Test_Trainer():
     def __init__(self, VM=True):
         self.VM = VM
         self.loss = LOSS
+        # Load dictionary containing all images and mask file names in corresponding
+        # csv file:
+        self.data_dict = LoadDataSets(csv_path_dict['train_csv'],
+                                         csv_path_dict['val_csv'],
+                                         csv_path_dict['test_csv']).load_datasets()
 
-    def just_get_the_data_loaded(self, X_path_key, y_path_key):
+    def just_get_the_data_loaded(self, X_key, y_key):
         """
         X_path_key: key for VM_path_dictionary - specifies X train, val or test data to load
         y_path_key: key for VM_path_dictionary - specifies y train, val or test data to load
-        """
-        if self.VM:
-            x_images = os.listdir(VM_path_dict[X_path_key])
-            x_path = VM_path_dict[X_path_key]
 
-            y_masks = os.listdir(VM_path_dict[y_path_key])
-            y_path = VM_path_dict[y_path_key]
+        Returns: customdata loader class object
+
+        Description: Call this function for each train, val and test specifiying the key to data_dictionary
+                     to access the list of image and mask file names & path to folder containing images.
+        """
+
+        # batch_size = 64 # add to global variables
+        if self.VM:
+            # Load filenames e.g. ['austin_x00_y00.jpeg', 'austin_x00_y01.jpeg' ...]
+            x_images = self.data_dict[X_key]
+            # Load path to folder containing images
+            x_path = VM_path_dict['path_x']
+
+            # Load filenames e.g. ['austin_x00_y00_mask.jpeg', 'austin_x00_y01_mask.jpeg' ...]
+            y_masks = self.data_dict[y_key]
+            # Load path to folder containing masks
+            y_path = VM_path_dict['path_y']
         else:
+            # For running file on a local machine
             x_path = '/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/jpeg_train/'
             x_images = os.listdir(x_path) # raw rgb images
 
             y_path = '/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/jpeg_train/'
             y_masks = os.listdir(y_path) # mask to predict
 
-        input_image_size = (250, 250)
-        batch_size = 16
-        customdata = CustomDataLoader(x_images, x_path, y_masks, y_path, input_image_size, batch_size)
+
+        customdata = CustomDataLoader(x_images, x_path, y_masks, y_path, INPUT_IMAGE_SIZE, BATCH_SIZE)
         return customdata
 
     def set_model(self):
 
         # Instantiate Model
-        our_input_shape = (224,224,3)
-        getVGG16 = SMR_Model(our_input_shape)
+        getVGG16 = SMR_Model(OUR_INPUT_SHAPE)
         self.model = getVGG16.get_latest_model()
 
         # Compile Model
         self.model.compile(
                     loss=self.loss,
                     optimizer=Adam(),
-                    metrics=['accuracy'] #, tf.keras.metrics.AUC(), tf.keras.metrics.IoU()]
+                    metrics=METRICS #, tf.keras.metrics.AUC(), tf.keras.metrics.IoU()]
                     )
 
     def start_mlflow(self):
@@ -80,12 +102,12 @@ class Test_Trainer():
 
         print(80*'-')
         print('------LOADING TRAIN DATA------')
-        self.customdata_train = self.just_get_the_data_loaded('path_X_train', 'path_y_train') # arguments are the keys to VM_path_dict
+        self.customdata_train = self.just_get_the_data_loaded(X_key='train_x', y_key='train_y') # arguments are the keys to VM_path_dict
         print(80*'.')
         print('------SUCCESS------')
         print(80*'-')
         print('------LOADING VALIDATION DATA------')
-        self.customdata_val = self.just_get_the_data_loaded('path_X_val', 'path_y_val')
+        self.customdata_val = self.just_get_the_data_loaded(X_key='val_x', y_key='val_y') # dataloader object
         print(80*'.')
         print('------SUCCESS------')
 
@@ -100,7 +122,7 @@ class Test_Trainer():
         self.model.fit(
             self.customdata_train,
             self.customdata_val,
-            batch_size=BATCH_SIZE,
+            # batch_size=BATCH_SIZE, # potential to take this line out (batch size defined in dataloader)
             epochs=EPOCHS,
             callbacks=[mc]
             )
@@ -115,7 +137,7 @@ class Test_Trainer():
     def evaluate(self):
         print(80*'-')
         print('------LOADING TEST DATA------')
-        self.customdata_test = self.just_get_the_data_loaded('path_X_test', 'path_y_test')
+        self.customdata_test = self.just_get_the_data_loaded(X_key='test_x', y_key='test_y')
         print(80*'.')
         print('------SUCCESS------')
         print(80*'-')
@@ -128,11 +150,6 @@ class Test_Trainer():
         print('------MODEL EVALUATED------')
 
 if __name__ == '__main__':
-    # print(os.getcwd())
     t = Test_Trainer(VM=False)
-    # dataloader = t.just_get_the_data_loaded(VM=False)
-    # print(type(dataloader))
     t.run()
     t.evaluate()
-
-# /Users/jackhousego/code/hughharford/lwb_smr
