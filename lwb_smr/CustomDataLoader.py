@@ -9,18 +9,18 @@ from PIL import Image
 class CustomDataLoader(keras.utils.Sequence):
     """ Allow custom data import and output from image files for masking """
 
-    def __init__(self, x_images, x_path, y_masks, y_path, image_size, batch_size):
+    def __init__(self, x_images, x_path, y_masks, y_path, input_image_size, batch_size):
         """
-        x_images     is a list of RGB images in a directory
-        x_path       is the path for the images
-        y_masks      is a list of greyscale masks in a directory
-        y_path       is the path for the image masks
-        image_size   tuple of image size e.g. (250,250)
+        x_images            is a list of RGB images in a directory
+        x_path              is the path for the images
+        y_masks             is a list of greyscale masks in a directory
+        y_path              is the path for the image masks
+        input_image_size    tuple of image size e.g. (250,250)
         batch_size   size of the batches e.g. 16, 32 etc.
         """
         self.x, self.y = x_images, y_masks
         self.x_path, self.y_path = x_path, y_path
-        self.image_size = image_size
+        self.input_image_size = input_image_size
         self.batch_size = batch_size
 
     def __len__(self):
