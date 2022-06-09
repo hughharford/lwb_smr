@@ -8,7 +8,7 @@ from PIL import Image
 
 class CustomDataLoader(keras.utils.Sequence):
     """ Allow custom data import and output from image files for masking """
-    
+
     def __init__(self, x_images, x_path, y_masks, y_path, image_size, batch_size):
         """
         x_images     is a list of RGB images in a directory
@@ -22,31 +22,31 @@ class CustomDataLoader(keras.utils.Sequence):
         self.x_path, self.y_path = x_path, y_path
         self.image_size = image_size
         self.batch_size = batch_size
-    
+
     def __len__(self):
         """
         return the number of batches required for the amount of
         images in x_images
         """
         return math.ceil(len(self.x) / self.batch_size)
-    
+
     def __getitem__(self,batch_index_position):
         # batch_index_position denotes start of current batch
         # current_index determines end index of current batch
         current_index = batch_index_position * self.batch_size
-        
+
         # create lists of the x and y image names in the current batch
         batch_x = self.x[current_index:current_index+self.batch_size]
         batch_y = self.y[current_index:current_index+self.batch_size]
-        
+
         self.resized_size = (224,224)
-        
+
         # create a list for the tensorflow objects then read in images
-        # and convert to tensorflow objects. 
+        # and convert to tensorflow objects.
         xl = []
         for i, ximg in enumerate(batch_x):
             img = tf.io.read_file(self.x_path+batch_x[i])
-            img = tfio.experimental.image.decode_tiff(img, index=0)
+            img = tf.io.decode_jpeg(img, channels=3)
             # resizing
             input_img =  tf.image.resize(img, [self.resized_size[0], self.resized_size[1]])
             # normalise
@@ -55,11 +55,12 @@ class CustomDataLoader(keras.utils.Sequence):
         x = tf.stack(xl)
 
         # create a list for the tensorflow objects then read in images
-        # and convert to tensorflow objects. 
+        # and convert to tensorflow objects.
+        # mask images are single channel
         yl = []
         for j, yimg in enumerate(batch_y):
             mask = tf.io.read_file(self.y_path+batch_y[i])
-            mask = tfio.experimental.image.decode_tiff(mask, index=0)
+            mask = tf.io.decode_jpeg(mask, channels=1)
             # resizing
             mask_img =  tf.image.resize(mask, [self.resized_size[0], self.resized_size[1]])
             # normalise
