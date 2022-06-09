@@ -5,6 +5,10 @@ with open('requirements.txt') as f:
     content = f.readlines()
 requirements = [x.strip() for x in content if 'git+' not in x]
 
+# with open('vertex-requirements.txt') as f:
+#     content = f.readlines()
+# requirements = [x.strip() for x in content if 'git+' not in x]
+
 setup(name='lwb_smr',
       version="1.0",
       description="Project Description",
