@@ -75,7 +75,9 @@ upload_gt_data:
 upload_test_data:
 		@gsutil cp ${LOCAL_TEST_DATA_PATH} gs://${BUCKET_NAME}/${BUCKET_FOLDER}/${BUCKET_TEST_DATA_FOLDER}/${BUCKET_TEST_FILE_NAME}
 
-
+# 		@gsutil cp vertex_raw_data.zip gs://lwb-solar-my-roof/data/vertex_raw_data.zip
+push_files_from_vertex_to_gcp:
+		@gsutil cp vertex_raw_data.zip gs://lwb-solar-my-roof/data/vertex_raw_data.zip
 # ----------------------------------
 #          INSTALL & TEST
 # ----------------------------------
