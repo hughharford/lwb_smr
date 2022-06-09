@@ -79,8 +79,27 @@ upload_test_data:
 # ----------------------------------
 #          INSTALL & TEST
 # ----------------------------------
+
+#
 install_requirements:
 	@pip install -r requirements.txt
+
+work_reqs_with_and_without_deps:
+	@grep -v -e --no-deps requirements.txt > requirements-with-deps.txt
+	@grep -e --no-deps requirements.txt > requirements-without-deps.txt
+
+# not working:
+reqs_with_n_without_deps:
+	@pip install -r requirements-without-deps.txt --no-deps
+	@pip install -r requirements-with-deps.txt
+
+
+install_tf_gpu:
+	@pip install -e .
+	@pip install tensorflow-io --no-deps
+	@pip uninstall -y tensorflow-gpu
+	@pip install -y tensorflow-gpu
+
 
 check_code:
 	@flake8 scripts/* lwb_solarmyroof/*.py
