@@ -1,0 +1,57 @@
+https://stackoverflow.com/questions/72255562/cannot-import-name-dtensor-from-tensorflow-compat-v2-experimental
+
+Cannot import name 'dtensor' from 'tensorflow.compat.v2.experimental'
+
+On:
+   VERTEX
+
+
+ANSWER 1
++++++++++++++++++++++
+
+This can be caused by an incompatibility between your tensorflow and your keras versions. In particular I see this with tensorflow==2.6.0 and keras==2.9.0, though I would not be surprised if other versions can cause this as well.
+
+Either update your tensorflow version by:
+
+pip install tensorflow==2.8
+
+or downgrade your keras version by:
+
+pip install keras==2.6
+
+
+OUR ATTEMPT:
+		THE BELOW DIDN'T WORK
+in the reqs is:	keras==2.6
+doesn't work yet
+the above tensorflow==2.8 is a bit complex as we are tensorflow-gpu
+
+
+
+ANSWER 2 
++++++++++++++++++++++
+
+
+
+I tried many solutions to no avail, in the end this worked for me!
+
+pip3 uninstall tensorflow absl-py astunparse flatbuffers gast google-pasta grpcio h5py keras keras-preprocessing libclang numpy opt-einsum protobuf setuptools six tensorboard tensorflow-io-gcs-filesystem termcolor tf-estimator-nightly typing-extensions wrapt
+
+pip3 install --disable-pip-version-check --no-cache-dir tensorflow
+
+Hope this Helps!!!
+
+
+ANSWER 3 
++++++++++++++++++++++
+
+
+
+Before you must delete tensorflow and keras folder at site-package. Open admin command prompt use this codes
+
+pip uninstall tensorflow 
+
+pip install tensorflow --ignore-installed
+
+
+
