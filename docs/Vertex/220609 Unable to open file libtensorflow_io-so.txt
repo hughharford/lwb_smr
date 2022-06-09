@@ -30,3 +30,10 @@ pip install tensorflow-gpu
 NOTE
 pip install -e . 
 		DOES NOT WORK
+		this command seems to skip the requirements.txt issue of: --no-deps tensorflow-io
+		Which would usually cause issues
+		
+
+PROVIDED WE RUN pip install -e . AND THEN THESE 2, LOCAL RUN WORKS:
+pip uninstall tensorflow-gpu
+pip install tensorflow-gpu
