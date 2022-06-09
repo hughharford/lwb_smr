@@ -54,7 +54,7 @@ class Test_Trainer():
                      to access the list of image and mask file names & path to folder containing images.
         """
 
-        # batch_size = 64 # add to global variables
+        # If using Virtual Machine Load data from VM paths otherwise local path
         if self.VM:
             # Load filenames e.g. ['austin_x00_y00.jpeg', 'austin_x00_y01.jpeg' ...]
             x_images = self.data_dict[X_key]
@@ -87,12 +87,12 @@ class Test_Trainer():
         self.model.compile(
                     loss=self.loss,
                     optimizer=Adam(),
-                    metrics=METRICS #, tf.keras.metrics.AUC(), tf.keras.metrics.IoU()]
+                    metrics=METRICS #, # more useful to see what metrics are here?? tf.keras.metrics.AUC(), tf.keras.metrics.IoU()]
                     )
 
     def start_mlflow(self):
         p = PushMLFlow(EXPERIMENT_NAME, EXPERIMENT_TAGS)
-        return p
+        return p # returns a class instance of PushMLFlow
 
     def run(self):
         # Load in train, validation and test data.
