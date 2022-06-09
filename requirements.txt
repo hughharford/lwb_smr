@@ -9,6 +9,11 @@ numpy
 pandas
 scikit-learn
 tensorflow
+# OR
+# tensorflow-gpu
+
+# tf bits
+tensorflow-io
 
 # tests/linter
 black
