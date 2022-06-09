@@ -20,6 +20,13 @@ or downgrade your keras version by:
 pip install keras==2.6
 
 
+OUR ATTEMPT:
+		THE BELOW DIDN'T WORK
+in the reqs is:	keras==2.6
+doesn't work yet
+the above tensorflow==2.8 is a bit complex as we are tensorflow-gpu
+
+
 
 ANSWER 2 
 +++++++++++++++++++++
