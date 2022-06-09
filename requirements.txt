@@ -9,10 +9,9 @@ numpy
 pandas
 scikit-learn
 scikit-image
-# tensorflow
+tensorflow
 # OR
-tensorflow-gpu
-keras==2.6
+keras
 
 # tf bits
 # tensorflow-io but with no dependencies
