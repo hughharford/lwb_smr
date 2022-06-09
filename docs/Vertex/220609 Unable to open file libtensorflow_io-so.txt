@@ -1,0 +1,32 @@
+Unable to open file libtensorflow_io.so caused by undefined symbol
+
+https://stackoverflow.com/questions/65623468/unable-to-open-file-libtensorflow-io-so-caused-by-undefined-symbol
+
+On:
+	Local machine
+	
+THIS WORKED 22 06 08:
+
+Obvious workaround is to uninstall tensorflow and tensorflow-io and install them from pip:
+pip uninstall tensorflow
+pip uninstall tensorflow-io
+pip install tensorflow-gpu
+pip install --no-deps tensorflow-io
+
+
+ISSUE CAME BACK AROUND WHEN REINSTALLED tensorflow TO SOLVE ANOTHER ISSUE
+
+ALSO, couldn't then import tf!
+https://stackoverflow.com/questions/53801766/i-cant-import-tensorflow-gpu
+
+SOLUTION:
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+ran ok, but only after doing the following again:
+
+pip uninstall tensorflow-gpu
+pip install tensorflow-gpu
+
+NOTE
+pip install -e . 
+		DOES NOT WORK
