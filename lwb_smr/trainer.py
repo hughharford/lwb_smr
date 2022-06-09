@@ -34,12 +34,16 @@ class Trainer():
         # could be these (locally):
         # x_images = os.listdir('../raw_data/train_RGB_tiles/')
         # x_path = '../../raw_data/train_RGB_tiles/'
-        x_images = os.listdir('../raw_data/AerialImageDataset/train/images/')
-        x_path = '../raw_data/AerialImageDataset/train/images/'
+        # x_images = os.listdir('../raw_data/AerialImageDataset/train/images/')
+        # x_path = '../raw_data/AerialImageDataset/train/images/'
+        x_path = '../../raw_data/train_RGB_tiles_jpeg/'
+        x_images = os.listdir(x_path)
         # y_masks = os.listdir('../../raw_data/train_mask_tiles/')
         # y_path = '../../raw_data/train_mask_tiles/'
-        y_masks = os.listdir('../raw_data/AerialImageDataset/train/gt/')
-        y_path = '../raw_data/AerialImageDataset/train/gt/'
+        # y_masks = os.listdir('../raw_data/AerialImageDataset/train/gt/')
+        # y_path = '../raw_data/AerialImageDataset/train/gt/'
+        y_path = '../../raw_data/train_mask_tiles_jpeg'
+        y_masks = os.listdir(y_path)
         input_image_size = (250, 250)
         batch_size = 16
         customdata = CustomDataLoader(x_images, x_path, y_masks, y_path, input_image_size, batch_size)
