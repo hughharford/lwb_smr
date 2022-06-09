@@ -16,7 +16,6 @@ keras==2.6
 
 # tf bits
 # tensorflow-io but with no dependencies
-# --no-deps tensorflow-io
 
 # tests/linter
 black
