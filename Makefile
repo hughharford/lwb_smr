@@ -75,12 +75,33 @@ upload_gt_data:
 upload_test_data:
 		@gsutil cp ${LOCAL_TEST_DATA_PATH} gs://${BUCKET_NAME}/${BUCKET_FOLDER}/${BUCKET_TEST_DATA_FOLDER}/${BUCKET_TEST_FILE_NAME}
 
-
+# 		@gsutil cp vertex_raw_data.zip gs://lwb-solar-my-roof/data/vertex_raw_data.zip
+push_files_from_vertex_to_gcp:
+		@gsutil cp vertex_raw_data.zip gs://lwb-solar-my-roof/data/vertex_raw_data.zip
 # ----------------------------------
 #          INSTALL & TEST
 # ----------------------------------
+
+#
 install_requirements:
 	@pip install -r requirements.txt
+
+work_reqs_with_and_without_deps:
+	@grep -v -e --no-deps requirements.txt > requirements-with-deps.txt
+	@grep -e --no-deps requirements.txt > requirements-without-deps.txt
+
+# not working:
+reqs_with_n_without_deps:
+	@pip install -r requirements-without-deps.txt --no-deps
+	@pip install -r requirements-with-deps.txt
+
+
+install_tf_gpu:
+	@pip install -e .
+	@pip install tensorflow-io --no-deps
+	@pip uninstall -y tensorflow-gpu
+	@pip install tensorflow-gpu
+
 
 check_code:
 	@flake8 scripts/* lwb_solarmyroof/*.py

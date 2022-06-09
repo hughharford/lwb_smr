@@ -8,12 +8,14 @@ wheel>=0.29
 numpy
 pandas
 scikit-learn
+scikit-image
 tensorflow
 # OR
-# tensorflow-gpu
+keras
 
 # tf bits
-tensorflow-io
+# tensorflow-io but with no dependencies
+# --no-deps tensorflow-io
 
 # tests/linter
 black
