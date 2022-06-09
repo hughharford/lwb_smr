@@ -1,6 +1,5 @@
 from tensorflow import keras
 import tensorflow as tf
-import tensorflow_io as tfio
 import numpy as np
 import math
 from skimage.transform import resize
@@ -41,6 +40,14 @@ class CustomDataLoader(keras.utils.Sequence):
 
         self.resized_size = (224,224)
 
+        ############################################################
+        # CREATING TENSORFLOW IMAGE OBJECTS
+        # The below functions read in images as tensorflow objects,
+        # then they are decoded (jpeg to tensorflow object), resized
+        # and normalised. Tensorflow objects are chosen over numpy
+        # objects as they are faster in the model than numpy
+        ###########################################################
+        
         # create a list for the tensorflow objects then read in images
         # and convert to tensorflow objects.
         xl = []
@@ -67,5 +74,8 @@ class CustomDataLoader(keras.utils.Sequence):
             mask_img = tf.math.divide(mask_img, 255)
             yl.append(mask_img)
         y = tf.stack(yl)
-
+        
+        # they x,y returned below are stacked tensorflow objects 
+        # of the batch of images
+        
         return x,y
