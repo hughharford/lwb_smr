@@ -98,7 +98,7 @@ install_tf_gpu:
 	@pip install -e .
 	@pip install tensorflow-io --no-deps
 	@pip uninstall -y tensorflow-gpu
-	@pip install -y tensorflow-gpu
+	@pip install tensorflow-gpu
 
 
 check_code:
