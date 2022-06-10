@@ -9,8 +9,8 @@ MLFLOW_URI = "https://mlflow.lewagon.ai/"
 
 # Dictionary containing paths to VM_folders for training, validation and test data
 VM_path_dict = {
-    'path_x': '../raw_data/AerialImageDataset/train/images/',
-    'path_y': '../raw_data/AerialImageDataset/train/gt/'
+    'path_x': '../../raw_data/train_RGB_tiles_jpeg/',
+    'path_y': '../../raw_data/train_mask_tiles_jpeg/'
 }
 
 
