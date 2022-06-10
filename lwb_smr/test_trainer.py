@@ -18,20 +18,40 @@ from lwb_smr.data import GetData, LoadDataSets
 INPUT_IMAGE_SIZE = (250, 250) # add to global variables
 BATCH_SIZE = 8
 
+<<<<<<< HEAD
 ### MLFLOW PARAMETERS
 EXPERIMENT_NAME = "UK Lon lwb_smr vertex_run_01"
 EXPERIMENT_TAGS = {
     'USER': 'jhjhjhjh',
     'RUN NAME': 'test_trainner_check',
-    'VERSION': '1.00',
-    'DESCRIPTION': '''Model_02 UNET VGG-16, 1 epoch, 3 images'''
-}
-
+=======
 ### MODEL PARAMETERS
 LOSS='binary_crossentropy'
 OUR_INPUT_SHAPE = (224, 224, 3)
 METRICS = ['accuracy']
 EPOCHS = 2
+MODEL_PATH = "/home/joshk/code/lwb_smr/lwb_smr/raw_data/models/"
+MODEL_NAME = "test_model_01.h5"
+
+### MLFLOW PARAMETERS
+EXPERIMENT_NAME = "UK Lon lwb_smr vertex_run_01"
+EXPERIMENT_TAGS = {
+    'USER': 'Josh',
+    'RUN NAME': MODEL_NAME,
+>>>>>>> 97043fb2ee17b0f2569ba7d6b4de110117ba1c47
+    'VERSION': '1.00',
+    'DESCRIPTION': '''Model_02 UNET VGG-16, 1 epoch, 3 images'''
+}
+
+<<<<<<< HEAD
+### MODEL PARAMETERS
+LOSS='binary_crossentropy'
+OUR_INPUT_SHAPE = (224, 224, 3)
+METRICS = ['accuracy']
+EPOCHS = 2
+=======
+
+>>>>>>> 97043fb2ee17b0f2569ba7d6b4de110117ba1c47
 
 class Test_Trainer():
     def __init__(self, VM=True):
@@ -39,6 +59,10 @@ class Test_Trainer():
         self.loss = LOSS
         # Load dictionary containing all images and mask file names in corresponding
         # csv file:
+<<<<<<< HEAD
+=======
+        # print(csv_path_dict)
+>>>>>>> 97043fb2ee17b0f2569ba7d6b4de110117ba1c47
         self.data_dict = LoadDataSets(csv_path_dict['train_csv'],
                                          csv_path_dict['val_csv'],
                                          csv_path_dict['test_csv']).load_datasets()
@@ -121,7 +145,11 @@ class Test_Trainer():
         # es = EarlyStopping()
         self.model.fit(
             self.customdata_train,
+<<<<<<< HEAD
             self.customdata_val,
+=======
+            validation_data = self.customdata_val,
+>>>>>>> 97043fb2ee17b0f2569ba7d6b4de110117ba1c47
             # batch_size=BATCH_SIZE, # potential to take this line out (batch size defined in dataloader)
             epochs=EPOCHS,
             callbacks=[mc]
@@ -131,6 +159,13 @@ class Test_Trainer():
 
         print(80*'=')
         print('------MODEL RUN SUCCESFULLY COMPLETED------')
+<<<<<<< HEAD
+=======
+        
+        model_path_and_filename = f'{MODEL_PATH}/{MODEL_NAME}'
+        # '../models/220610_sampleCHECKER_UNET_input_shape_224x224x3.h5'
+        self.model.save(model_path_and_filename)
+>>>>>>> 97043fb2ee17b0f2569ba7d6b4de110117ba1c47
 
         self.evaluate()
 
@@ -153,3 +188,7 @@ if __name__ == '__main__':
     t = Test_Trainer(VM=False)
     t.run()
     t.evaluate()
+<<<<<<< HEAD
+=======
+
+>>>>>>> 97043fb2ee17b0f2569ba7d6b4de110117ba1c47
