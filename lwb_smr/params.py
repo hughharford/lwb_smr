@@ -9,15 +9,15 @@ MLFLOW_URI = "https://mlflow.lewagon.ai/"
 
 # Dictionary containing paths to VM_folders for training, validation and test data
 VM_path_dict = {
-    'path_x': "../../raw_data/train_RGB_tiles_jpeg/",
-    'path_y': "../../raw_data/train_mask_tiles_jpeg/"
+    'path_x': "../raw_data/train_RGB_tiles_jpeg/",
+    'path_y': "../raw_data/train_mask_tiles_jpeg/"
 }
 
 
 # SET NAMES OF 3 .csv FILES
 
 csv_path_dict = {
-    'train_csv': "/home/code/hughharford/raw_data/image_datasets_csv/train_dataset.csv",
-    'val_csv': "/home/code/hughharford/raw_data/image_datasets_csv/validation_dataset.csv",
-    'test_csv': "/home/code/hughharford/raw_data/image_datasets_csv/test_dataset.csv"
+    'train_csv': "/home/hsth/code/hughharford/lwb_smr/raw_data/image_datasets_csv/train_dataset.csv",
+    'val_csv': "/home/hsth/code/hughharford/lwb_smr/raw_data/image_datasets_csv/validation_dataset.csv",
+    'test_csv': "/home/hsth/code/hughharford/lwb_smr/raw_data/image_datasets_csv/test_dataset.csv"
 }
