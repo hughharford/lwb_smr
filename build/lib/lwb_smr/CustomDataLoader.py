@@ -1,6 +1,5 @@
 from tensorflow import keras
 import tensorflow as tf
-import tensorflow_io as tfio
 import numpy as np
 import math
 from skimage.transform import resize
@@ -41,14 +40,20 @@ class CustomDataLoader(keras.utils.Sequence):
 
         self.resized_size = (224,224)
 
+        ############################################################
+        # CREATING TENSORFLOW IMAGE OBJECTS
+        # The below functions read in images as tensorflow objects,
+        # then they are decoded (jpeg to tensorflow object), resized
+        # and normalised. Tensorflow objects are chosen over numpy
+        # objects as they are faster in the model than numpy
+        ###########################################################
+        
         # create a list for the tensorflow objects then read in images
         # and convert to tensorflow objects.
         xl = []
         for i, ximg in enumerate(batch_x):
             img = tf.io.read_file(self.x_path+batch_x[i])
-            img = tfio.experimental.image.decode_tiff(img, index=0)
-            #print(img.shape)
-            img = img[:, :, :-1]  # [:,:,:]
+            img = tf.io.decode_jpeg(img, channels=3)
             # resizing
             input_img =  tf.image.resize(img, [self.resized_size[0], self.resized_size[1]])
             # normalise
@@ -58,17 +63,19 @@ class CustomDataLoader(keras.utils.Sequence):
 
         # create a list for the tensorflow objects then read in images
         # and convert to tensorflow objects.
+        # mask images are single channel
         yl = []
         for j, yimg in enumerate(batch_y):
             mask = tf.io.read_file(self.y_path+batch_y[i])
-            mask = tfio.experimental.image.decode_tiff(mask, index=0)
-            mask = mask[:, :, :-1]
-            mask = tf.image.rgb_to_grayscale(mask)
+            mask = tf.io.decode_jpeg(mask, channels=1)
             # resizing
             mask_img =  tf.image.resize(mask, [self.resized_size[0], self.resized_size[1]])
             # normalise
             mask_img = tf.math.divide(mask_img, 255)
             yl.append(mask_img)
         y = tf.stack(yl)
-
+        
+        # they x,y returned below are stacked tensorflow objects 
+        # of the batch of images
+        
         return x,y
