@@ -12,4 +12,6 @@ lwb_solarmyroof/data_samples/
 *.tif
 *.tiff
 *.zip
+*.jpeg
 .vscode
+*.h5
