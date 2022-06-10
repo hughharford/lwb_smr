@@ -33,13 +33,17 @@ class Trainer():
     def just_get_the_data_loaded(self):
         # could be these (locally):
         # x_images = os.listdir('../raw_data/train_RGB_tiles/')
-        # x_path = '../../raw_data/train_RGB_tiles/'
-        x_images = os.listdir('../raw_data/AerialImageDataset/train/images/')
-        x_path = '../raw_data/AerialImageDataset/train/images/'
+        x_path = '../../raw_data/train_RGB_tiles/'
+        # x_images = os.listdir('../raw_data/AerialImageDataset/train/images/')
+        # x_path = '../raw_data/AerialImageDataset/train/images/'
+        # x_path = '../../raw_data/train_RGB_tiles_jpeg/'
+        x_images = os.listdir(x_path)
         # y_masks = os.listdir('../../raw_data/train_mask_tiles/')
-        # y_path = '../../raw_data/train_mask_tiles/'
-        y_masks = os.listdir('../raw_data/AerialImageDataset/train/gt/')
-        y_path = '../raw_data/AerialImageDataset/train/gt/'
+        y_path = '../../raw_data/train_mask_tiles/'
+        # y_masks = os.listdir('../raw_data/AerialImageDataset/train/gt/')
+        # y_path = '../raw_data/AerialImageDataset/train/gt/'
+        # y_path = '../../raw_data/train_mask_tiles_jpeg'
+        y_masks = os.listdir(y_path)
         input_image_size = (250, 250)
         batch_size = 16
         customdata = CustomDataLoader(x_images, x_path, y_masks, y_path, input_image_size, batch_size)
@@ -52,11 +56,16 @@ class Trainer():
         getVGG16 = SMR_Model(our_input_shape)
         self.model = getVGG16.get_latest_model()
 
+        # binaryIoU metric
+        threshold = 0.5
+        binaryIoU = tf.keras.metrics.BinaryIoU(target_class_ids=[1], threshold=threshold)
+        AUC = tf.keras.metrics.AUC()
+
         # Compile Model
         self.model.compile(
                     loss=self.loss,
                     optimizer=Adam(),
-                    metrics=['accuracy'] #, tf.keras.metrics.AUC(), tf.keras.metrics.IoU()]
+                    metrics=['accuracy', binaryIoU, AUC]
                     )
 
     def start_mlflow(self):
@@ -80,13 +89,13 @@ class Trainer():
         self.set_model()
 
         mc = ModelCheckpoint('oxford_segmentation.h5', save_best_only=True) # could put path here
-        # es = EarlyStopping()
+        es = EarlyStopping(patience=30, restore_best_weights=True)
         self.model.fit(
             customdata,
             # validation_split=0.3,
             batch_size=BATCH_SIZE,
             epochs=EPOCHS,
-            callbacks=[mc]
+            callbacks=[mc, es]
             )
 
         self.MFLOW.mlflow_log_param('loss', self.loss)
