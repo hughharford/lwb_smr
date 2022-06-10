@@ -16,7 +16,7 @@ from lwb_smr.data import GetData, LoadDataSets
 
 ### DATALOADER PARAMETERS
 INPUT_IMAGE_SIZE = (250, 250) # add to global variables
-BATCH_SIZE = 64
+BATCH_SIZE = 8
 
 ### MLFLOW PARAMETERS
 EXPERIMENT_NAME = "UK Lon lwb_smr vertex_run_01"
@@ -31,7 +31,7 @@ EXPERIMENT_TAGS = {
 LOSS='binary_crossentropy'
 OUR_INPUT_SHAPE = (224, 224, 3)
 METRICS = ['accuracy']
-EPOCHS = 1
+EPOCHS = 2
 
 class Test_Trainer():
     def __init__(self, VM=True):
@@ -57,12 +57,12 @@ class Test_Trainer():
         # If using Virtual Machine Load data from VM paths otherwise local path
         if self.VM:
             # Load filenames e.g. ['austin_x00_y00.jpeg', 'austin_x00_y01.jpeg' ...]
-            x_images = self.data_dict[X_key]
+            x_images = self.data_dict[X_key][:2*BATCH_SIZE]
             # Load path to folder containing images
             x_path = VM_path_dict['path_x']
 
             # Load filenames e.g. ['austin_x00_y00_mask.jpeg', 'austin_x00_y01_mask.jpeg' ...]
-            y_masks = self.data_dict[y_key]
+            y_masks = self.data_dict[y_key][:2*BATCH_SIZE]
             # Load path to folder containing masks
             y_path = VM_path_dict['path_y']
         else:
