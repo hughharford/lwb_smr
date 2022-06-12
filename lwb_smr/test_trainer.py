@@ -10,6 +10,7 @@ from tensorflow.keras.optimizers import Adam
 
 from lwb_smr.CustomDataLoader import CustomDataLoader
 from lwb_smr.model import SMR_Model
+from lwb_smr.model_resnet50 import ResNet50_Model
 from lwb_smr.utils_class.MLFlowPush import PushMLFlow
 from lwb_smr.params import VM_path_dict, csv_path_dict
 from lwb_smr.data import GetData, LoadDataSets
@@ -18,18 +19,19 @@ from lwb_smr.data import GetData, LoadDataSets
 INPUT_IMAGE_SIZE = (250, 250) # add to global variables
 BATCH_SIZE = 8
 
-### MODEL PARAMETERS
+### MODEL PARAMETERS
+MODEL_TYPE = 'resnet' # option of 'resnet' and ' vgg16'
 LOSS='binary_crossentropy'
 OUR_INPUT_SHAPE = (224, 224, 3)
 METRICS = ['accuracy']
 EPOCHS = 2
-MODEL_PATH = "/home/code/hughharford/lwb_smr/raw_data/models/"
-MODEL_NAME = "test_model_01.h5"
+MODEL_PATH = "/home/joshk/code/lwb_smr/lwb_smr/raw_data/models/"
+MODEL_NAME = "test_model_01.h5" # requires .h5 to end
 
-### MLFLOW PARAMETERS
-EXPERIMENT_NAME = "UK Lon lwb_smr vertex_run_01"
+### MLFLOW PARAMETERS
+EXPERIMENT_NAME = "UK Lon lwb_smr ResNet50"
 EXPERIMENT_TAGS = {
-    'USER': 'Hugh',
+    'USER': 'Jack',
     'RUN NAME': MODEL_NAME,
     'VERSION': '1.00',
     'DESCRIPTION': '''Model_02 UNET VGG-16, 1 epoch, 3 images'''
@@ -41,10 +43,11 @@ class Test_Trainer():
         self.loss = LOSS
         # Load dictionary containing all images and mask file names in corresponding
         # csv file:
-        print(csv_path_dict)
-        self.data_dict = LoadDataSets(csv_path_dict['train_csv'],
-                                         csv_path_dict['val_csv'],
-                                         csv_path_dict['test_csv']).load_datasets()
+        # print(csv_path_dict)
+        if VM:
+            self.data_dict = LoadDataSets(csv_path_dict['train_csv'],
+                                            csv_path_dict['val_csv'],
+                                            csv_path_dict['test_csv']).load_datasets()
 
     def just_get_the_data_loaded(self, X_key, y_key):
         """
@@ -83,8 +86,12 @@ class Test_Trainer():
     def set_model(self):
 
         # Instantiate Model
-        getVGG16 = SMR_Model(OUR_INPUT_SHAPE)
-        self.model = getVGG16.get_latest_model()
+        ### VGG16
+        # getVGG16 = SMR_Model(OUR_INPUT_SHAPE)
+        # self.model = getVGG16.get_latest_model()
+        ### ResNet50
+        getRESNET = ResNet50_Model(OUR_INPUT_SHAPE)
+        self.model = getRESNET.build_resnet50()
 
         # Compile Model
         self.model.compile(
@@ -120,7 +127,8 @@ class Test_Trainer():
         # set model
         self.set_model()
 
-        mc = ModelCheckpoint('test_checkpoint.h5', save_best_only=True) # could put path here
+        mc = ModelCheckpoint(MODEL_NAME, save_best_only=True) # could put path here
+
         # es = EarlyStopping()
         self.model.fit(
             self.customdata_train,
@@ -135,6 +143,7 @@ class Test_Trainer():
         print(80*'=')
         print('------MODEL RUN SUCCESFULLY COMPLETED------')
 
+        ### SAVING MODEL OPTIONS ###
         model_path_and_filename = f'{MODEL_PATH}/{MODEL_NAME}'
         # '../models/220610_sampleCHECKER_UNET_input_shape_224x224x3.h5'
         self.model.save(model_path_and_filename)
