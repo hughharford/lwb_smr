@@ -6,7 +6,7 @@ from tensorflow.keras.models import Model
 
 from tensorflow.keras.applications.resnet50 import ResNet50
 
-class BuildResNet50():
+class ResNet50_Model():
     """
     To create and compile model use code:
     get_resnet = BuildResNet50((224,224,3))
