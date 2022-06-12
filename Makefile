@@ -18,8 +18,13 @@ BUCKET_TRAIN_DATA_FOLDER=train
 BUCKET_TEST_DATA_FOLDER=test
 BUCKET_GROUNDTRUTH_DATA_FOLDER=gt
 
-
-
+#manually copy files to site packages(!)
+manual_copy_to_sitepackages:
+		@ls /home/hsth/.pyenv/versions/3.8.12/envs/lewagon/lib/python3.8/site-packages/lwb_smr
+		@rm -rf /home/hsth/.pyenv/versions/3.8.12/envs/lewagon/lib/python3.8/site-packages/lwb_smr/
+		@mkdir /home/hsth/.pyenv/versions/3.8.12/envs/lewagon/lib/python3.8/site-packages/lwb_smr
+		@ls /home/hsth/.pyenv/versions/3.8.12/envs/lewagon/lib/python3.8/site-packages/lwb_smr
+		@cp -r lwb_smr/* /home/hsth/.pyenv/versions/3.8.12/envs/lewagon/lib/python3.8/site-packages/lwb_smr
 
 # BUILD AND RUN LOCALLY
 build_image:
@@ -77,7 +82,7 @@ upload_test_data:
 
 # 		@gsutil cp vertex_raw_data.zip gs://lwb-solar-my-roof/data/vertex_raw_data.zip
 push_files_from_vertex_to_gcp:
-		@gsutil cp vertex_raw_data.zip gs://lwb-solar-my-roof/data/vertex_raw_data.zip
+		@gsutil cp vertex_data_jpegs.zip gs://lwb-solar-my-roof/data/vertex_data_jpegs.zip
 # ----------------------------------
 #          INSTALL & TEST
 # ----------------------------------
@@ -95,12 +100,8 @@ reqs_with_n_without_deps:
 	@pip install -r requirements-without-deps.txt --no-deps
 	@pip install -r requirements-with-deps.txt
 
+# run_all_installs: work_reqs_with_and_without_deps reqs_with_n_without_deps
 
-install_tf_gpu:
-	@pip install -e .
-	@pip install tensorflow-io --no-deps
-	@pip uninstall -y tensorflow-gpu
-	@pip install tensorflow-gpu
 
 
 check_code:
