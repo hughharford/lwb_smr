@@ -1,0 +1,40 @@
+
+NORTH
+51.67522
+
+EAST 
+0.24919
+
+SOUTH
+51.28608
+
+WEST
+-0.49003
+
+
+
+
+North centre 
+N
+51.67522
+W
+-0.11164
+
+
+South centre 
+N
+51.28608
+W
+-0.09241
+
+West Centre 
+N
+51.49796
+W
+-0.49003
+
+East Centre 
+N
+51.48349
+E
+0.24919

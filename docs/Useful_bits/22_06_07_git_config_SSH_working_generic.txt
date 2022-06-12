@@ -13,8 +13,8 @@ git config --local user.email "other_username@other_email_provider.com"
 
 
 # to reset username
-git config --global --replace-all user.name "user_name"
-git config --global --replace-all user.email "username@email_provider.com"
+git config --global --replace-all user.name "hughharford"
+git config --global --replace-all user.email "hughharford@poscoconsulting.com"
 
 # OR
 git config --local --replace-all user.name "user_name"

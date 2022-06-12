@@ -18,8 +18,13 @@ BUCKET_TRAIN_DATA_FOLDER=train
 BUCKET_TEST_DATA_FOLDER=test
 BUCKET_GROUNDTRUTH_DATA_FOLDER=gt
 
-
-
+#manually copy files to site packages(!)
+manual_copy_to_sitepackages:
+		@ls /home/hsth/.pyenv/versions/3.8.12/envs/lewagon/lib/python3.8/site-packages/lwb_smr
+		@rm -rf /home/hsth/.pyenv/versions/3.8.12/envs/lewagon/lib/python3.8/site-packages/lwb_smr/
+		@mkdir /home/hsth/.pyenv/versions/3.8.12/envs/lewagon/lib/python3.8/site-packages/lwb_smr
+		@ls /home/hsth/.pyenv/versions/3.8.12/envs/lewagon/lib/python3.8/site-packages/lwb_smr
+		@cp -r lwb_smr/* /home/hsth/.pyenv/versions/3.8.12/envs/lewagon/lib/python3.8/site-packages/lwb_smr
 
 # BUILD AND RUN LOCALLY
 build_image:
