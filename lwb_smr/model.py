@@ -2,6 +2,8 @@ from tensorflow.keras.layers import Input, Conv2D, MaxPooling2D, Activation, ReL
 from tensorflow.keras.layers import BatchNormalization, Conv2DTranspose, Concatenate
 from tensorflow.keras.models import Model, Sequential
 from tensorflow.keras.utils import plot_model
+from tensorflow import keras
+
 
 from tensorflow.keras.applications import VGG16
 
@@ -11,8 +13,17 @@ from tensorflow.keras.applications import VGG16
 class SMR_Model():
     ''' creating our first lwb_smr models '''
 
-    def __init__(self, input_shape):
+    def __init__(self, input_shape, model_path_to_file=''):
         self.input_shape = input_shape
+        if model_path_to_file:
+            self.model_to_load = model_path_to_file
+
+    def get_loaded_model(self):
+        # model_path_and_filename = '../models/first_UNET_input_shape_224x224x3.h5'
+        # model = keras.models.load_model(model_path_and_filename)
+        loaded_model = keras.models.load_model(self.model_to_load)
+        return loaded_model
+
 
     def get_latest_model(self):
         model = self.build_vgg16_unet(self.input_shape)

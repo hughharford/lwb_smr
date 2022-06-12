@@ -17,7 +17,7 @@ VM_path_dict = {
 # SET NAMES OF 3 .csv FILES
 
 csv_path_dict = {
-    'train_csv': "/home/joshk/code/lwb_smr/lwb_smr/raw_data/image_datasets_csv/train_dataset.csv",
-    'val_csv': "/home/joshk/code/lwb_smr/lwb_smr/raw_data/image_datasets_csv/validation_dataset.csv",
-    'test_csv': "/home/joshk/code/lwb_smr/lwb_smr/raw_data/image_datasets_csv/test_dataset.csv"
+    'train_csv': "/home/hsth/code/hughharford/lwb_smr/raw_data/image_datasets_csv/train_dataset.csv",
+    'val_csv': "/home/hsth/code/hughharford/lwb_smr/raw_data/image_datasets_csv/validation_dataset.csv",
+    'test_csv': "/home/hsth/code/hughharford/lwb_smr/raw_data/image_datasets_csv/test_dataset.csv"
 }

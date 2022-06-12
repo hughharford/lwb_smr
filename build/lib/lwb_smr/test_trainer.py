@@ -23,7 +23,7 @@ LOSS='binary_crossentropy'
 OUR_INPUT_SHAPE = (224, 224, 3)
 METRICS = ['accuracy']
 EPOCHS = 2
-MODEL_PATH = "/home/code/hughharford/lwb_smr/raw_data/models/"
+MODEL_PATH = "/home/hughharford/code/raw_data/models/"
 MODEL_NAME = "test_model_01.h5"
 
 ### MLFLOW PARAMETERS
@@ -41,7 +41,7 @@ class Test_Trainer():
         self.loss = LOSS
         # Load dictionary containing all images and mask file names in corresponding
         # csv file:
-        print(csv_path_dict)
+        # print(csv_path_dict)
         self.data_dict = LoadDataSets(csv_path_dict['train_csv'],
                                          csv_path_dict['val_csv'],
                                          csv_path_dict['test_csv']).load_datasets()
@@ -70,10 +70,10 @@ class Test_Trainer():
             y_path = VM_path_dict['path_y']
         else:
             # For running file on a local machine
-            x_path = '/home/code/hughharford/lwb_smr/raw_data/data_samples/jpeg_train/'
+            x_path = '/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/jpeg_train/'
             x_images = os.listdir(x_path) # raw rgb images
 
-            y_path = '/home/code/hughharford/lwb_smr/raw_data/data_samples/jpeg_train/'
+            y_path = '/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/jpeg_train/'
             y_masks = os.listdir(y_path) # mask to predict
 
 
@@ -120,7 +120,7 @@ class Test_Trainer():
         # set model
         self.set_model()
 
-        mc = ModelCheckpoint('test_checkpoint.h5', save_best_only=True) # could put path here
+        mc = ModelCheckpoint('oxford_segmentation.h5', save_best_only=True) # could put path here
         # es = EarlyStopping()
         self.model.fit(
             self.customdata_train,
