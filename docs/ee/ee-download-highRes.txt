@@ -1,0 +1,21 @@
+install extension fireshot to the browser
+select the following website
+
+http://www.chengfolio.com/google_map_customizer#satellitemap
+choose SATELLITE MAP
+set the dimension 5000 x 5000 and resize the image later or 3333 x3333
+
+press on fireshot the image tiles get collected and ready to be saved , select save as image
+notice that it saves as jpg. when you open the saved file with window viewer software it offer you resize as well as save as ( can choose tif format)
+
+
+PS. Although it got url location upload by selecting CUSTOM URL but adds the labels, may be there is a way to exclude the labels!
+
+http://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1942.2407811960613!2d-0.07908308488766365!3d51.53281351666666!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761cb14bdedb8d%3A0xfc10335ef69b7113!2sLe%20Wagon%20London!5e1!3m2!1sen!2suk!4v1655049875150!5m2!1sen!2suk" width="5000" height="5000" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+
+http://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1942.2407811960613!2d-0.0790830848876794!3d51.532813516666664!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2suk!4v1655052683588!5m2!1sen!2suk" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+for
+Le Wagon, Flat 13 138 Kingsland Road, London E2 8DY
+
+
+
