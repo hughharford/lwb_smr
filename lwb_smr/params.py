@@ -2,22 +2,8 @@
 File to store parameters for reuse
 
 """
-
 # NB: this sets variables below, so only set this to True/False
-TEST_RUN = False
-
-EXPERIMENT_NAME = "UK Lon lwb_smr vertex_run_02" # template
-EXPERIMENT_TAGS = {
-    'USER': 'hsth',
-    'RUN NAME': 'vertex2, operational',
-    'VERSION': 'M2_R04_15',
-    'DESCRIPTION': 'Model VGG16 UNet, 20+now another 30 epochs, 72k images',
-    'LOSS': 'dice',
-    'METRICS': 'accuracy, binaryIoU, AUC'
-}
-
-UNET_INPUT_SHAPE = (224,224,3)
-IMAGE_SQ_SIZE = 224
+TEST_RUN = True
 
 TEST_BATCH_SIZE = 8
 TEST_EPOCHS = 2
@@ -32,6 +18,18 @@ else:
     BATCH_SIZE = RUN_BATCH_SIZE
     EPOCHS = RUN_EPOCHS
 
+EXPERIMENT_NAME = "UK Lon lwb_smr vertex_run_02" # template
+EXPERIMENT_TAGS = {
+    'USER': 'hsth',
+    'RUN NAME': 'vertex2, operational',
+    'VERSION': 'M2_R04_15',
+    'DESCRIPTION': 'Model VGG16 UNet, 20+now another 30 epochs, 72k images',
+    'LOSS': 'dice',
+    'METRICS': 'accuracy, binaryIoU, AUC'
+}
+
+UNET_INPUT_SHAPE = (224,224,3)
+IMAGE_SQ_SIZE = 224
 # LOSS='binary_crossentropy'
 LOSS = 'DICE'
 
