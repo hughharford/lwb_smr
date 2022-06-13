@@ -18,7 +18,9 @@ def load_model_from_local_path(model_load_string_inc_path_n_h5):
     custom_objects_dict = {
                     'dice_loss': dice_loss
     }
-    loaded_model = tf.keras.models.load_model(model_load_string_inc_path_n_h5, custom_objects=custom_objects_dict)
+    loaded_model = tf.keras.models.load_model(
+        model_load_string_inc_path_n_h5,
+        custom_objects=custom_objects_dict)
 
     return loaded_model
 
