@@ -1,0 +1,7 @@
+
+# firewalls and bits
+https://console.cloud.google.com/networking/firewalls/list?project=lwb-solar-my-roof
+
+
+# firewall rules on our Vertex:
+https://console.cloud.google.com/networking/networkinterfaces/zones/europe-west4-a/instances/tensorflow-2-8-20220609-155820?networkInterface=nic0&project=lwb-solar-my-roof&tab=APPLICABLE_FIREWALLS&analysisTab=CONNECTIVITY_TEST
