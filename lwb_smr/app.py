@@ -3,8 +3,8 @@ from PIL import Image
 # Code to loaded images, make prediction
 
 
-train_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/jpeg_train/austin1.jpeg')
-mask_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/jpeg_test/austin1.jpeg')
+train_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/train_examples/austin1.tif')
+mask_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/gt_examples/austin1.tif')
 layover_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/input_with_mask.jpg')
 
 '''
@@ -14,15 +14,10 @@ st.markdown('''
 
 ## User Guide
 - Enter post code below
--
+- Or used selected locations in following section
+- Website will source a raw RGB image and make a prediction on roof
+- Prediction will be laid over the raw image as demonstrated below
 ''')
-## Enter post box BOX HERE
-post_code = st.text_input(label='Enter postcode', max_chars=8)
-# ----------------------------------------------
-# Logic to deal with post code and display image:
-# ----------------------------------------------
-
-
 
 col1, col2 = st.columns(2)
 col1.subheader('Raw RGB Image')
@@ -46,6 +41,47 @@ with col2:
 # ----------------------------------------------
 # Logic to deal with post code and display image:
 # ----------------------------------------------
+st.markdown('''
+            # Enter postcode
+            ''')
+post_code = st.text_input(label='Postcode:', max_chars=8)
+st.markdown('''
+            # Preselected location
+            ''')
+st.markdown('''
+            # WORK IN PROGRESS
+            ''')
+
+
+# ----------------------------------------------
+# Preloaded images:
+# ----------------------------------------------
+option = st.selectbox(
+    'Please select a preloaded example location',
+    ('Le Wagon London - E2 8DY', 'Finnieston, Glasgow - G3 8LX')
+)
+
+image_dict_path = {
+    'Le Wagon London - E2 8DY':'/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/lewagon_london.jpg',
+    'Finnieston, Glasgow - G3 8LX': '/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/glasgow_test.png'
+}
+st.write('You selected: ', option)
+
+if st.button('Show me the roofs'):
+    col3, col4 = st.columns(2)
+    col3.subheader('Raw RGB Image')
+    with col3:
+        option_image = Image.open(image_dict_path[option])
+        st.image(option_image)
+    col4.subheader('Laid over image')
+    with col4:
+        st.image(layover_test)
+
+
+
+# ----------------------------------------------
+# Logic to deal with post code and display image:
+# ----------------------------------------------
 
 
 
@@ -53,12 +89,7 @@ with col2:
 
 st.markdown('''
 
-raw-image -------- roof predicted
-some description -------- overlay
-## About this project
-
-## technical stuff ...
-- model , method ,
+### About this project
 
 lwb solar my roof is a project developed at Le Wagon Data Science bootcamp.
 
@@ -77,13 +108,9 @@ This page contains the final model developed by the team. Custom locations can b
 requested and the model will predict the locations of the roofs, giving an estimation
 of the roof area.
 
-An example of pre-selected locations can be found at in the following section.
-## INRIA
+### INRIA
 
-
-
-## Dropdown selection of preloaded images to predict
-
-
+### technical stuff ...
+- model , method ,
 
 ''')
