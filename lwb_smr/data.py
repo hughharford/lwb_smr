@@ -1,6 +1,10 @@
 import numpy as np
 import pandas as pd
 import os
+from pathlib import Path
+import tensorflow as tf
+
+from params import BATCH_SIZE, IMAGE_SQ_SIZE
 
 class GetData():
     '''
@@ -22,6 +26,50 @@ class GetData():
         self.train_pc = 1.0 - (val_pc + test_pc)
         self.val_pc = 1.0 - (train_pc + test_pc)
         self.test_pc = test_pc
+
+
+    def process_path(self, input_path, mask_path):
+        """
+        Load images from files.
+        :input_path: the path to the satellite file
+        :mask_path: the path to the mask file
+        :return: The image and mask
+        .. note:: Works with jpg images
+                Only the first channel is kept for the mask
+        """
+        input_img = tf.io.read_file(input_path)
+        input_img = tf.io.decode_jpeg(input_img, channels=3)
+        input_img =  tf.image.resize(input_img, [IMAGE_SQ_SIZE, IMAGE_SQ_SIZE])
+
+        mask_img = tf.io.read_file(mask_path)
+        mask_img = tf.io.decode_jpeg(mask_img, channels=1)
+        mask_img =  tf.image.resize(mask_img, [IMAGE_SQ_SIZE, IMAGE_SQ_SIZE])
+
+        return input_img, mask_img
+
+    def normalize(self, image, mask):
+        # image = tf.cast(image, tf.float32) / 255.
+        return tf.math.divide(image, 255), tf.math.divide(mask, 255)
+
+
+    def process_data_inc_autotune(self, ds_train, ds_val=None, ds_test=None):
+        AUTOTUNE = tf.data.experimental.AUTOTUNE
+
+        ds_train = ds_train.map(self.process_path) \
+        .map(self.normalize) \
+        .batch(batch_size=BATCH_SIZE) \
+        .prefetch(buffer_size=AUTOTUNE)
+
+        if ds_val:
+            ds_val = ds_val.map(self.process_path) \
+            .map(self.normalize) \
+            .batch(batch_size=BATCH_SIZE) \
+            .prefetch(buffer_size=AUTOTUNE)
+        if ds_test:
+            ds_test = ds_test.map(self.process_path) \
+            .map(self.normalize) \
+            .batch(batch_size=BATCH_SIZE) \
+            .prefetch(buffer_size=AUTOTUNE)
 
     def make_dataframe(self):
         '''
