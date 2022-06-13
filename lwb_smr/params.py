@@ -69,9 +69,8 @@ csv_path_dict = {
 
 
 predict_paths_dict = {
-    'input_image': "../../raw_data/lwb_smr/lwb_smr/raw_data/prediction/austin3.tif",
-    'output_tiles_path': "../../raw_data/prediction/raw_image_tiles/",
-    'prediction_output_images_path': "../../raw_data/prediction/predicted_tiles_output",
-    'model_path': "../../raw_data/models/220612_Josh_model_vertexAI_07_FULL_dataset_dice.h5"
+    'input_image': "/home/joshk/code/lwb_smr/lwb_smr/raw_data/prediction/google_map_images/",
+    'output_tiles_path': "/home/joshk/code/lwb_smr/lwb_smr/raw_data/prediction/raw_image_tiles/",
+    'prediction_output_images_path': "/home/joshk/code/lwb_smr/lwb_smr/raw_data/prediction/predicted_tiles_output/",
+    'model_path': "/home/joshk/code/lwb_smr/lwb_smr/raw_data/prediction/",
 }
-
