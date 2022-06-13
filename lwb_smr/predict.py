@@ -4,7 +4,9 @@ from tensorflow import keras
 import tensorflow as tf
 from PIL import Image
 import os
+import glob
 from lwb_smr.params import predict_paths_dict
+from skimage.transform import resize
 
 class PredictRoof():
     '''
@@ -19,25 +21,40 @@ class PredictRoof():
         '''
         docstring
         '''
-        pass
+        
 
-    def tile_split(self):
+    def tile_split(self,image_file, t_h = 250, t_w = 250):
         ''' Function to take an input image and tile it with no overlap/strides
             ensure following is specified:
                - input image directory
                - individual image files
                - the desired output folder
+        Specify:
+        image file = name of the image file e.g. 'austin.tif'
+        t_h        = default tile height is 250
+        t_w        = default tile width is 250
         '''
-        tile_height = 250
-        tile_width = 250
+        tile_height = t_h #250
+        tile_width = t_w #250
         tile_size = (tile_width, tile_height)
+        self.image_file = image_file
         # Read in image file and convert to numpy array
         # filepath = img_directory+image_file
-        image = Image.open(predict_paths_dict['input_image'])
+        image = Image.open(predict_paths_dict['input_image']+self.image_file)
+        # for jpegs, converts into the appropriate mode and channels
+        if image.mode != "RGB":
+            image = image.convert("RGB")
+            
         image = np.asarray(image)
 
         # from np array, get image total width and height
         img_height, img_width, channels = image.shape
+        
+        # to ensure output image is the same size as the original input image:
+        self.image_size = (img_height,img_width)
+        
+        # for later predictions, assumes always square images
+        self.num_tiles = image.shape[0] / tile_height
 
         # create numpy array of zeros to fill in from the image data
         tiled_array = np.zeros((img_height // tile_height,
@@ -61,7 +78,13 @@ class PredictRoof():
         # output tiled images to specified folder
         # first read image name
         image_name = 'prediction_input_image'
-
+        
+        
+        ## CLEAN THE TILES FOLDER ##
+        clean_files = glob.glob(predict_paths_dict['output_tiles_path']+"*")
+        for f in clean_files:
+            os.remove(f)
+        
         # loop through images contained in the array
         for ximg in range(tiled_array.shape[0]):
             for yimg in range(tiled_array.shape[1]):
@@ -92,13 +115,15 @@ class PredictRoof():
         self.ds_predict = tf.data.Dataset.from_tensor_slices(
              (self.tiles_predict["image_path"].values))
 
-    def load_model(self):
+    def load_model(self,model_to_load):
         '''
         load a specified model upon which to perform the prediction on
         the input image
         '''
         # load the pre-trained model
-        self.loaded_model = keras.models.load_model(predict_paths_dict['model_path'],custom_objects={'dice_loss':self.dice_loss})
+        # model_to_load = "Josh_model_vertexAI_08_FULL_dataset_BCE.h5"
+        model = f"{predict_paths_dict['model_path']}{model_to_load}"
+        self.loaded_model = keras.models.load_model(model,custom_objects={'dice_loss':self.dice_loss})
         return self.loaded_model
     
     def process_path(self,input_path):
@@ -132,11 +157,11 @@ class PredictRoof():
 
         return 1 - numerator / denominator      
     
-    def perform_prediction(self):
+    def perform_prediction(self, model_to_load):
         '''
         Perform the prediction with the dataset on the loaded model
         '''
-        self.load_model()
+        self.load_model(model_to_load)
         self.predict_dataset()
         
         ########################################################
@@ -154,10 +179,41 @@ class PredictRoof():
         self.pred = self.loaded_model.predict(self.ds_predict)
         return self.pred
 
-    def output_tiles(self):
-        # loop through images contained in the array
-        for ximg in range(self.pred.shape[0]):
-            tile_name = f"output_mask_{ximg:02d}.jpg"
-            im = Image.fromarray(self.pred[ximg].astype(np.uint8))
-            im.save(predict_paths_dict['prediction_output_images_path']+tile_name)
+    def output_mask(self, roof_images):
+        '''
+        Compile the numpy images into one tile
+        resize the tile to desired shape
+        save as jpg
+        '''
+        nh = int(self.num_tiles) #20 # number of horizontal tiles
+        nw = int(self.num_tiles) #20 # number of width tiles
+        h = 224 # individual tile height
+        w = 224 # individual tile width
+        output_shape = self.image_size #(1280,1280) #(5000,5000)
 
+        # combine all numpy arrays into one single array
+        self.big_image = roof_images.reshape(nh,nw,h,w).swapaxes(1,2).reshape(nh*h,nw*w)
+        # resize the array to desired shape
+        self.resized_big_image = resize(self.big_image, output_shape)
+        # import as PIL image for later saving
+        self.resized_big_image = Image.fromarray(self.resized_big_image*255)
+        # convert to 'L' from mode 'F' in order to be able to save
+        self.resized_big_image = self.resized_big_image.convert("L")
+        # save image in desired path
+        output_path = f"{predict_paths_dict['prediction_output_images_path']}output_mask.jpg"
+        self.resized_big_image.save(output_path)
+        
+        # have an overlay image of the raw input and the predicted roofs
+        # specify background (the input image) and the created mask image
+        background = Image.open(predict_paths_dict['input_image']+self.image_file)
+        # for jpegs, converts into the appropriate mode and channels
+        if background.mode != "RGB":
+            background = background.convert("RGB")
+        maskimg = Image.open(output_path)
+        foreground = maskimg
+        # overlay
+        background.paste(foreground, (0, 0), foreground)
+        # saving
+        output_masked = f"{predict_paths_dict['prediction_output_images_path']}input_with_mask.jpg"
+        background.save(output_masked)
+        
