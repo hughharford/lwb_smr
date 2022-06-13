@@ -4,8 +4,15 @@
 mlflow
 s3fs
 
+
+# some tf bits are not auto installed!
+tensorflow_addons
+
+
 # # utilities
 six>=1.14
 joblib
 memoized-property
 termcolor
+
+streamlit
