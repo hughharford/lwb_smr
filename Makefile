@@ -153,3 +153,9 @@ pypi_test:
 
 pypi:
 	@twine upload dist/* -u $(PYPI_USERNAME)
+
+# ----------------------------------
+#      UPLOAD PACKAGE TO PYPI
+# ----------------------------------
+streamlit:
+	-@streamlit run lwb_smr/app.py
