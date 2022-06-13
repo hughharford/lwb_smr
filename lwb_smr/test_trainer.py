@@ -8,10 +8,10 @@ from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
 from tensorflow.keras.optimizers import Adam
 # from tensorflow.keras.metrics import AUC, IoU
 
-from lwb_smr.CustomDataLoader import CustomDataLoader
+from lwb_smr.custom_data_loader import CustomDataLoader
 from lwb_smr.model import SMR_Model
 from lwb_smr.model_resnet50 import ResNet50_Model
-from lwb_smr.utils_class.MLFlowPush import PushMLFlow
+from lwb_smr.utils_class.ml_flow_push import PushMLFlow
 from lwb_smr.params import VM_path_dict, csv_path_dict
 from lwb_smr.data import GetData, LoadDataSets
 
