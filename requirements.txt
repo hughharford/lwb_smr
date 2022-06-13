@@ -10,6 +10,7 @@ pandas
 scikit-learn
 scikit-image
 tensorflow
+tensorflow_addons
 # OR
 keras
 
