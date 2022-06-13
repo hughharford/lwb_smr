@@ -4,7 +4,7 @@ import os
 
 import tensorflow as tf
 
-from lwb_smr.CustomDataLoader import CustomDataLoader
+from lwb_smr.custom_data_loader import CustomDataLoader
 from lwb_smr.model import SMR_Model
 from lwb_smr.utils import PushMLFlow
 
