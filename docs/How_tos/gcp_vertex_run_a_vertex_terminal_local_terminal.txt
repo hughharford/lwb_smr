@@ -1,0 +1,5 @@
+# to run locally a Vertex terminal:
+
+gcloud compute ssh jupyter@tensorflow-2-8-20220609-155820 
+
+jupyter@ and then VM instance name
