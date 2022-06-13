@@ -6,16 +6,21 @@ class SolarMyRoof():
     def __init__():
         pass
 
-    def grab_input_image(self, postcode=None, borough_name=None):
-        if postcode:
+    def grab_input_image(self, postcode='None', borough_name='None'):
+        if postcode != 'None':
             self.postcode = postcode
-        if borough_name:
+        if borough_name != 'None':
             self.borough_name
+        self.load_and_ready(self.postcode)
 
-    def load_and_ready(self):
+    def load_and_ready(self, postcode='None'):
         print(79*'*')
         self.pred_roof = PredictRoof()
-        self.pred_roof.tile_split()
+        if postcode == 'None':
+            self.pred_roof.tile_split()
+        elif postcode != 'None':
+            self.pred_roof.tile_split(self.postcode)
+
         print((20*'_')+'DONE LOAD AND READY'+(20*'_'))
 
 

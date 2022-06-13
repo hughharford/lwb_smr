@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 import tensorflow as tf
 
-from params import BATCH_SIZE, IMAGE_SQ_SIZE
+from params import BATCH_SIZE, IMAGE_SQ_SIZE, VM_path_dict
 from utils import  aug_flip_l_r, aug_flip_u_d, aug_rotate
 
 
@@ -28,6 +28,38 @@ class GetData():
         self.train_pc = 1.0 - (val_pc + test_pc)
         self.val_pc = 1.0 - (train_pc + test_pc)
         self.test_pc = test_pc
+
+
+    def create_tensor_slicer(self):
+        # to call use:
+        #           data_dict = LoadDataSets("../../../image_datasets_csv/train_dataset.csv","../../../image_datasets_csv/validation_dataset.csv").load_datasets()
+        #           data_dict.keys()
+        '''
+        tensorflow slicer method
+        '''
+        #dict_keys(['train_x', 'train_y', 'val_x', 'val_y', 'test_x', 'test_y'])
+        # create train,val and test dataframes
+        train_list_path_RGB = [VM_path_dict['path_x']+x for x in self.data_dict['train_x']]
+        val_list_path_RGB   = [VM_path_dict['path_x']+x for x in self.data_dict['val_x']]
+        test_list_path_RGB  = [VM_path_dict['path_x']+x for x in self.data_dict['test_x']]
+        train_list_path_mask = [VM_path_dict['path_y']+x for x in self.data_dict['train_y']]
+        val_list_path_mask   = [VM_path_dict['path_y']+x for x in self.data_dict['val_y']]
+        test_list_path_mask  = [VM_path_dict['path_y']+x for x in self.data_dict['test_y']]
+
+        self.train_df = pd.DataFrame({'image_path':train_list_path_RGB, 'mask_path':train_list_path_mask})
+        self.val_df   = pd.DataFrame({'image_path':val_list_path_RGB, 'mask_path':val_list_path_mask})
+        self.test_df  = pd.DataFrame({'image_path':test_list_path_RGB, 'mask_path':test_list_path_mask})
+
+        # tensorslices
+        self.ds_train = tf.data.Dataset.from_tensor_slices(
+            (self.train_df["image_path"].values, self.train_df["mask_path"].values)
+        )
+        self.ds_val = tf.data.Dataset.from_tensor_slices(
+            (self.val_df["image_path"].values, self.val_df["mask_path"].values)
+        )
+        self.ds_test = tf.data.Dataset.from_tensor_slices(
+            (self.test_df["image_path"].values, self.test_df["mask_path"].values)
+        )
 
 
     def process_path(self, input_path, mask_path):
