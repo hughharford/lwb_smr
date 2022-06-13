@@ -74,3 +74,4 @@ predict_paths_dict = {
     'prediction_output_images_path': "../../raw_data/prediction/predicted_tiles_output",
     'model_path': "../../raw_data/models/220612_Josh_model_vertexAI_07_FULL_dataset_dice.h5"
 }
+
