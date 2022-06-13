@@ -16,7 +16,7 @@ class PredictRoof():
     Run prediction
     Tile back and overlay mask on input image
     '''
-    
+
     def __init__(self):
         '''
         docstring
@@ -107,9 +107,9 @@ class PredictRoof():
         self.cleanup = '.ipynb_checkpoints'
         if self.cleanup in tiles_list:
             tiles_list.remove(self.cleanup)
-        
-        tiles_list_path = [predict_paths_dict['output_tiles_path']+x for x in tiles_list]     
-        
+
+        tiles_list_path = [predict_paths_dict['output_tiles_path']+x for x in tiles_list]
+
         self.tiles_predict = pd.DataFrame({'image_path':tiles_list_path})
 
         self.ds_predict = tf.data.Dataset.from_tensor_slices(
@@ -125,20 +125,20 @@ class PredictRoof():
         model = f"{predict_paths_dict['model_path']}{model_to_load}"
         self.loaded_model = keras.models.load_model(model,custom_objects={'dice_loss':self.dice_loss})
         return self.loaded_model
-    
+
     def process_path(self,input_path):
         """
         Load images from files.
         :input_path: the path to the satellite file
         :mask_path: the path to the mask file
         :return: The image and mask
-        .. note:: Works with jpg images 
+        .. note:: Works with jpg images
                   Only the first channel is kept for the mask
         """
 
         IMAGE_SQ_SIZE = 224
 
-        input_img = tf.io.read_file(input_path)   
+        input_img = tf.io.read_file(input_path)
         input_img = tf.io.decode_jpeg(input_img, channels=3)
         input_img =  tf.image.resize(input_img, [IMAGE_SQ_SIZE, IMAGE_SQ_SIZE])
 
@@ -163,19 +163,19 @@ class PredictRoof():
         '''
         self.load_model(model_to_load)
         self.predict_dataset()
-        
+
         ########################################################
         # self.create_tensor_slicer()
-        
+
         AUTOTUNE = tf.data.experimental.AUTOTUNE
-        
+
         self.ds_predict = self.ds_predict.map(self.process_path) \
         .map(self.normalize) \
         .batch(batch_size=32) \
-        .prefetch(buffer_size=AUTOTUNE)     
-        
+        .prefetch(buffer_size=AUTOTUNE)
+
         ########################################################
-        
+
         self.pred = self.loaded_model.predict(self.ds_predict)
         return self.pred
 
