@@ -5,6 +5,8 @@ from pathlib import Path
 import tensorflow as tf
 
 from params import BATCH_SIZE, IMAGE_SQ_SIZE
+from utils import  aug_flip_l_r, aug_flip_u_d, aug_rotate
+
 
 class GetData():
     '''
@@ -52,24 +54,53 @@ class GetData():
         return tf.math.divide(image, 255), tf.math.divide(mask, 255)
 
 
-    def process_data_inc_autotune(self, ds_train, ds_val=None, ds_test=None):
+    def process_data_inc_autotune(self, ds_train, ds_val=None, ds_test=None, data_augmentation=1):
+        # data_augmentation defaults to NOT
         AUTOTUNE = tf.data.experimental.AUTOTUNE
 
-        ds_train = ds_train.map(self.process_path) \
-        .map(self.normalize) \
-        .batch(batch_size=BATCH_SIZE) \
-        .prefetch(buffer_size=AUTOTUNE)
+        if data_augmentation == 0:
+            ds_train = ds_train.map(self.process_path) \
+            .map(self.normalize) \
+            .batch(batch_size=BATCH_SIZE) \
+            .prefetch(buffer_size=AUTOTUNE)
 
-        if ds_val:
             ds_val = ds_val.map(self.process_path) \
             .map(self.normalize) \
             .batch(batch_size=BATCH_SIZE) \
             .prefetch(buffer_size=AUTOTUNE)
-        if ds_test:
+
             ds_test = ds_test.map(self.process_path) \
             .map(self.normalize) \
             .batch(batch_size=BATCH_SIZE) \
             .prefetch(buffer_size=AUTOTUNE)
+
+        elif data_augmentation == 1:
+            # augmentation BEFORE messing with photos
+            # 30% chance for an augmentation to occur
+            # 2.7% chance of all augmentations to occur
+            ds_train = ds_train.map(self.process_path) \
+                .map(aug_flip_l_r) \
+                .map(aug_flip_u_d) \
+                .map(aug_rotate) \
+                .map(self.normalize) \
+                .batch(batch_size=BATCH_SIZE) \
+                .prefetch(buffer_size=AUTOTUNE)
+
+            ds_val = ds_val.map(self.process_path) \
+                .map(aug_flip_l_r) \
+                .map(aug_flip_u_d) \
+                .map(aug_rotate) \
+                .map(self.normalize) \
+                .batch(batch_size=BATCH_SIZE) \
+                .prefetch(buffer_size=AUTOTUNE)
+
+            ds_test = ds_test.map(self.process_path) \
+                .map(aug_flip_l_r) \
+                .map(aug_flip_u_d) \
+                .map(aug_rotate) \
+                .map(self.normalize) \
+                .batch(batch_size=BATCH_SIZE) \
+                .prefetch(buffer_size=AUTOTUNE)
 
     def make_dataframe(self):
         '''
