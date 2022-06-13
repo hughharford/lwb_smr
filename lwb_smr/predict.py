@@ -5,6 +5,7 @@ import tensorflow as tf
 from PIL import Image
 import os
 from lwb_smr.params import predict_paths_dict
+from skimage.transform import resize
 
 class PredictRoof():
     '''
@@ -154,10 +155,38 @@ class PredictRoof():
         self.pred = self.loaded_model.predict(self.ds_predict)
         return self.pred
 
-    def output_tiles(self):
-        # loop through images contained in the array
-        for ximg in range(self.pred.shape[0]):
-            tile_name = f"output_mask_{ximg:02d}.jpg"
-            im = Image.fromarray(self.pred[ximg].astype(np.uint8))
-            im.save(predict_paths_dict['prediction_output_images_path']+tile_name)
+    def output_mask(self, roof_images):
+        '''
+        Compile the numpy images into one tile
+        resize the tile to desired shape
+        save as jpg
+        '''
+        nh = 20 # number of horizontal tiles
+        nw = 20 # number of width tiles
+        h = 224 # individual tile height
+        w = 224 # individual tile width
+        output_shape = (5000,5000)
 
+        # combine all numpy arrays into one single array
+        self.big_image = roof_images.reshape(nh,nw,h,w).swapaxes(1,2).reshape(nh*h,nw*w)
+        # resize the array to desired shape
+        self.resized_big_image = resize(self.big_image, output_shape)
+        # import as PIL image for later saving
+        self.resized_big_image = Image.fromarray(self.resized_big_image*255)
+        # convert to 'L' from mode 'F' in order to be able to save
+        self.resized_big_image = self.resized_big_image.convert("L")
+        # save image in desired path
+        output_path = f"{predict_paths_dict['prediction_output_images_path']}output_mask.jpg"
+        self.resized_big_image.save(output_path)
+        
+        # have an overlay image of the raw input and the predicted roofs
+        # specify background (the input image) and the created mask image
+        background = Image.open(predict_paths_dict['input_image'])
+        maskimg = Image.open(output_path)
+        foreground = maskimg
+        # overlay
+        background.paste(foreground, (0, 0), foreground)
+        # saving
+        output_masked = f"{predict_paths_dict['prediction_output_images_path']}input_with_mask.jpg"
+        background.save(output_masked)
+        
