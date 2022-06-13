@@ -33,12 +33,12 @@ build_image:
 run_image:
 	docker run -e PORT=8000 -p 8080:8000 ${MULTI_REGION}/${PROJECT}/${IMAGE}
 
-# API COMMANDS
-run_api:
-	uvicorn api.fast:app --reload
+# run our streamlit site
+# @streamlit run lwb_smr_web/solar_my_roof.py
+streamlit:
+	@streamlit run lwb_smr_web/taxi_fare_app.py
 
 # GCP PROJECT SETUP COMMANDS
-
 see_gcloud_config:
 	@gcloud config list
 
