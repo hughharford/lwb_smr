@@ -327,6 +327,11 @@ class LoadDataSets(GetData):
 
         if self.load_test != "none":
             self.data_test_df = pd.read_csv(self.load_test, index_col = 0)
+
+            if TEST_RUN == True:
+                # adjust down to really small if testing only
+                self.data_test_df = self.data_test_df[0:2*BATCH_SIZE]
+
             dict = self.make_dict(with_val = 1)
         else:
             dict = self.make_dict(with_val = 0)
