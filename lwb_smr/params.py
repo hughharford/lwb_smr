@@ -79,7 +79,7 @@ csv_path_dict = {
 
 
 predict_paths_dict = {
-    'input_image': "/home/joshk/code/lwb_smr/lwb_smr/raw_data/prediction/google_map_images/",
+    'input_image': "/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/",
     'output_tiles_path': "/home/joshk/code/lwb_smr/lwb_smr/raw_data/prediction/raw_image_tiles/",
     'prediction_output_images_path': "/home/joshk/code/lwb_smr/lwb_smr/raw_data/prediction/predicted_tiles_output/",
     'model_path': "/home/joshk/code/lwb_smr/lwb_smr/raw_data/prediction/",
