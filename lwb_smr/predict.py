@@ -21,9 +21,9 @@ class PredictRoof():
         '''
         docstring
         '''
-        
 
-    def tile_split(self,image_file, t_h = 250, t_w = 250):
+
+    def tile_split(self,image_filename, t_h = 250, t_w = 250):
         ''' Function to take an input image and tile it with no overlap/strides
             ensure following is specified:
                - input image directory
@@ -37,22 +37,22 @@ class PredictRoof():
         tile_height = t_h #250
         tile_width = t_w #250
         tile_size = (tile_width, tile_height)
-        self.image_file = image_file
+        self.image_file = image_filename
         # Read in image file and convert to numpy array
         # filepath = img_directory+image_file
         image = Image.open(predict_paths_dict['input_image']+self.image_file)
         # for jpegs, converts into the appropriate mode and channels
         if image.mode != "RGB":
             image = image.convert("RGB")
-            
+
         image = np.asarray(image)
 
         # from np array, get image total width and height
         img_height, img_width, channels = image.shape
-        
+
         # to ensure output image is the same size as the original input image:
         self.image_size = (img_height,img_width)
-        
+
         # for later predictions, assumes always square images
         self.num_tiles = image.shape[0] / tile_height
 
@@ -78,13 +78,13 @@ class PredictRoof():
         # output tiled images to specified folder
         # first read image name
         image_name = 'prediction_input_image'
-        
-        
+
+
         ## CLEAN THE TILES FOLDER ##
         clean_files = glob.glob(predict_paths_dict['output_tiles_path']+"*")
         for f in clean_files:
             os.remove(f)
-        
+
         # loop through images contained in the array
         for ximg in range(tiled_array.shape[0]):
             for yimg in range(tiled_array.shape[1]):
@@ -155,8 +155,8 @@ class PredictRoof():
         numerator = 2 * tf.reduce_sum(y_true * y_pred)
         denominator = tf.reduce_sum(y_true + y_pred)
 
-        return 1 - numerator / denominator      
-    
+        return 1 - numerator / denominator
+
     def perform_prediction(self, model_to_load):
         '''
         Perform the prediction with the dataset on the loaded model
@@ -202,7 +202,7 @@ class PredictRoof():
         # save image in desired path
         output_path = f"{predict_paths_dict['prediction_output_images_path']}output_mask.jpg"
         self.resized_big_image.save(output_path)
-        
+
         # have an overlay image of the raw input and the predicted roofs
         # specify background (the input image) and the created mask image
         background = Image.open(predict_paths_dict['input_image']+self.image_file)
@@ -216,4 +216,3 @@ class PredictRoof():
         # saving
         output_masked = f"{predict_paths_dict['prediction_output_images_path']}input_with_mask.jpg"
         background.save(output_masked)
-        
