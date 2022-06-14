@@ -52,10 +52,6 @@ class GetData():
         self.val_df   = pd.DataFrame({'image_path':val_list_path_RGB, 'mask_path':val_list_path_mask})
         self.test_df  = pd.DataFrame({'image_path':test_list_path_RGB, 'mask_path':test_list_path_mask})
 
-        if TEST_RUN:
-            # cut down the dfs to just a tiny fraction:
-            self.train_df[2*BATCH_SIZE
-
         # tensorslices
         self.ds_train = tf.data.Dataset.from_tensor_slices(
             (self.train_df["image_path"].values, self.train_df["mask_path"].values)
@@ -308,8 +304,25 @@ class LoadDataSets(GetData):
                       'val_y':[],
                       'test_x':[],
                       'test_y':[]}
+
         self.data_train_df = pd.read_csv(self.load_train, index_col = 0)
         self.data_val_df   = pd.read_csv(self.load_val, index_col = 0)
+
+        if TEST_RUN == True:
+            # adjust down to really small if testing only
+            self.data_train_df = self.data_train_df[0:2*BATCH_SIZE]
+            self.data_val_df = self.data_val_df[0:2*BATCH_SIZE]
+
+            # train_images, train_mask = [], []
+            # # train_images =[f'../../../raw_data/train_RGB_tiles_jpeg/{filename}' for filename in os.listdir(folder_path[0])]
+            # for i, filename in enumerate(os.listdir(folder_path[0])):
+            #     if i == 2*BATCH_SIZE: break
+            #     train_images.append(f'../../../raw_data/train_RGB_tiles_jpeg/{filename}')
+
+            # # train_mask = [f'../../../raw_data/train_mask_tiles_jpeg/{filename}' for filename in os.listdir(folder_path[1])]
+            # for i, filename in enumerate(os.listdir(folder_path[1])):
+            #     if i == 2*BATCH_SIZE: break
+            #     train_mask.append(f'../../../raw_data/train_mask_tiles_jpeg/{filename}')
 
 
         if self.load_test != "none":
