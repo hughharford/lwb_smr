@@ -26,7 +26,7 @@ pytest
 pytest-bdd
 yapf
 
-# API
+# web, demo etc
 gcsfs
 google-cloud-storage
 mlflow
