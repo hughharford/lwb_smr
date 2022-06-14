@@ -1,14 +1,20 @@
 import streamlit as st
+import pandas as pd
 from streamlit_option_menu import option_menu
 from lwb_smr.map_image import GetMapImage
 from lwb_smr.params import predict_paths_dict
+from lwb_smr.predict import PredictRoof
 from PIL import Image
 # Code to loaded images, make prediction
 
 # raw_data/data_samples/train_examples
-train_test = Image.open('raw_data/data_samples/train_examples/austin1.tif')
-mask_test = Image.open('raw_data/data_samples/train_examples/austin2.tif')
-layover_test = Image.open('raw_data/data_samples/train_examples/austin3.tif')
+# train_test = Image.open('raw_data/data_samples/train_examples/austin1.tif')
+# mask_test = Image.open('raw_data/data_samples/train_examples/austin2.tif')
+# layover_test = Image.open('raw_data/data_samples/train_examples/austin3.tif')
+
+train_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/train_examples/austin1.tif')
+mask_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/gt_examples/austin1.tif')
+layover_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/input_with_mask.jpg')
 
 with st.sidebar:
     selected = option_menu(
@@ -18,7 +24,7 @@ with st.sidebar:
 
 
 if selected == 'Home Page':
-    st.title('lwb solar roof')
+    st.title('Solar My Roof')
 
     st.markdown('''
     ## User Guide
@@ -59,14 +65,18 @@ if selected == 'Post Code':
     # print('TYPE POST CODE IS: ', type(post_code))
 
     if st.button('Predict for postcode'):
+        gif_runner = st.image('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/ezgif.com-gif-maker.gif')
+        # end_execution = st.button('End
         map = GetMapImage(post_code)
         im_name = map.get_map() # gets image name
+
         # --------------
         # CALL PREDICT.PY HERE
         # --------------
+        # im_predict_path = PredictRoof().new_function()
 
         colp1, colp2 = st.columns(2)
-
+        gif_runner.empty()
         colp1.subheader('Postcode RGB Image')
         with colp1:
             st.image(f"{predict_paths_dict['input_image']+im_name}")
@@ -74,9 +84,15 @@ if selected == 'Post Code':
 
         colp2.subheader('Predcited Mask Image')
         with colp2:
+            # st.image(im_predict_path)
             st.markdown(''' Feature to be added ''')
-    # create map instance
-    # this saves the map at location predict_paths_dict['input_image']
+
+    test_dict = {'Binary IoU loss': [0.65],
+                 'AuC': [0.76],
+                 'Accuracy':[0.89]}
+    test_df = pd.DataFrame.from_dict(test_dict)
+    st.markdown('''Metrics''')
+    st.table(test_df)
 
 
 
