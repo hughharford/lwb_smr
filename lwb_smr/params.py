@@ -70,6 +70,18 @@ VM_path_dict = {
     'path_y': "../../raw_data/train_mask_tiles_jpeg/"
 }
 
+pred_root_path = 'lwb_smr/data/demo_files/'
+prediction_path_dict = {
+    'all_files_here': pred_root_path, # NOT!: '../lwb_smr/data/demo_files/'
+    # N_OTE BENE this is used from lwb_smr_app => please DO NOT alter
+    # USE 'all_files_here' instead (hilariouly named) 'input_image': pred_root_path+"prediction/google_map_images/",
+    'output_tiles_path': pred_root_path+"prediction/raw_image_tiles/",
+    'prediction_output_images_path': pred_root_path+"prediction/predicted_tiles_output/",
+    'model_path': pred_root_path+"prediction/",
+}
+
+
+
 # SET NAMES OF 3 .csv FILES
 csv_path_dict = {
     'train_csv': "image_datasets_csv/train_dataset.csv",
@@ -79,7 +91,7 @@ csv_path_dict = {
 
 
 predict_paths_dict = {
-    'input_image': "/home/joshk/code/lwb_smr/lwb_smr/raw_data/prediction/google_map_images/",
+    'input_image': "/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/",
     'output_tiles_path': "/home/joshk/code/lwb_smr/lwb_smr/raw_data/prediction/raw_image_tiles/",
     'prediction_output_images_path': "/home/joshk/code/lwb_smr/lwb_smr/raw_data/prediction/predicted_tiles_output/",
     'model_path': "/home/joshk/code/lwb_smr/lwb_smr/raw_data/prediction/",
