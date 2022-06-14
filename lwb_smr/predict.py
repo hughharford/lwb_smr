@@ -6,7 +6,7 @@ from PIL import Image
 import cv2
 import os
 import glob
-from lwb_smr.params import prediction_path_dict
+from lwb_smr.params import prediction_path_dict, MODEL_FOR_PREDICTION
 from skimage.transform import resize
 
 class PredictRoof():
@@ -24,7 +24,7 @@ class PredictRoof():
         '''
 
         ### DEBUG ONLY:
-        print(f'PREDICT.tile_split: self.im_path_and_filename: {self.im_path_and_filename}')
+        # print(f'PREDICT.tile_split: self.im_path_and_filename: {self.im_path_and_filename}')
 
 
     def tile_split(self,im_path_and_filename, t_h = 250, t_w = 250):
@@ -45,7 +45,7 @@ class PredictRoof():
         # Read in image file and convert to numpy array
         # filepath = img_directory+image_file
         # TOOK OUT: prediction_path_dict['all_files_here']+
-        
+
         image = Image.open(self.im_path_and_filename)
 # =======
 #         image = Image.open(prediction_path_dict['model_path']+self.im_path_and_filename)
@@ -129,14 +129,14 @@ class PredictRoof():
         self.ds_predict = tf.data.Dataset.from_tensor_slices(
              (self.tiles_predict["image_path"].values))
 
-    def load_model(self,model_to_load):
+    def load_model(self):
         '''
         load a specified model upon which to perform the prediction on
         the input image
         '''
         # load the pre-trained model
         # model_to_load = "Josh_model_vertexAI_08_FULL_dataset_BCE.h5"
-        model = f"{prediction_path_dict['model_path']}{model_to_load}"
+        model = f"{prediction_path_dict['model_path']}{MODEL_FOR_PREDICTION}"
         self.loaded_model = keras.models.load_model(model,custom_objects={'dice_loss':self.dice_loss, 'loss_combo_dice_bce':self.loss_combo_dice_bce})
         return self.loaded_model
 
@@ -185,11 +185,11 @@ class PredictRoof():
 
         return tf.reduce_mean(o)
 
-    def perform_prediction(self, model_to_load):
+    def perform_prediction(self):
         '''
         Perform the prediction with the dataset on the loaded model
         '''
-        self.load_model(model_to_load)
+        self.load_model()
         self.predict_dataset()
 
         ########################################################

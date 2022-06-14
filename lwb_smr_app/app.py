@@ -30,9 +30,12 @@ from lwb_smr.solar_my_roof import SolarMyRoof
 #          GSUTIL command:
 #                      gsutil cp gs://lwb-solar-my-roof/data/demo_files.zip demo_files.zip
 
-train_test = Image.open(f"{prediction_path_dict['all_files_here']}austin1.tif")
-mask_test = Image.open(f"{prediction_path_dict['all_files_here']}austin2.tif")
-layover_test = Image.open(f"{prediction_path_dict['all_files_here']}austin3.tif")
+train_test = Image.open(f"{prediction_path_dict['all_files_here']}_sample_lewagon_london.jpg")
+mask_test = Image.open(f"{prediction_path_dict['all_files_here']}_sample_input_with_mask.jpg")
+layover_test = Image.open(f"{prediction_path_dict['all_files_here']}_sample_contour_mask_03_numbered.png")
+
+# st.image(f"{prediction_path_dict['all_files_here']}_sample_lewagon_london.jpg")
+# st.image(f"{prediction_path_dict['all_files_here']}_sample_input_with_mask.jpg")
 
 with st.sidebar:
     selected = option_menu(
@@ -64,15 +67,12 @@ if selected == 'Home Page':
                     highlight the effectiveness of the prediction.
                     ''')
 
-        st.image('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/contour_mask_03_numbered (1).png')
-        st.image('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/contour_mask_03_numbered (2).png')
 
     col2.subheader('Roof Prediction')
     with col2:
         st.image(mask_test)
         st.markdown('''## Prediction laid over raw image''')
         st.image(layover_test)
-        st.image('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/contour_mask_03_numbered.png')
 
 # ----------------------------------------------
 # Logic to deal with post code and display image:
@@ -87,7 +87,7 @@ if selected == 'Post Code':
     # print('TYPE POST CODE IS: ', type(post_code))
 
     if st.button('Predict for postcode'):
-        gif_runner = st.image('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/ezgif.com-gif-maker.gif')
+        gif_runner = st.image(f"{prediction_path_dict['model_path']}ezgif.com-gif-maker.gif")
         # end_execution = st.button('End
         map = GetMapImage(post_code)
         im_path_and_filename = map.get_map() # gets image name, and writes it to a file
@@ -108,7 +108,7 @@ if selected == 'Post Code':
         #     st.image(f"{predict_paths_dict['input_image']+im_path_and_filename}")
         #     map.remove_saved_file()
 
-        colp2.subheader('Predcited Mask Image')
+        colp2.subheader('Predicted Mask Image')
         with colp2:
             # st.image(im_predict_path)
             st.markdown(''' Feature to be added ''')
