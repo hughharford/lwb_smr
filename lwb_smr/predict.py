@@ -320,6 +320,7 @@ class PredictRoof():
 
         base = Image.alpha_composite(background, foreground)
         contoured_image_output = Image.alpha_composite(base,contour_image)
+        # output filename is the same for each prediction
         contoured_image_output.save(f"{prediction_path_dict['prediction_output_images_path']}output_prediction.png")
         return contoured_image_output
 
