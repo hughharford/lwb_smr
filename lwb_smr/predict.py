@@ -23,6 +23,9 @@ class PredictRoof():
         docstring
         '''
 
+        ### DEBUG ONLY:
+        print(f'PREDICT.tile_split: self.im_path_and_filename: {self.im_path_and_filename}')
+
 
     def tile_split(self,im_path_and_filename, t_h = 250, t_w = 250):
         ''' Function to take an input image and tile it with no overlap/strides
@@ -42,11 +45,15 @@ class PredictRoof():
         # Read in image file and convert to numpy array
         # filepath = img_directory+image_file
         # TOOK OUT: prediction_path_dict['all_files_here']+
-        image = Image.open(prediction_path_dict['model_path']+self.im_path_and_filename)
-        # for later outputting
-        self.background_image = image
-        ### DEBUG ONLY:
-        print(f'PREDICT.tile_split: self.im_path_and_filename: {self.im_path_and_filename}')
+        
+        image = Image.open(self.im_path_and_filename)
+# =======
+#         image = Image.open(prediction_path_dict['model_path']+self.im_path_and_filename)
+#         # for later outputting
+#         self.background_image = image
+#         ### DEBUG ONLY:
+#         print(f'PREDICT.tile_split: self.im_path_and_filename: {self.im_path_and_filename}')
+# >>>>>>> master
 
         # for jpegs, converts into the appropriate mode and channels
         if image.mode != "RGB":
