@@ -4,9 +4,8 @@ import os
 from pathlib import Path
 import tensorflow as tf
 
-from params import BATCH_SIZE, IMAGE_SQ_SIZE, VM_path_dict
-from utils import  aug_flip_l_r, aug_flip_u_d, aug_rotate
-
+from lwb_smr.params import BATCH_SIZE, IMAGE_SQ_SIZE, VM_path_dict
+from lwb_smr.utils import  aug_flip_l_r, aug_flip_u_d, aug_rotate
 
 class GetData():
     '''
@@ -14,30 +13,36 @@ class GetData():
     by specifying percentages. Saves to a csv file for reading in and out.
     '''
 
-    def __init__(self,train_path,test_path,train_pc,val_pc,test_pc = 0.0):
-        '''
-        Specify train and ground truth ("test") paths
-        train_pc = percentage of images for training
-        val_pc   = percentage of images for validation purposes
-        test_pc  = [optional] reserve percentage of images for testing
-                   default is 0.0%
-        '''
-        self.train_path = train_path
-        self.test_path  = test_path
-        # Percentages
-        self.train_pc = 1.0 - (val_pc + test_pc)
-        self.val_pc = 1.0 - (train_pc + test_pc)
-        self.test_pc = test_pc
+    def __init__(self):
+        pass
+
+    # (self,train_path,test_path,train_pc,val_pc,test_pc = 0.0):
+    #     '''
+    #     Specify train and ground truth ("test") paths
+    #     train_pc = percentage of images for training
+    #     val_pc   = percentage of images for validation purposes
+    #     test_pc  = [optional] reserve percentage of images for testing
+    #                default is 0.0%
+    #     '''
+    #     self.train_path = train_path
+    #     self.test_path  = test_path
+    #     # Percentages
+    #     self.train_pc = 1.0 - (val_pc + test_pc)
+    #     self.val_pc = 1.0 - (train_pc + test_pc)
+    #     self.test_pc = test_pc
 
 
-    def create_tensor_slicer(self):
+    def create_tensor_slicer(self, data_dict):
         # to call use:
-        #           data_dict = LoadDataSets("../../../image_datasets_csv/train_dataset.csv","../../../image_datasets_csv/validation_dataset.csv").load_datasets()
-        #           data_dict.keys()
+
+        # data_dict = LoadDataSets("../../../image_datasets_csv/train_dataset.csv","../../../image_datasets_csv/validation_dataset.csv").load_datasets()
+        # data_dict.keys()
         '''
         tensorflow slicer method
         '''
-        #dict_keys(['train_x', 'train_y', 'val_x', 'val_y', 'test_x', 'test_y'])
+        # dict_keys(['train_x', 'train_y', 'val_x', 'val_y', 'test_x', 'test_y'])
+
+        self.data_dict = data_dict
         # create train,val and test dataframes
         train_list_path_RGB = [VM_path_dict['path_x']+x for x in self.data_dict['train_x']]
         val_list_path_RGB   = [VM_path_dict['path_x']+x for x in self.data_dict['val_x']]
@@ -61,6 +66,7 @@ class GetData():
             (self.test_df["image_path"].values, self.test_df["mask_path"].values)
         )
 
+        return self.ds_train, self.ds_val, self.ds_test
 
     def process_path(self, input_path, mask_path):
         """
@@ -86,7 +92,9 @@ class GetData():
         return tf.math.divide(image, 255), tf.math.divide(mask, 255)
 
 
-    def process_data_inc_autotune(self, ds_train, ds_val=None, ds_test=None, data_augmentation=1):
+    def process_data_inc_autotune(self,
+                                  ds_train, ds_val=None, ds_test=None,
+                                  data_augmentation=1):
         # data_augmentation defaults to NOT
         AUTOTUNE = tf.data.experimental.AUTOTUNE
 
@@ -96,15 +104,17 @@ class GetData():
             .batch(batch_size=BATCH_SIZE) \
             .prefetch(buffer_size=AUTOTUNE)
 
-            ds_val = ds_val.map(self.process_path) \
-            .map(self.normalize) \
-            .batch(batch_size=BATCH_SIZE) \
-            .prefetch(buffer_size=AUTOTUNE)
+            if ds_val:
+                ds_val = ds_val.map(self.process_path) \
+                .map(self.normalize) \
+                .batch(batch_size=BATCH_SIZE) \
+                .prefetch(buffer_size=AUTOTUNE)
 
-            ds_test = ds_test.map(self.process_path) \
-            .map(self.normalize) \
-            .batch(batch_size=BATCH_SIZE) \
-            .prefetch(buffer_size=AUTOTUNE)
+            if ds_test:
+                ds_test = ds_test.map(self.process_path) \
+                .map(self.normalize) \
+                .batch(batch_size=BATCH_SIZE) \
+                .prefetch(buffer_size=AUTOTUNE)
 
         elif data_augmentation == 1:
             # augmentation BEFORE messing with photos
@@ -118,21 +128,26 @@ class GetData():
                 .batch(batch_size=BATCH_SIZE) \
                 .prefetch(buffer_size=AUTOTUNE)
 
-            ds_val = ds_val.map(self.process_path) \
-                .map(aug_flip_l_r) \
-                .map(aug_flip_u_d) \
-                .map(aug_rotate) \
-                .map(self.normalize) \
-                .batch(batch_size=BATCH_SIZE) \
-                .prefetch(buffer_size=AUTOTUNE)
+            if ds_val:
+                ds_val = ds_val.map(self.process_path) \
+                    .map(aug_flip_l_r) \
+                    .map(aug_flip_u_d) \
+                    .map(aug_rotate) \
+                    .map(self.normalize) \
+                    .batch(batch_size=BATCH_SIZE) \
+                    .prefetch(buffer_size=AUTOTUNE)
 
-            ds_test = ds_test.map(self.process_path) \
-                .map(aug_flip_l_r) \
-                .map(aug_flip_u_d) \
-                .map(aug_rotate) \
-                .map(self.normalize) \
-                .batch(batch_size=BATCH_SIZE) \
-                .prefetch(buffer_size=AUTOTUNE)
+            if ds_test:
+                ds_test = ds_test.map(self.process_path) \
+                    .map(aug_flip_l_r) \
+                    .map(aug_flip_u_d) \
+                    .map(aug_rotate) \
+                    .map(self.normalize) \
+                    .batch(batch_size=BATCH_SIZE) \
+                    .prefetch(buffer_size=AUTOTUNE)
+
+        return ds_train, ds_val, ds_test
+
 
     def make_dataframe(self):
         '''

@@ -1,9 +1,17 @@
 """
 File to store parameters for reuse
 
+PLEASE adapt experiment tags appropriately.
+initials especially
+model name to cover epochs, architecture
+REMOVE test_ when doing a proper run
+
+AND, of course, set TEST_RUN to false, to do an actual run
+
 """
 # NB: this sets variables below, so only set this to True/False
 TEST_RUN = True
+DATA_AUGMENTATION = True
 
 TEST_BATCH_SIZE = 8
 TEST_EPOCHS = 2
@@ -18,20 +26,22 @@ else:
     BATCH_SIZE = RUN_BATCH_SIZE
     EPOCHS = RUN_EPOCHS
 
-EXPERIMENT_NAME = "UK Lon lwb_smr vertex_run_02" # template
+UNET_INPUT_SHAPE = (224,224,3)
+IMAGE_SQ_SIZE = 224
+possibleLOSS=['binary_crossentropy','DICE', 'custom_combo']
+LOSS = possibleLOSS[2]
+
+Experiment_name_base = 'UK Lon lwb_smr'
+EXPERIMENT_NAME = Experiment_name_base + " test_run_02" # template
 EXPERIMENT_TAGS = {
     'USER': 'hsth',
-    'RUN NAME': 'vertex2, operational',
+    'RUN NAME': 'test_vertex2, ops check',
     'VERSION': 'M2_R04_15',
-    'DESCRIPTION': 'Model VGG16 UNet, 20+now another 30 epochs, 72k images',
-    'LOSS': 'dice',
+    'DESCRIPTION': 'test_Model VGG16 UNet',
+    'LOSS': LOSS,
     'METRICS': 'accuracy, binaryIoU, AUC'
 }
 
-UNET_INPUT_SHAPE = (224,224,3)
-IMAGE_SQ_SIZE = 224
-# LOSS='binary_crossentropy'
-LOSS = 'DICE'
 
 PROJECT_ID = 'lwb-solar-my-roof'
 # le-wagon-bootcamp-347615

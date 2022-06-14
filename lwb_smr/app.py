@@ -2,10 +2,10 @@ import streamlit as st
 from PIL import Image
 # Code to loaded images, make prediction
 
-
-train_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/jpeg_train/austin1.jpeg')
-mask_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/jpeg_test/austin1.jpeg')
-layover_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/input_with_mask.jpg')
+# raw_data/data_samples/train_examples
+train_test = Image.open('raw_data/data_samples/train_examples/austin1.tif')
+mask_test = Image.open('raw_data/data_samples/train_examples/austin2.tif')
+layover_test = Image.open('raw_data/data_samples/train_examples/austin3.tif')
 
 '''
 # lwb solar my roof
