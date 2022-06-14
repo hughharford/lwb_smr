@@ -37,3 +37,10 @@ six>=1.14
 joblib
 memoized-property
 termcolor
+
+# web and bits
+streamlit
+streamlit_option_menu
+googlemaps
+PIL
+cv2
