@@ -15,8 +15,8 @@ class GetMapImage():
     to input into predict.py
     '''
 
-    def __init__(self, input):
-        self.address = input
+    def __init__(self, input_location):
+        self.address = input_location
 
     def user_input(self):
         '''
@@ -29,6 +29,7 @@ class GetMapImage():
         '''
         Process for retrieving map image
         '''
+
         #  self.user_input() # this input is given on instantiation of the class
         # see self.address in __init__()
 
@@ -44,12 +45,12 @@ class GetMapImage():
         # for test only:
         print(f'im_path_and_filename = {self.im_path_and_filename}')
 
-
         # turn map get into saved image
         map_image = open(self.im_path_and_filename,"wb")
         for x in response:
             map_image.write(x)
         map_image.close()
+
 
         return self.im_path_and_filename
 
