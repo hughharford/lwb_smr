@@ -177,7 +177,7 @@ class PredictRoof():
         o = tf.nn.sigmoid_cross_entropy_with_logits(y_true, y_pred) + dice_loss(y_true, y_pred)
 
         return tf.reduce_mean(o)
-    
+
     def perform_prediction(self, model_to_load):
         '''
         Perform the prediction with the dataset on the loaded model
@@ -252,7 +252,7 @@ class PredictRoof():
         mask_b = 255
         transparancy = 0.3 # listed as a percent and converted later
         threshold_area = 60.0 # px
-        
+
         # everything above or below midpoint of 255 set to either
         # all black or all white
         for i in range(im.size[0]): # for every pixel:
@@ -266,7 +266,7 @@ class PredictRoof():
                 if pixels[i,j] > (128, 128, 128,255):
                     # if above threshold, change to white
                     pixels[i,j] = (255, 255 ,255,255)
-        
+
         # make mask red and partially transparent
         for i in range(im.size[0]): # for every pixel:
             for j in range(im.size[1]):
@@ -275,13 +275,13 @@ class PredictRoof():
                     pixels[i,j] = (mask_r, mask_g, mask_b, 255)
                     # make the same red pixels 50% transparent
                     pixels[i,j] = (mask_r, mask_g, mask_b, int(255*transparancy))
-        
+
         # set background and foreground iamges
         background = self.background_image
         background = background.convert("RGBA")
 
         foreground = im
-        
+
         # convert mask to cv2 type for processing below
         cimg = cv2.cvtColor(np.array(foreground),cv2.COLOR_RGBA2RGB)
 
@@ -289,24 +289,24 @@ class PredictRoof():
         gray = cv2.cvtColor(cimg, cv2.COLOR_BGR2GRAY)
         cnts = cv2.findContours(gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         cnts = cnts[0] if len(cnts) == 2 else cnts[1]
-        
+
         # remove islands below a specified threshold area
         self.cnts_thresh = []
         for i in cnts:
             if cv2.contourArea(i) > threshold_area:
                 self.cnts_thresh.append(i)
-        
+
         # draw countours around the reamining islands
         for c in self.cnts_thresh:
             cv2.drawContours(mask, [c], -1, (mask_r, mask_g, mask_b), thickness=2)
-        
+
         # find middle of each island and place a number there
         for count, c in enumerate(self.cnts_thresh):
             # Find centroid for each contour and label contour
             M = cv2.moments(c)
             cx = int(M['m10']/M['m00'])
             cy = int(M['m01']/M['m00'])
-            cv2.putText(mask, str(count), (cx-5, cy+5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (254,254,254), 2)           
+            cv2.putText(mask, str(count), (cx-5, cy+5), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (254,254,254), 2)
 
         # compile output image
         contour_image = Image.fromarray(mask)
@@ -320,7 +320,7 @@ class PredictRoof():
 
         base = Image.alpha_composite(background, foreground)
         contoured_image_output = Image.alpha_composite(base,contour_image)
-        contoured_image_output.save(f"{prediction_path_dict['prediction_output_images_path']}{self.im_path_and_filename}_prediction.png")
+        contoured_image_output.save(f"{prediction_path_dict['prediction_output_images_path']}output_prediction.png")
         return contoured_image_output
 
     def get_roof_area(self):
