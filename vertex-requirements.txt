@@ -15,4 +15,5 @@ joblib
 memoized-property
 termcolor
 
+# demo and web
 streamlit

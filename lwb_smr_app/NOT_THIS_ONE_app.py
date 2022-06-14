@@ -4,9 +4,9 @@ from PIL import Image
 # Code to loaded images, make prediction
 
 
-train_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/train_examples/austin1.tif')
-mask_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/gt_examples/austin1.tif')
-layover_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/input_with_mask.jpg')
+train_test = Image.open('../../raw_data/data_samples/train_examples/austin1.tif')
+mask_test = Image.open('../../raw_data/data_samples/gt_examples/austin2.tif')
+layover_test = Image.open('../../raw_data/data_samples/gt_examples/austin2.tif')
 
 '''
 # lwb solar my roof
