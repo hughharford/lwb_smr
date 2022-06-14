@@ -42,5 +42,5 @@ termcolor
 streamlit
 streamlit_option_menu
 googlemaps
-PIL
-cv2
+Pillow # for PIL
+opencv-python # for cv2
