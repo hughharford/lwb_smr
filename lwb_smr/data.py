@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 import tensorflow as tf
 
-from lwb_smr.params import BATCH_SIZE, IMAGE_SQ_SIZE, VM_path_dict
+from lwb_smr.params import TEST_RUN, BATCH_SIZE, IMAGE_SQ_SIZE, VM_path_dict
 from lwb_smr.utils import  aug_flip_l_r, aug_flip_u_d, aug_rotate
 
 class GetData():
@@ -13,23 +13,20 @@ class GetData():
     by specifying percentages. Saves to a csv file for reading in and out.
     '''
 
-    def __init__(self):
-        pass
-
-    # (self,train_path,test_path,train_pc,val_pc,test_pc = 0.0):
-    #     '''
-    #     Specify train and ground truth ("test") paths
-    #     train_pc = percentage of images for training
-    #     val_pc   = percentage of images for validation purposes
-    #     test_pc  = [optional] reserve percentage of images for testing
-    #                default is 0.0%
-    #     '''
-    #     self.train_path = train_path
-    #     self.test_path  = test_path
-    #     # Percentages
-    #     self.train_pc = 1.0 - (val_pc + test_pc)
-    #     self.val_pc = 1.0 - (train_pc + test_pc)
-    #     self.test_pc = test_pc
+    def __init__(self,train_path,test_path,train_pc,val_pc,test_pc = 0.0):
+        '''
+        Specify train and ground truth ("test") paths
+        train_pc = percentage of images for training
+        val_pc   = percentage of images for validation purposes
+        test_pc  = [optional] reserve percentage of images for testing
+                   default is 0.0%
+        '''
+        self.train_path = train_path
+        self.test_path  = test_path
+        # Percentages
+        self.train_pc = 1.0 - (val_pc + test_pc)
+        self.val_pc = 1.0 - (train_pc + test_pc)
+        self.test_pc = test_pc
 
 
     def create_tensor_slicer(self, data_dict):
@@ -54,6 +51,10 @@ class GetData():
         self.train_df = pd.DataFrame({'image_path':train_list_path_RGB, 'mask_path':train_list_path_mask})
         self.val_df   = pd.DataFrame({'image_path':val_list_path_RGB, 'mask_path':val_list_path_mask})
         self.test_df  = pd.DataFrame({'image_path':test_list_path_RGB, 'mask_path':test_list_path_mask})
+
+        if TEST_RUN:
+            # cut down the dfs to just a tiny fraction:
+            self.train_df[2*BATCH_SIZE
 
         # tensorslices
         self.ds_train = tf.data.Dataset.from_tensor_slices(
