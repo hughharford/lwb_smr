@@ -5,7 +5,7 @@ import tensorflow as tf
 from PIL import Image
 import os
 import glob
-from lwb_smr.params import predict_paths_dict
+from lwb_smr.params import prediction_path_dict
 from skimage.transform import resize
 
 class PredictRoof():
@@ -23,7 +23,7 @@ class PredictRoof():
         '''
 
 
-    def tile_split(self,image_filename, t_h = 250, t_w = 250):
+    def tile_split(self,im_path_and_filename, t_h = 250, t_w = 250):
         ''' Function to take an input image and tile it with no overlap/strides
             ensure following is specified:
                - input image directory
@@ -37,10 +37,15 @@ class PredictRoof():
         tile_height = t_h #250
         tile_width = t_w #250
         tile_size = (tile_width, tile_height)
-        self.image_file = image_filename
+        self.im_path_and_filename = im_path_and_filename
         # Read in image file and convert to numpy array
         # filepath = img_directory+image_file
-        image = Image.open(predict_paths_dict['input_image']+self.image_file)
+        # TOOK OUT: prediction_path_dict['all_files_here']+
+        image = Image.open(self.im_path_and_filename)
+
+        ### DEBUG ONLY:
+        print(f'PREDICT.tile_split: self.im_path_and_filename: {self.im_path_and_filename}')
+
         # for jpegs, converts into the appropriate mode and channels
         if image.mode != "RGB":
             image = image.convert("RGB")
@@ -81,7 +86,7 @@ class PredictRoof():
 
 
         ## CLEAN THE TILES FOLDER ##
-        clean_files = glob.glob(predict_paths_dict['output_tiles_path']+"*")
+        clean_files = glob.glob(prediction_path_dict['output_tiles_path']+"*")
         for f in clean_files:
             os.remove(f)
 
@@ -92,7 +97,7 @@ class PredictRoof():
                     # in specified location
                     tile_name = f"{image_name}_x{ximg:02d}_y{yimg:02d}.jpg"
                     im = Image.fromarray(tiled_array[ximg][yimg].astype(np.uint8))
-                    im.save(predict_paths_dict['output_tiles_path']+tile_name)
+                    im.save(prediction_path_dict['output_tiles_path']+tile_name)
 
         return print(f"completed tiling {image_name}")
 
@@ -102,13 +107,13 @@ class PredictRoof():
         note that this ignores the y_images (masks) as these will
         not be present
         '''
-        tiles_list = os.listdir(predict_paths_dict['output_tiles_path'])
+        tiles_list = os.listdir(prediction_path_dict['output_tiles_path'])
         tiles_list.sort()
         self.cleanup = '.ipynb_checkpoints'
         if self.cleanup in tiles_list:
             tiles_list.remove(self.cleanup)
 
-        tiles_list_path = [predict_paths_dict['output_tiles_path']+x for x in tiles_list]
+        tiles_list_path = [prediction_path_dict['output_tiles_path']+x for x in tiles_list]
 
         self.tiles_predict = pd.DataFrame({'image_path':tiles_list_path})
 
@@ -122,7 +127,7 @@ class PredictRoof():
         '''
         # load the pre-trained model
         # model_to_load = "Josh_model_vertexAI_08_FULL_dataset_BCE.h5"
-        model = f"{predict_paths_dict['model_path']}{model_to_load}"
+        model = f"{prediction_path_dict['model_path']}{model_to_load}"
         self.loaded_model = keras.models.load_model(model,custom_objects={'dice_loss':self.dice_loss})
         return self.loaded_model
 
@@ -200,12 +205,12 @@ class PredictRoof():
         # convert to 'L' from mode 'F' in order to be able to save
         self.resized_big_image = self.resized_big_image.convert("L")
         # save image in desired path
-        output_path = f"{predict_paths_dict['prediction_output_images_path']}output_mask.jpg"
+        output_path = f"{prediction_path_dict['prediction_output_images_path']}output_mask.jpg"
         self.resized_big_image.save(output_path)
 
         # have an overlay image of the raw input and the predicted roofs
         # specify background (the input image) and the created mask image
-        background = Image.open(predict_paths_dict['input_image']+self.image_file)
+        background = Image.open(prediction_path_dict['input_image']+self.image_file)
         # for jpegs, converts into the appropriate mode and channels
         if background.mode != "RGB":
             background = background.convert("RGB")
@@ -214,5 +219,5 @@ class PredictRoof():
         # overlay
         background.paste(foreground, (0, 0), foreground)
         # saving
-        output_masked = f"{predict_paths_dict['prediction_output_images_path']}input_with_mask.jpg"
+        output_masked = f"{prediction_path_dict['prediction_output_images_path']}input_with_mask.jpg"
         background.save(output_masked)

@@ -1,41 +1,48 @@
 import googlemaps
-from lwb_smr.params import predict_paths_dict
-APIKEY = ""
+from lwb_smr.params import predict_paths_dict, prediction_path_dict
+from env import GoogleMapsAPI
+APIKEY = GoogleMapsAPI
 
 class GetMapImage():
     '''
     API to get 1280x1280 image from google maps
     to input into predict.py
     '''
-    
-    def __init__(self):
-        pass
-    
+
+    def __init__(self, input):
+        self.address = input
+
     def user_input(self):
         '''
-        Ask the user to input an address
+        Ask the user to input an address.
+        Optional, not currently expected to use this...
         '''
         self.address = input("Please enter a UK postcode:")
-    
+
     def get_map(self):
         '''
         Process for retrieving map image
         '''
-        self.user_input()
-        
+        #  self.user_input() # this input is given on instantiation of the class
+        # see self.address in __init__()
+
         # get map
         map_client = googlemaps.Client(APIKEY)
         response = map_client.static_map(size=(1024,1024),scale=2,maptype ="satellite" ,center=(self.address),zoom= 17)
-        
-        # create filename
+
+        # create path and filename
         im_name = self.address.upper().split()
         im_name = "_".join(im_name) +".jpg"
-        filename = f"{predict_paths_dict['input_image']}{im_name}"
-        
+        im_path_and_filename = f"{prediction_path_dict['all_files_here']}{im_name}"
+
+        # for test only:
+        print(f'im_path_and_filename = {im_path_and_filename}')
+
+
         # turn map get into saved image
-        map_image = open(filename,"wb")
+        map_image = open(im_path_and_filename,"wb")
         for x in response:
             map_image.write(x)
         map_image.close()
-        
-        return im_name
+
+        return im_path_and_filename

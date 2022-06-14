@@ -1,14 +1,19 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
-from lwb_smr.map_image import GetMapImage
-from lwb_smr.params import predict_paths_dict
 from PIL import Image
+import os
+
+from lwb_smr.map_image import GetMapImage
+from lwb_smr.params import predict_paths_dict, prediction_path_dict
+from lwb_smr.solar_my_roof import SolarMyRoof
 # Code to loaded images, make prediction
 
+### st.write(os. getcwd())
+
 # raw_data/data_samples/train_examples
-train_test = Image.open('raw_data/data_samples/train_examples/austin1.tif')
-mask_test = Image.open('raw_data/data_samples/train_examples/austin2.tif')
-layover_test = Image.open('raw_data/data_samples/train_examples/austin3.tif')
+train_test = Image.open(f"{prediction_path_dict['all_files_here']}austin1.tif")
+mask_test = Image.open(f"{prediction_path_dict['all_files_here']}austin2.tif")
+layover_test = Image.open(f"{prediction_path_dict['all_files_here']}austin3.tif")
 
 with st.sidebar:
     selected = option_menu(
@@ -60,17 +65,24 @@ if selected == 'Post Code':
 
     if st.button('Predict for postcode'):
         map = GetMapImage(post_code)
-        im_name = map.get_map() # gets image name
+        im_path_and_filename = map.get_map() # gets image name, and writes it to a file
+        # LOCATION is:
         # --------------
         # CALL PREDICT.PY HERE
         # --------------
+        smr = SolarMyRoof()
+        smr.load_and_ready(im_path_and_filename)
+        smr.predict()
+
 
         colp1, colp2 = st.columns(2)
 
         colp1.subheader('Postcode RGB Image')
-        with colp1:
-            st.image(f"{predict_paths_dict['input_image']+im_name}")
-            map.remove_saved_file()
+
+        # DON'T USE remove_saved_file() for now, just to ensure it is saving!
+        # with colp1:
+        #     st.image(f"{predict_paths_dict['input_image']+im_path_and_filename}")
+        #     map.remove_saved_file()
 
         colp2.subheader('Predcited Mask Image')
         with colp2:
