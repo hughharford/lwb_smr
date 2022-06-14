@@ -9,6 +9,10 @@ REMOVE test_ when doing a proper run
 AND, of course, set TEST_RUN to false, to do an actual run
 
 """
+
+MODEL_FOR_PREDICTION = "220612_Josh_model_vertexAI_07_FULL_dataset_dice.h5" # must reside in the path:
+#                           lwb_smr/lwb_smr/data/demo_files/prediction
+
 # NB: this sets variables below, so only set this to True/False
 TEST_RUN = True
 DATA_AUGMENTATION = True
