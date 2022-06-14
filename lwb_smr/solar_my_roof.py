@@ -20,7 +20,7 @@ class SolarMyRoof():
 
         print(79*'*')
         self.pred_roof = PredictRoof()
-        self.pred_roof.tile_split(self.im_path_and_filename) # takes in the image_filename (but not the path)
+        self.pred_roof.tile_split(self.im_path_and_filename, 256, 256) # takes in the image_filename (but not the path)
         LOADED_DATA = True
 
         print((20*'_')+'DONE LOAD AND READY'+(20*'_'))
