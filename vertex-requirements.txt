@@ -17,3 +17,7 @@ termcolor
 
 # demo and web
 streamlit
+streamlit_option_menu
+googlemaps
+PIL
+cv2
