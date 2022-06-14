@@ -15,3 +15,5 @@ lwb_solarmyroof/data_samples/
 *.jpeg
 .vscode
 *.h5
+env.py
+.env
