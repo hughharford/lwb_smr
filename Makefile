@@ -19,8 +19,8 @@ BUCKET_TEST_DATA_FOLDER=test
 BUCKET_GROUNDTRUTH_DATA_FOLDER=gt
 
 #manually copy files to site packages(!)
+# @ls /home/hsth/.pyenv/versions/3.8.12/envs/lewagon/lib/python3.8/site-packages/lwb_smr
 manual_copy_to_sitepackages:
-		@ls /home/hsth/.pyenv/versions/3.8.12/envs/lewagon/lib/python3.8/site-packages/lwb_smr
 		@rm -rf /home/hsth/.pyenv/versions/3.8.12/envs/lewagon/lib/python3.8/site-packages/lwb_smr/
 		@mkdir /home/hsth/.pyenv/versions/3.8.12/envs/lewagon/lib/python3.8/site-packages/lwb_smr
 		@ls /home/hsth/.pyenv/versions/3.8.12/envs/lewagon/lib/python3.8/site-packages/lwb_smr
@@ -32,11 +32,6 @@ build_image:
 
 run_image:
 	docker run -e PORT=8000 -p 8080:8000 ${MULTI_REGION}/${PROJECT}/${IMAGE}
-
-# run our streamlit site
-# @streamlit run lwb_smr_web/solar_my_roof.py
-streamlit:
-	@streamlit run lwb_smr_web/taxi_fare_app.py
 
 # GCP PROJECT SETUP COMMANDS
 see_gcloud_config:
@@ -155,7 +150,9 @@ pypi:
 	@twine upload dist/* -u $(PYPI_USERNAME)
 
 # ----------------------------------
-#      UPLOAD PACKAGE TO PYPI
+#      RUN STREAMLIT WEBSITE
 # ----------------------------------
+# streamlit:
+# 	-@streamlit run lwb_smr/app.py
 streamlit:
-	-@streamlit run lwb_smr/app.py
+	@streamlit run lwb_smr/app.py --server.port 8000 --server.address 0.0.0.0
