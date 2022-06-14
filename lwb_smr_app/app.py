@@ -5,16 +5,34 @@ from lwb_smr.map_image import GetMapImage
 from lwb_smr.params import predict_paths_dict
 from lwb_smr.predict import PredictRoof
 from PIL import Image
+import os
+
+from lwb_smr.map_image import GetMapImage
+from lwb_smr.params import predict_paths_dict, prediction_path_dict
+from lwb_smr.solar_my_roof import SolarMyRoof
 # Code to loaded images, make prediction
 
+### st.write(os. getcwd())
+
 # raw_data/data_samples/train_examples
+
 # train_test = Image.open('raw_data/data_samples/train_examples/austin1.tif')
 # mask_test = Image.open('raw_data/data_samples/train_examples/austin2.tif')
 # layover_test = Image.open('raw_data/data_samples/train_examples/austin3.tif')
 
-train_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/train_examples/austin1.tif')
-mask_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/gt_examples/austin1.tif')
-layover_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/input_with_mask.jpg')
+# train_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/train_examples/austin1.tif')
+# mask_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/gt_examples/austin1.tif')
+# layover_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/input_with_mask.jpg')
+
+
+# ABOUT THESE PATHS:
+#                  download the following file and then unzip in your lwb_smr/data folder:
+#          GSUTIL command:
+#                      gsutil cp gs://lwb-solar-my-roof/data/demo_files.zip demo_files.zip
+
+train_test = Image.open(f"{prediction_path_dict['all_files_here']}austin1.tif")
+mask_test = Image.open(f"{prediction_path_dict['all_files_here']}austin2.tif")
+layover_test = Image.open(f"{prediction_path_dict['all_files_here']}austin3.tif")
 
 with st.sidebar:
     selected = option_menu(
@@ -72,19 +90,23 @@ if selected == 'Post Code':
         gif_runner = st.image('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/ezgif.com-gif-maker.gif')
         # end_execution = st.button('End
         map = GetMapImage(post_code)
-        im_name = map.get_map() # gets image name
-
+        im_path_and_filename = map.get_map() # gets image name, and writes it to a file
+        # LOCATION is:
         # --------------
         # CALL PREDICT.PY HERE
         # --------------
-        # im_predict_path = PredictRoof().new_function()
+        smr = SolarMyRoof()
+        smr.load_and_ready(im_path_and_filename)
+        smr.predict()
 
         colp1, colp2 = st.columns(2)
         gif_runner.empty()
         colp1.subheader('Postcode RGB Image')
-        with colp1:
-            st.image(f"{predict_paths_dict['input_image']+im_name}")
-            map.remove_saved_file()
+
+        # DON'T USE remove_saved_file() for now, just to ensure it is saving!
+        # with colp1:
+        #     st.image(f"{predict_paths_dict['input_image']+im_path_and_filename}")
+        #     map.remove_saved_file()
 
         colp2.subheader('Predcited Mask Image')
         with colp2:
