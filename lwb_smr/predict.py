@@ -47,13 +47,11 @@ class PredictRoof():
         # TOOK OUT: prediction_path_dict['all_files_here']+
 
         image = Image.open(self.im_path_and_filename)
-# =======
-#         image = Image.open(prediction_path_dict['model_path']+self.im_path_and_filename)
-#         # for later outputting
-#         self.background_image = image
+        # for later outputting
+        self.background_image = image
 #         ### DEBUG ONLY:
 #         print(f'PREDICT.tile_split: self.im_path_and_filename: {self.im_path_and_filename}')
-# >>>>>>> master
+
 
         # for jpegs, converts into the appropriate mode and channels
         if image.mode != "RGB":
@@ -330,13 +328,17 @@ class PredictRoof():
         base = Image.alpha_composite(background, foreground)
         contoured_image_output = Image.alpha_composite(base,contour_image)
         # output filename is the same for each prediction
-        contoured_image_output.save(f"{prediction_path_dict['prediction_output_images_path']}output_prediction.png")
-        return contoured_image_output
+        self.output_contoured = f"{prediction_path_dict['prediction_output_images_path']}output_prediction.png"
+        contoured_image_output.save(self.output_contoured)
 
-    def get_roof_area(self):
+        return self.output_contoured
+
+    def get_roof_area(self,roof_num):
         '''
         enter a roof number to return an error
         '''
+        roof_num = int(roof_num)
         px_per_area = 0.25**2 # 25cm/pixel
-        get_roof = int(input("Enter roof number: "))
-        return print(f"Roof number {get_roof} area = {cv2.contourArea(self.cnts_thresh[get_roof])*px_per_area} m^2")
+        # get_roof = int(input("Enter roof number: "))
+        # return print(f"Roof number {roof_num} area = {cv2.contourArea(self.cnts_thresh[roof_num])*px_per_area} m^2")
+        return cv2.contourArea(self.cnts_thresh[roof_num]*px_per_area)
