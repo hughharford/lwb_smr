@@ -1,9 +1,7 @@
 import pandas as pd
 from lwb_smr.predict import PredictRoof
 
-GOT_INPUT_IMAGE = False
-LOADED_AND_READY = False
-PREDICTED = False
+
 
 class SolarMyRoof():
     def __init__(self):
@@ -16,12 +14,10 @@ class SolarMyRoof():
         '''
         print(f'load_and_ready___: image_filename = {im_path_and_filename}')
         self.im_path_and_filename = im_path_and_filename
-        self.GOT_INPUT_IMAGE = True
 
         print(79*'*')
         self.pred_roof = PredictRoof()
         self.pred_roof.tile_split(self.im_path_and_filename, 256, 256) # takes in the image_filename (but not the path)
-        self.LOADED_AND_READY = True
 
         print((20*'_')+'DONE LOAD AND READY'+(20*'_'))
 
@@ -46,10 +42,15 @@ class SolarMyRoof():
         gets and returns output_mask image
         '''
         print(79*'$')
-        if (self.GOT_INPUT_IMAGE + self.LOADED_AND_READY + self.PREDICTED) == 3:
+        try:
             self.output_mask_path_and_filename = self.pred_roof.output_mask(self.roof_images)
-        else:
-            print(10 * " <<<< ERROR >>> ")
+        except Exception as e:
+            print("PREDICTION ERROR: Something went wrong")
+            print(e.__cause__)
+            print(e.with_traceback)
+            raise Exception("Sorry, no prediction available right now")
+        finally:
+            print("poorly coded, 'all error catching' ERROR CATCHING COMPLETED")
 
         # SET: self.output_mask_path_and_filename
 
