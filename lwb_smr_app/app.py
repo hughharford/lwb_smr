@@ -30,12 +30,13 @@ from lwb_smr.solar_my_roof import SolarMyRoof
 #          GSUTIL command:
 #                      gsutil cp gs://lwb-solar-my-roof/data/demo_files.zip demo_files.zip
 
-train_test = Image.open(f"{prediction_path_dict['all_files_here']}_sample_lewagon_london.jpg")
-mask_test = Image.open(f"{prediction_path_dict['all_files_here']}_sample_input_with_mask.jpg")
-layover_test = Image.open(f"{prediction_path_dict['all_files_here']}_sample_contour_mask_03_numbered.png")
-
-# st.image(f"{prediction_path_dict['all_files_here']}_sample_lewagon_london.jpg")
-# st.image(f"{prediction_path_dict['all_files_here']}_sample_input_with_mask.jpg")
+# IMAGE NEED:
+#           1) INRIA Austin3 our full prediction
+#           OPTIONAL: 2) INRIA smaller filesize for _sample_INRIA_austin3_RGB.tif
+# using Austin 3, see naming already specified here:
+train_test = Image.open(f"{prediction_path_dict['all_files_here']}_sample_INRIA_austin3_RGB.tif") # got this, just MASSIVE 75mb
+mask_test = Image.open(f"{prediction_path_dict['all_files_here']}_sample_INRIA_austin3_mask.tif") # got this one
+layover_test = Image.open(f"{prediction_path_dict['all_files_here']}_sample_INRIA_austin3_our_prediction.tif") # copy of mask, our prediction is AMAZING!
 
 with st.sidebar:
     selected = option_menu(
@@ -87,31 +88,44 @@ if selected == 'Post Code':
     # print('TYPE POST CODE IS: ', type(post_code))
 
     if st.button('Predict for postcode'):
-        gif_runner = st.image(f"{prediction_path_dict['model_path']}ezgif.com-gif-maker.gif")
+        # DONE >>> NEED CHANGE: we should show the predicted area RGB
+        # DONE >>> NEED CHANGE: the gif should be for 'where the prediction will appear'
+        # DONE >>> NEED CHANGE: gif to right hand side of RGB
+
         # end_execution = st.button('End
+
         map = GetMapImage(post_code)
         im_path_and_filename = map.get_map() # gets image name, and writes it to a file
-        # LOCATION is:
-        # --------------
-        # CALL PREDICT.PY HERE
-        # --------------
-        smr = SolarMyRoof()
-        smr.load_and_ready(im_path_and_filename)
-        smr.predict()
 
         colp1, colp2 = st.columns(2)
-        gif_runner.empty()
         colp1.subheader('Postcode RGB Image')
-
-        # DON'T USE remove_saved_file() for now, just to ensure it is saving!
-        # with colp1:
-        #     st.image(f"{predict_paths_dict['input_image']+im_path_and_filename}")
-        #     map.remove_saved_file()
-
         colp2.subheader('Predicted Mask Image')
+        with colp1:
+             st.image(f"{im_path_and_filename}") # should already be at this path: prediction_path_dict['all_files_here']+
+        #     map.remove_saved_file() # only once all neatly working
+
         with colp2:
-            # st.image(im_predict_path)
-            st.markdown(''' Feature to be added ''')
+            gif_runner = st.image(f"{prediction_path_dict['model_path']}ezgif.com-gif-maker.gif")
+
+            st.markdown(''' WORKING ON IT! ''')
+
+            # LOCATION is:
+            # --------------
+            # CALL PREDICT.PY HERE
+            # --------------
+            smr = SolarMyRoof()
+            smr.load_and_ready(im_path_and_filename)
+            smr.predict()
+            y_pred_path_and_filename = smr.output_completed_mask()
+
+            gif_runner.empty()
+            st.image(y_pred_path_and_filename)
+
+            st.markdown(''' DONE, but not loading prediction, yet ''')
+
+            # NEED CHANGE
+            # how do we load the predicted file when it is available...? gif instead for now, then what
+
 
     test_dict = {'Binary IoU loss': [0.65],
                  'AuC': [0.76],
@@ -135,12 +149,14 @@ if selected == 'Preselected':
                 ''')
     option = st.selectbox(
         'Please select a preloaded example location',
-        ('Le Wagon London - E2 8DY', 'Finnieston, Glasgow - G3 8LX')
+        ('Le Wagon London - E2 8DY') # include next line once NEED IMAGE completed
+        #, 'Finnieston, Glasgow - G3 8LX')
     )
 
     image_dict_path = {
-        'Le Wagon London - E2 8DY':'/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/lewagon_london.jpg',
-        'Finnieston, Glasgow - G3 8LX': '/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/glasgow_test.png'
+        'Le Wagon London - E2 8DY':f"{prediction_path_dict['all_files_here']}_sample_lewagon_london.jpg",
+        # 'Finnieston, Glasgow - G3 8LX': f"{prediction_path_dict['all_files_here']}glasgow_test.png"
+        # NEED IMAGE: glasgow image into the all files here path: glasgow_test.png
     }
     st.write('You selected: ', option)
 
@@ -162,109 +178,111 @@ if selected == 'Preselected':
 
 
 
-if selected == 'About the project':
-    inria_url = 'https://project.inria.fr/aerialimagelabeling/'
-    st.markdown('''
-    ## About this project
-    Solar My Roof is a project developed at Le Wagon Data Science bootcamp.
-    Solar Panel installation is a complex task yet provides a great opportunity
-    to alleviate energy demands and provides a renewable energy source.
+inria_url = 'https://project.inria.fr/aerialimagelabeling/'
+st.markdown('''
+## About this project
+Solar My Roof is a project developed at Le Wagon Data Science bootcamp.
+Solar Panel installation is a complex task yet provides a great opportunity
+to alleviate energy demands and provides a renewable energy source.
 
-    It may be desirable to be able to assess large areas of urban environments to determine
-    suitable roofs for solar panel installations. This project was developed to
-    help automate the installation processes by identifying suitable roof space
-    using Deep Learning and satellite imagery. This would not only be able to
-    highlight specific roofs but be able to make an estimation of the roof
-    surface area.
+It may be desirable to be able to assess large areas of urban environments to determine
+suitable roofs for solar panel installations. This project was developed to
+help automate the installation processes by identifying suitable roof space
+using Deep Learning and satellite imagery. This would not only be able to
+highlight specific roofs but be able to make an estimation of the roof
+surface area.
 
-    It is with the hope that this work could have other uses for
-    individuals, councils, or installers. To tackle this problem, we made use of
-    the [INRIA dataset](%s) to provide a full labelled dataset to train a
-    network.
+It is with the hope that this work could have other uses for
+individuals, councils, or installers. To tackle this problem, we made use of
+the [INRIA dataset](%s) to provide a full labelled dataset to train a
+network.
 
-    ''' % inria_url)
+''' % inria_url)
 
-    st.markdown('''
-    ### The Team
-    The team consists of four Le Wagon Data Science students, who worked
-    closely together over a two week sprint period to source data, train several
-    Convolutional Neural Networks (CNN) and deploy a final model to a Python package.
-    ''')
-    col_a1, col_a2 = st.columns(2)
-    with col_a1:
-        st.image('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/le_wagon_logo.png')
-    with col_a2:
-        st.image('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/coding_le_wagon.jpeg')
+st.markdown('''
+### The Team
+The team consists of four Le Wagon Data Science students, who worked
+closely together over a two week sprint period to source data, train several
+Convolutional Neural Networks (CNN) and deploy a final model to a Python package.
+''')
+col_a1, col_a2 = st.columns(2)
+with col_a1:
+    st.image(f"{prediction_path_dict['all_files_here']}lw-logo.png")
+# with col_a2:
+#     st.image(f"{prediction_path_dict['all_files_here']}coding_le_wagon.jpeg")
+# NEED IMAGE: in path: coding_le_wagon.jpeg, then uncomment 2 lines above
 
-    st.markdown('''
-    ### Technical Approach
+st.markdown("""
+### Technical Approach
 
-    At the core, this problem is an Image Semantic Segmentation problem where for
-    each pixel of an image we wish to predict whether it is part of a roof (1) or not (0).
-    As the pixels that are located around each other tell us information regarding this
-    classification it is important to use a suitable network. In addition to this, a
-    full labelled dataset was required inorder to train a suitable model able
-    to classify satellite imagery.
+At the core, this problem is an Image Semantic Segmentation problem where for
+each pixel of an image we wish to predict whether it is part of a roof (1) or not (0).
+As the pixels that are located around each other tell us information regarding this
+classification it is important to use a suitable network. In addition to this, a
+full labelled dataset was required inorder to train a suitable model able
+to classify satellite imagery.
 
-    #### Inria Aerial Image Labelling Dataset
+#### Inria Aerial Image Labelling Dataset
 
-    The dataset used for this project was the Inria Aerial Image Labelling Dataset.
-    Within this dataset, a total of 810km^2 land coverage is provided (405km2 for
-    training and testing). All images were provided with a pixel resolution of 0.3m.
+The dataset used for this project was the Inria Aerial Image Labelling Dataset.
+Within this dataset, a total of 810km^2 land coverage is provided (405km2 for
+training and testing). All images were provided with a pixel resolution of 0.3m.
 
-    The images are taken from several cities across the world, including Chicago, San
-    Francisco, Lienz and Vienna.This provides a dataset with a large variation in
-    building styles and architecture. The goal behind the original dataset was the
-    aim to create a model that can generalise its prediction across various regions.
+The images are taken from several cities across the world, including Chicago, San
+Francisco, Lienz and Vienna.This provides a dataset with a large variation in
+building styles and architecture. The goal behind the original dataset was the
+aim to create a model that can generalise its prediction across various regions.
 
-    Within these separate areas there is also photos containing highly densely
-    populated areas (e.g., San Francisco’s financial district) and sparsely populated
-    areas such as towns in Austria.
+Within these separate areas there is also photos containing highly densely
+populated areas (e.g., San Francisco's financial district) and sparsely populated
+areas such as towns in Austria.
 
-    A full description on the dataset and further reading can be found on their
-    [website here](%s).
+A full description on the dataset and further reading can be found on their
+[website here](%s).
 
-    ''' % inria_url)
-    col_a3, col_a4 = st.columns(2)
-    col_a3.subheader('Inria Raw RGB Image')
-    with col_a3:
-        st.image(train_test)
-    col_a4.subheader('Inria Trianing Mask')
-    with col_a4:
-        st.image(mask_test)
+""" % inria_url)
+
+col_a3, col_a4 = st.columns(2)
+col_a3.subheader('Inria Raw RGB Image')
+with col_a3:
+    st.image(train_test)
+col_a4.subheader('Inria Training Mask')
+with col_a4:
+    st.image(mask_test)
 
 
-    st.markdown('''
-    ## Model
-    The model deployed in this Python package is a U-Net model enhanced with
-    transfer learning from the VGG16 Neural Network. This pretrained network was
-    trained on over one million images from the ImageNet database.
-    ''')
+st.markdown('''
+## Model
+The model deployed in this Python package is a U-Net model enhanced with
+transfer learning from the VGG16 Neural Network. This pretrained network was
+trained on over one million images from the ImageNet database.
+''')
 
-    unet_url = 'https://arxiv.org/abs/1505.04597'
-    c1, c2, c3 = st.columns(3)
-    with c1:
-        st.markdown('')
-    with c2:
-        st.image('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/u_net_model.png', use_column_width=True)
-        st.markdown('Figure: [U-Net Model](%s)' % unet_url)
-    with c3:
-        st.markdown('')
+unet_url = 'https://arxiv.org/abs/1505.04597'
+c1, c2, c3 = st.columns(3)
+with c1:
+    st.markdown('')
+with c2:
+    # NEED IMAGE: in path: unet_model.png
+    st.image(f"{prediction_path_dict['all_files_here']}unet_model.png", use_column_width=True)
+    st.markdown('Figure: [U-Net Model](%s)' % unet_url)
+with c3:
+    st.markdown('')
 
-    st.markdown('''
-    The team also investigated alterative models to use for transfer learning.
-    Specifically large attention was placed on the ResNet50 model. Ultimately,
-    due to time constraints and an initial better performance from the VGG16 it
-    was decided to continue with the latter.
+st.markdown('''
+The team also investigated alterative models to use for transfer learning.
+Specifically large attention was placed on the ResNet50 model. Ultimately,
+due to time constraints and an initial better performance from the VGG16 it
+was decided to continue with the latter.
 
-    It is the team’s objective to keep working on this project post bootcamp
-    where more time can be spent on model selection and optimisation.
+It is the team’s objective to keep working on this project post bootcamp
+where more time can be spent on model selection and optimisation.
 
-    While training the model, several iterations were ran using common techniques
-    such as data augmentation (to provide a richer dataset with the hope of developing
-    a model that better generalises) and several loss functions.
+While training the model, several iterations were ran using common techniques
+such as data augmentation (to provide a richer dataset with the hope of developing
+a model that better generalises) and several loss functions.
 
-    To assess the performance of the model both the Intersection over Union
-    (IoU) and accuracy where used, as outline by the Inria challenge.
+To assess the performance of the model both the Intersection over Union
+(IoU) and accuracy where used, as outline by the Inria challenge.
 
-                ''')
+''')

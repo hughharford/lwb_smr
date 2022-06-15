@@ -233,7 +233,7 @@ class PredictRoof():
 
         # have an overlay image of the raw input and the predicted roofs
         # specify background (the input image) and the created mask image
-        background = Image.open(prediction_path_dict['model_path']+self.im_path_and_filename)
+        background = Image.open(self.im_path_and_filename) # REMOVED: prediction_path_dict['model_path']+
         # for jpegs, converts into the appropriate mode and channels
         if background.mode != "RGB":
             background = background.convert("RGB")
@@ -242,8 +242,10 @@ class PredictRoof():
         # overlay
         background.paste(foreground, (0, 0), foreground)
         # saving
-        output_masked = f"{prediction_path_dict['prediction_output_images_path']}input_with_mask.jpg"
-        background.save(output_masked)
+        self.output_masked = f"{prediction_path_dict['prediction_output_images_path']}input_with_mask.jpg"
+        background.save(self.output_masked)
+
+        return self.output_masked
 
     def flashy_output(self):
         '''
