@@ -6,7 +6,6 @@ from lwb_smr.params import predict_paths_dict, prediction_path_dict, VM_path_dic
 from decouple import config #library to use
 APIKEY = config('GoogleMapsAPI') #how you access a env variable
 
-
 class GetMapImage():
     '''
     API to get 1280x1280 image from google maps
