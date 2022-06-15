@@ -44,4 +44,8 @@ streamlit_option_menu
 googlemaps
 Pillow # for PIL
 opencv-python # for cv2
+<<<<<<< HEAD
 python-decouple # for .env
+=======
+python-dotenv
+>>>>>>> 90e214a1e52f9b7c6751b932b7bda492fe9e8c5d
