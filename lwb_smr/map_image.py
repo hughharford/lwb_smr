@@ -1,10 +1,11 @@
 import googlemaps
 import os
-
+from env import GoogleMapsAPI
+import time
 from lwb_smr.params import predict_paths_dict, prediction_path_dict, VM_path_dict
-
-from decouple import config #library to use
-APIKEY = config('GoogleMapsAPI') #how you access a env variable
+APIKEY = GoogleMapsAPI
+# from decouple import config #library to use
+# APIKEY = config('GoogleMapsAPI') #how you access a env variable
 
 class GetMapImage():
     '''
@@ -29,6 +30,14 @@ class GetMapImage():
 
         #  self.user_input() # this input is given on instantiation of the class
         # see self.address in __init__()
+
+        im_name = self.address.upper().split()
+        im_name = "_".join(im_name) +".jpg"
+        existing_images = os.listdir(prediction_path_dict['all_files_here'])
+        if im_name in existing_images:
+            self.im_path_and_filename = f"{prediction_path_dict['all_files_here']}{im_name}"
+            time.sleep(2)
+            return self.im_path_and_filename
 
         # get map
         map_client = googlemaps.Client(APIKEY)
