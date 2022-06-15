@@ -32,9 +32,8 @@ from lwb_smr.solar_my_roof import SolarMyRoof
 
 # IMAGE NEED:
 #           1) INRIA Austin3 our full prediction
-#           OPTIONAL: 2) INRIA smaller filesize for _sample_INRIA_austin3_RGB.tif
 # using Austin 3, see naming already specified here:
-train_test = Image.open(f"{prediction_path_dict['all_files_here']}_sample_INRIA_austin3_RGB.tif") # got this, just MASSIVE 75mb
+train_test = Image.open(f"{prediction_path_dict['all_files_here']}_sample_INRIA_austin3_RGB.jpg") # got this, just MASSIVE 75mb
 mask_test = Image.open(f"{prediction_path_dict['all_files_here']}_sample_INRIA_austin3_mask.tif") # got this one
 layover_test = Image.open(f"{prediction_path_dict['all_files_here']}_sample_INRIA_austin3_our_prediction.tif") # copy of mask, our prediction is AMAZING!
 
