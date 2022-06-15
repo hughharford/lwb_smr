@@ -16,12 +16,12 @@ class SolarMyRoof():
         '''
         print(f'load_and_ready___: image_filename = {im_path_and_filename}')
         self.im_path_and_filename = im_path_and_filename
-        GOT_INPUT_IMAGE = True
+        self.GOT_INPUT_IMAGE = True
 
         print(79*'*')
         self.pred_roof = PredictRoof()
         self.pred_roof.tile_split(self.im_path_and_filename, 256, 256) # takes in the image_filename (but not the path)
-        LOADED_DATA = True
+        self.LOADED_AND_READY = True
 
         print((20*'_')+'DONE LOAD AND READY'+(20*'_'))
 
@@ -35,7 +35,7 @@ class SolarMyRoof():
         print(79*'@')
         self.pred_roof.load_model()
         self.roof_images = self.pred_roof.perform_prediction()
-        PREDICTED = False
+        self.PREDICTED = True
         print((20*'_')+'DONE PREDICT'+(20*'_'))
 
 
@@ -46,8 +46,8 @@ class SolarMyRoof():
         gets and returns output_mask image
         '''
         print(79*'$')
-        if sum(GOT_INPUT_IMAGE, LOADED_AND_READY, PREDICTED) == 3:
-            self.pred_roof.output_mask(self.roof_images)
+        if (self.GOT_INPUT_IMAGE + self.LOADED_AND_READY + self.PREDICTED) == 3:
+            self.output_mask_path_and_filename = self.pred_roof.output_mask(self.roof_images)
         else:
             print(10 * " <<<< ERROR >>> ")
 
