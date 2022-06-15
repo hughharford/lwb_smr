@@ -176,112 +176,112 @@ if selected == 'Preselected':
 # ----------------------------------------------
 
 
+if selected == 'About the project':
+    inria_url = 'https://project.inria.fr/aerialimagelabeling/'
+    st.markdown('''
+    ## About this project
+    Solar My Roof is a project developed at Le Wagon Data Science bootcamp.
+    Solar Panel installation is a complex task yet provides a great opportunity
+    to alleviate energy demands and provides a renewable energy source.
 
-inria_url = 'https://project.inria.fr/aerialimagelabeling/'
-st.markdown('''
-## About this project
-Solar My Roof is a project developed at Le Wagon Data Science bootcamp.
-Solar Panel installation is a complex task yet provides a great opportunity
-to alleviate energy demands and provides a renewable energy source.
+    It may be desirable to be able to assess large areas of urban environments to determine
+    suitable roofs for solar panel installations. This project was developed to
+    help automate the installation processes by identifying suitable roof space
+    using Deep Learning and satellite imagery. This would not only be able to
+    highlight specific roofs but be able to make an estimation of the roof
+    surface area.
 
-It may be desirable to be able to assess large areas of urban environments to determine
-suitable roofs for solar panel installations. This project was developed to
-help automate the installation processes by identifying suitable roof space
-using Deep Learning and satellite imagery. This would not only be able to
-highlight specific roofs but be able to make an estimation of the roof
-surface area.
+    It is with the hope that this work could have other uses for
+    individuals, councils, or installers. To tackle this problem, we made use of
+    the [INRIA dataset](%s) to provide a full labelled dataset to train a
+    network.
 
-It is with the hope that this work could have other uses for
-individuals, councils, or installers. To tackle this problem, we made use of
-the [INRIA dataset](%s) to provide a full labelled dataset to train a
-network.
+    ''' % inria_url)
 
-''' % inria_url)
+    st.markdown('''
+    ### The Team
+    The team consists of four Le Wagon Data Science students, who worked
+    closely together over a two week sprint period to source data, train several
+    Convolutional Neural Networks (CNN) and deploy a final model to a Python package.
+    ''')
+    col_a1, col_a2 = st.columns(2)
+    with col_a1:
+        st.image(f"{prediction_path_dict['all_files_here']}lw-logo.png")
+    # with col_a2:
+    #     st.image(f"{prediction_path_dict['all_files_here']}coding_le_wagon.jpeg")
+    # NEED IMAGE: in path: coding_le_wagon.jpeg, then uncomment 2 lines above
 
-st.markdown('''
-### The Team
-The team consists of four Le Wagon Data Science students, who worked
-closely together over a two week sprint period to source data, train several
-Convolutional Neural Networks (CNN) and deploy a final model to a Python package.
-''')
-col_a1, col_a2 = st.columns(2)
-with col_a1:
-    st.image(f"{prediction_path_dict['all_files_here']}lw-logo.png")
-# with col_a2:
-#     st.image(f"{prediction_path_dict['all_files_here']}coding_le_wagon.jpeg")
-# NEED IMAGE: in path: coding_le_wagon.jpeg, then uncomment 2 lines above
+    st.markdown("""
+    ### Technical Approach
 
-st.markdown("""
-### Technical Approach
+    At the core, this problem is an Image Semantic Segmentation problem where for
+    each pixel of an image we wish to predict whether it is part of a roof (1) or not (0).
+    As the pixels that are located around each other tell us information regarding this
+    classification it is important to use a suitable network. In addition to this, a
+    full labelled dataset was required inorder to train a suitable model able
+    to classify satellite imagery.
 
-At the core, this problem is an Image Semantic Segmentation problem where for
-each pixel of an image we wish to predict whether it is part of a roof (1) or not (0).
-As the pixels that are located around each other tell us information regarding this
-classification it is important to use a suitable network. In addition to this, a
-full labelled dataset was required inorder to train a suitable model able
-to classify satellite imagery.
+    #### Inria Aerial Image Labelling Dataset
 
-#### Inria Aerial Image Labelling Dataset
+    The dataset used for this project was the Inria Aerial Image Labelling Dataset.
+    Within this dataset, a total of 810km^2 land coverage is provided (405km2 for
+    training and testing). All images were provided with a pixel resolution of 0.3m.
 
-The dataset used for this project was the Inria Aerial Image Labelling Dataset.
-Within this dataset, a total of 810km^2 land coverage is provided (405km2 for
-training and testing). All images were provided with a pixel resolution of 0.3m.
+    The images are taken from several cities across the world, including Chicago, San
+    Francisco, Lienz and Vienna.This provides a dataset with a large variation in
+    building styles and architecture. The goal behind the original dataset was the
+    aim to create a model that can generalise its prediction across various regions.
 
-The images are taken from several cities across the world, including Chicago, San
-Francisco, Lienz and Vienna.This provides a dataset with a large variation in
-building styles and architecture. The goal behind the original dataset was the
-aim to create a model that can generalise its prediction across various regions.
+    Within these separate areas there is also photos containing highly densely
+    populated areas (e.g., San Francisco's financial district) and sparsely populated
+    areas such as towns in Austria.
 
-Within these separate areas there is also photos containing highly densely
-populated areas (e.g., San Francisco's financial district) and sparsely populated
-areas such as towns in Austria.
+    A full description on the dataset and further reading can be found on their
+    [website here](%s).
 
-A full description on the dataset and further reading can be found on their
-[website here](%s).
+    """ % inria_url)
 
-""" % inria_url)
-
-col_a3, col_a4 = st.columns(2)
-col_a3.subheader('Inria Raw RGB Image')
-with col_a3:
-    st.image(train_test)
-col_a4.subheader('Inria Training Mask')
-with col_a4:
-    st.image(mask_test)
+    col_a3, col_a4 = st.columns(2)
+    col_a3.subheader('Inria Raw RGB Image')
+    with col_a3:
+        st.image(train_test)
+    col_a4.subheader('Inria Training Mask')
+    with col_a4:
+        st.image(mask_test)
 
 
-st.markdown('''
-## Model
-The model deployed in this Python package is a U-Net model enhanced with
-transfer learning from the VGG16 Neural Network. This pretrained network was
-trained on over one million images from the ImageNet database.
-''')
+    st.markdown('''
+    ## Model
+    The model deployed in this Python package is a U-Net model enhanced with
+    transfer learning from the VGG16 Neural Network. This pretrained network was
+    trained on over one million images from the ImageNet database.
+    ''')
 
-unet_url = 'https://arxiv.org/abs/1505.04597'
-c1, c2, c3 = st.columns(3)
-with c1:
-    st.markdown('')
-with c2:
-    # NEED IMAGE: in path: unet_model.png
-    st.image(f"{prediction_path_dict['all_files_here']}unet_model.png", use_column_width=True)
-    st.markdown('Figure: [U-Net Model](%s)' % unet_url)
-with c3:
-    st.markdown('')
+    unet_url = 'https://arxiv.org/abs/1505.04597'
+    c1, c2, c3 = st.columns(3)
+    with c1:
+        st.markdown('')
+    with c2:
+        # NEED IMAGE: in path: unet_model.png
+        st.image(f"{prediction_path_dict['all_files_here']}unet_model.png", use_column_width=True)
+        st.markdown('Figure: [U-Net Model](%s)' % unet_url)
+    with c3:
+        st.markdown('')
 
-st.markdown('''
-The team also investigated alterative models to use for transfer learning.
-Specifically large attention was placed on the ResNet50 model. Ultimately,
-due to time constraints and an initial better performance from the VGG16 it
-was decided to continue with the latter.
+    st.markdown('''
+    The team also investigated alterative models to use for transfer learning.
+    Specifically large attention was placed on the ResNet50 model. Ultimately,
+    due to time constraints and an initial better performance from the VGG16 it
+    was decided to continue with the latter.
 
-It is the team’s objective to keep working on this project post bootcamp
-where more time can be spent on model selection and optimisation.
+    It is the team’s objective to keep working on this project post bootcamp
+    where more time can be spent on model selection and optimisation.
 
-While training the model, several iterations were ran using common techniques
-such as data augmentation (to provide a richer dataset with the hope of developing
-a model that better generalises) and several loss functions.
+    While training the model, several iterations were ran using common techniques
+    such as data augmentation (to provide a richer dataset with the hope of developing
+    a model that better generalises) and several loss functions.
 
-To assess the performance of the model both the Intersection over Union
-(IoU) and accuracy where used, as outline by the Inria challenge.
+    To assess the performance of the model both the Intersection over Union
+    (IoU) and accuracy where used, as outline by the Inria challenge.
 
-''')
+    ''')
