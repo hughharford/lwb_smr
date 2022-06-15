@@ -2,16 +2,6 @@ import googlemaps
 import os
 from lwb_smr.params import predict_paths_dict, prediction_path_dict, VM_path_dict
 
-from dotenv import load_dotenv,find_dotenv
-# point to .env file
-env_path = join(dirname(dirname(__file__)),'.env') # ../.env
-env_path = find_dotenv() # automatic find
-
-# load your api key as environment variables
-load_dotenv(env_path)
-
-APIKEY = os.getenv("GoogleMapsAPI")
-
 class GetMapImage():
     '''
     API to get 1280x1280 image from google maps
