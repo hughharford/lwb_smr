@@ -1,8 +1,9 @@
 import googlemaps
 import os
 from lwb_smr.params import predict_paths_dict, prediction_path_dict
-from env import GoogleMapsAPI
-APIKEY = GoogleMapsAPI
+
+from decouple import config #library to use
+apigoogleKey = config('GoogleMapsAPI') #how you access a env variable
 
 class GetMapImage():
     '''
