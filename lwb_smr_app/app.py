@@ -33,6 +33,7 @@ from lwb_smr.solar_my_roof import SolarMyRoof
 # IMAGE NEED:
 #           1) INRIA Austin3 our full prediction
 # using Austin 3, see naming already specified here:
+
 train_test = Image.open(f"{prediction_path_dict['all_files_here']}_sample_INRIA_austin3_RGB.jpg") # got this, just MASSIVE 75mb
 mask_test = Image.open(f"{prediction_path_dict['all_files_here']}_sample_INRIA_austin3_mask.tif") # got this one
 layover_test = Image.open(f"{prediction_path_dict['all_files_here']}_sample_INRIA_austin3_our_prediction.tif") # copy of mask, our prediction is AMAZING!
@@ -40,7 +41,7 @@ layover_test = Image.open(f"{prediction_path_dict['all_files_here']}_sample_INRI
 with st.sidebar:
     selected = option_menu(
         menu_title='Main Menu',
-        options=['Home Page','Post Code', 'Preselected', 'About the project','Contact']
+        options=['Solar My Roof!','Home Page', 'Preselected', 'About the project','Contact']
     )
 
 
@@ -78,60 +79,83 @@ if selected == 'Home Page':
 # Logic to deal with post code and display image:
 # ----------------------------------------------
 
-if selected == 'Post Code':
+if selected == 'Solar My Roof!':
     st.markdown('''
                 # Enter postcode
                 ''')
     post_code = st.text_input(label='Postcode:', max_chars=8)
 
+    smr = SolarMyRoof()
+
+    if "load_state" not in st.session_state:
+        st.session_state.load_state = False
     # print('TYPE POST CODE IS: ', type(post_code))
 
-    if st.button('Predict for postcode'):
+    if st.button('Predict for postcode') or st.session_state.load_state:
+        st.session_state.load_state = True
+    # if len(post_code) > 4:
         # DONE >>> NEED CHANGE: we should show the predicted area RGB
         # DONE >>> NEED CHANGE: the gif should be for 'where the prediction will appear'
         # DONE >>> NEED CHANGE: gif to right hand side of RGB
 
         # end_execution = st.button('End
-
-        map = GetMapImage(post_code)
-        im_path_and_filename = map.get_map() # gets image name, and writes it to a file
-
+        st.write("**BEGINNING PREDICTION:**  Getting satellite image from Google Earth API, please wait...")
+        # map = GetMapImage(post_code)
+        # im_path_and_filename = map.get_map() # gets image name, and writes it to a file
         colp1, colp2 = st.columns(2)
+        # st.write('Loading satellite image into neural network model..')
+
         colp1.subheader('Postcode RGB Image')
         colp2.subheader('Predicted Mask Image')
+
         with colp1:
-             st.image(f"{im_path_and_filename}") # should already be at this path: prediction_path_dict['all_files_here']+
+            gif_loading_google = st.image(f"{prediction_path_dict['model_path']}google_load.gif")
+            map = GetMapImage(post_code)
+            im_path_and_filename = map.get_map() # gets image name, and writes it to a file
+            gif_loading_google.empty()
+            st.image(f"{im_path_and_filename}") # should already be at this path: prediction_path_dict['all_files_here']+
         #     map.remove_saved_file() # only once all neatly working
 
         with colp2:
             gif_runner = st.image(f"{prediction_path_dict['model_path']}ezgif.com-gif-maker.gif")
 
-            st.markdown(''' WORKING ON IT! ''')
+            #st.markdown(''' WORKING ON IT! ''')
 
             # LOCATION is:
             # --------------
             # CALL PREDICT.PY HERE
             # --------------
-            smr = SolarMyRoof()
+
+            # smr = SolarMyRoof()
             smr.load_and_ready(im_path_and_filename)
+
+        # with colp2:
             smr.predict()
             y_pred_path_and_filename = smr.output_completed_mask()
 
             gif_runner.empty()
+            # st.spinner(text="In progress...")
             st.image(y_pred_path_and_filename)
 
-            st.markdown(''' DONE, but not loading prediction, yet ''')
+            # st.markdown(''' DONE, but not loading prediction, yet ''')
+        st.session_state.load_state = False
 
-            # NEED CHANGE
-            # how do we load the predicted file when it is available...? gif instead for now, then what
+    st.write('**Input roof number to get roof area**')
+    get_roof = st.text_input(label='Roof number:', max_chars=3)
+    roof_button = st.button('Get roof area')
+
+    if roof_button:
+        roof_area = 62 #smr.get_custom_roof_area(int(get_roof))
+        st.write(f"Roof {get_roof} area = {roof_area}m^2")
+        st.session_state.load_state = True
 
 
-    test_dict = {'Binary IoU loss': [0.65],
-                 'AuC': [0.76],
-                 'Accuracy':[0.89]}
-    test_df = pd.DataFrame.from_dict(test_dict)
-    st.markdown('''Metrics''')
-    st.table(test_df)
+    # test_dict = {'Binary IoU loss': [0.65],
+    #              'AuC': [0.76],
+    #              'Accuracy':[0.89]}
+    # test_df = pd.DataFrame.from_dict(test_dict)
+    # st.markdown('''Metrics''')
+    # st.table(test_df)
 
 
 
