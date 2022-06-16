@@ -1,3 +1,4 @@
+from functools import total_ordering
 import numpy as np
 import pandas as pd
 from tensorflow import keras
@@ -8,6 +9,8 @@ import os
 import glob
 from lwb_smr.params import prediction_path_dict, MODEL_FOR_PREDICTION
 from skimage.transform import resize
+
+cnts_thresh = []
 
 class PredictRoof():
     '''
@@ -22,7 +25,6 @@ class PredictRoof():
         '''
         docstring
         '''
-
         ### DEBUG ONLY:
         # print(f'PREDICT.tile_split: self.im_path_and_filename: {self.im_path_and_filename}')
 
@@ -298,17 +300,18 @@ class PredictRoof():
         cnts = cnts[0] if len(cnts) == 2 else cnts[1]
 
         # remove islands below a specified threshold area
-        self.cnts_thresh = []
+        global cnts_thresh
+        cnts_thresh = []
         for i in cnts:
             if cv2.contourArea(i) > threshold_area:
-                self.cnts_thresh.append(i)
+                cnts_thresh.append(i)
 
         # draw countours around the reamining islands
-        for c in self.cnts_thresh:
+        for c in cnts_thresh:
             cv2.drawContours(mask, [c], -1, (mask_r, mask_g, mask_b), thickness=2)
 
         # find middle of each island and place a number there
-        for count, c in enumerate(self.cnts_thresh):
+        for count, c in enumerate(cnts_thresh):
             # Find centroid for each contour and label contour
             M = cv2.moments(c)
             cx = int(M['m10']/M['m00'])
@@ -331,14 +334,55 @@ class PredictRoof():
         self.output_contoured = f"{prediction_path_dict['prediction_output_images_path']}output_prediction.png"
         contoured_image_output.save(self.output_contoured)
 
+
+
+
         return self.output_contoured
 
-    def get_roof_area(self,roof_num):
+    def get_roof_area(self):
         '''
-        enter a roof number to return an error
+        enter a roof number to return an value
         '''
-        roof_num = int(roof_num)
+        global cnts_thresh
+
         px_per_area = 0.25**2 # 25cm/pixel
-        # get_roof = int(input("Enter roof number: "))
-        # return print(f"Roof number {roof_num} area = {cv2.contourArea(self.cnts_thresh[roof_num])*px_per_area} m^2")
-        return cv2.contourArea(self.cnts_thresh[roof_num]*px_per_area)
+        list_roof_area = []
+        roof_num = []
+
+        for i in range(len(cnts_thresh)):
+            roof_num.append(f"Roof {i}")
+            roof_area = cv2.contourArea(cnts_thresh[i])*px_per_area
+            roof_string_area = f"{roof_area: .2f}"
+            list_roof_area.append(roof_string_area)
+
+        roof_df = pd.DataFrame({
+                    'Roof Number': roof_num,
+                    'Roof Area m^2': list_roof_area
+                    })
+
+        return roof_df #cv2.contourArea(cnts_thresh[roof_num])*px_per_area
+
+
+    # def get_roof_area(self,roof_num):
+    #     '''
+    #     enter a roof number to return an value
+    #     '''
+    #     global cnts_thresh
+    #     # print(self.cnts_thresh)
+    #     roof_num = int(roof_num)
+    #     px_per_area = 0.25**2 # 25cm/pixel
+    #     # get_roof = int(input("Enter roof number: "))
+    #     # return print(f"Roof number {roof_num} area = {cv2.contourArea(self.cnts_thresh[roof_num])*px_per_area} m^2")
+    #     return cv2.contourArea(cnts_thresh[roof_num])*px_per_area
+
+    def total_roof_area(self):
+        '''
+        return all roofs total area
+        '''
+        global cnts_thresh
+        px_per_area = 0.25**2 # 25cm/pixel
+        self.total_roof_area = []
+        for i in range(len(cnts_thresh)):
+            self.total_roof_area.append(cv2.contourArea(cnts_thresh[i])*px_per_area)
+
+        return self.total_roof_area.sum()
