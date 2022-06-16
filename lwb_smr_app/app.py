@@ -1,3 +1,4 @@
+from matplotlib.pyplot import get
 import streamlit as st
 import pandas as pd
 from streamlit_option_menu import option_menu
@@ -81,75 +82,94 @@ if selected == 'Home Page':
 
 if selected == 'Solar My Roof!':
     st.markdown('''
-                # Enter postcode
+                # Solar My Roof!
                 ''')
-    post_code = st.text_input(label='Postcode:', max_chars=8)
+    st.session_state.top_level = False
+
+    post_code = st.text_input(label='Enter Postcode:', max_chars=8)
 
     smr = SolarMyRoof()
 
-    if "load_state" not in st.session_state:
-        st.session_state.load_state = False
-    # print('TYPE POST CODE IS: ', type(post_code))
+    if st.session_state.top_level == False:
 
-    if st.button('Predict for postcode') or st.session_state.load_state:
-        st.session_state.load_state = True
-    # if len(post_code) > 4:
-        # DONE >>> NEED CHANGE: we should show the predicted area RGB
-        # DONE >>> NEED CHANGE: the gif should be for 'where the prediction will appear'
-        # DONE >>> NEED CHANGE: gif to right hand side of RGB
+        if "load_state" not in st.session_state:
+            st.session_state.load_state = False
+        # print('TYPE POST CODE IS: ', type(post_code))
 
-        # end_execution = st.button('End
-        st.write("**BEGINNING PREDICTION:**  Getting satellite image from Google Earth API, please wait...")
-        # map = GetMapImage(post_code)
-        # im_path_and_filename = map.get_map() # gets image name, and writes it to a file
-        colp1, colp2 = st.columns(2)
-        # st.write('Loading satellite image into neural network model..')
+        if st.button('Predict for postcode') or st.session_state.load_state:
+            st.session_state.load_state = True
+        # if len(post_code) > 4:
+            # DONE >>> NEED CHANGE: we should show the predicted area RGB
+            # DONE >>> NEED CHANGE: the gif should be for 'where the prediction will appear'
+            # DONE >>> NEED CHANGE: gif to right hand side of RGB
 
-        colp1.subheader('Postcode RGB Image')
-        colp2.subheader('Predicted Mask Image')
+            # end_execution = st.button('End
+            st.write("**BEGINNING PREDICTION:**  Getting satellite image from Google Earth API, please wait...")
+            # map = GetMapImage(post_code)
+            # im_path_and_filename = map.get_map() # gets image name, and writes it to a file
+            colp1, colp2 = st.columns(2)
+            # st.write('Loading satellite image into neural network model..')
 
-        with colp1:
-            gif_loading_google = st.image(f"{prediction_path_dict['model_path']}google_load.gif")
-            map = GetMapImage(post_code)
-            im_path_and_filename = map.get_map() # gets image name, and writes it to a file
-            gif_loading_google.empty()
-            st.image(f"{im_path_and_filename}") # should already be at this path: prediction_path_dict['all_files_here']+
-        #     map.remove_saved_file() # only once all neatly working
+            colp1.subheader('Postcode RGB Image')
+            colp2.subheader('Predicted Mask Image')
 
-        with colp2:
-            gif_runner = st.image(f"{prediction_path_dict['model_path']}ezgif.com-gif-maker.gif")
+            with colp1:
+                gif_loading_google = st.image(f"{prediction_path_dict['model_path']}google_load.gif")
+                map = GetMapImage(post_code)
+                im_path_and_filename = map.get_map() # gets image name, and writes it to a file
+                gif_loading_google.empty()
+                st.image(f"{im_path_and_filename}") # should already be at this path: prediction_path_dict['all_files_here']+
+            #     map.remove_saved_file() # only once all neatly working
 
-            #st.markdown(''' WORKING ON IT! ''')
+            with colp2:
+                gif_runner = st.image(f"{prediction_path_dict['model_path']}loading-buffering.gif")
 
-            # LOCATION is:
-            # --------------
-            # CALL PREDICT.PY HERE
-            # --------------
+                #st.markdown(''' WORKING ON IT! ''')
 
-            # smr = SolarMyRoof()
-            smr.load_and_ready(im_path_and_filename)
+                # LOCATION is:
+                # --------------
+                # CALL PREDICT.PY HERE
+                # --------------
 
-        # with colp2:
-            smr.predict()
-            y_pred_path_and_filename = smr.output_completed_mask()
+                # smr = SolarMyRoof()
+                smr.load_and_ready(im_path_and_filename)
 
-            gif_runner.empty()
-            # st.spinner(text="In progress...")
-            st.image(y_pred_path_and_filename)
+            # with colp2:
+                smr.predict()
+                y_pred_path_and_filename = smr.output_completed_mask()
 
-            # st.markdown(''' DONE, but not loading prediction, yet ''')
-        st.session_state.load_state = False
+                gif_runner.empty()
+                # st.spinner(text="In progress...")
+                st.image(y_pred_path_and_filename)
+                # st.write(y_pred_path_and_filename[1])
 
-    st.write('**Input roof number to get roof area**')
-    get_roof = st.text_input(label='Roof number:', max_chars=3)
-    roof_button = st.button('Get roof area')
+                # st.markdown(''' DONE, but not loading prediction, yet ''')
+            st.session_state.load_state = False
 
-    if roof_button:
-        roof_area = 62 #smr.get_custom_roof_area(int(get_roof))
-        st.write(f"Roof {get_roof} area = {roof_area}m^2")
-        st.session_state.load_state = True
+        st.session_state.top_level = True
 
+    # if st.session_state.top_level == False:
 
+    # if "load_roof" not in st.session_state:
+    #     st.session_state.load_roof = False
+
+    st.write('**List of roof areas:**')
+    # tra = smr.get_total_roof_area()
+    # st.write(f"Total area of all roofs: {tra} m^2")
+
+    roof_df = smr.get_custom_roof_area()
+    st.write(roof_df)
+
+    # roof_number = st.text_input(label='Roof number:', max_chars=3)
+    # roof_button = st.button('Get roof area')
+
+    # if roof_button: # or st.session_state.load_roof:
+    #     roof_area = smr.get_custom_roof_area(roof_number)
+    #     st.write(f"Roof {roof_number} area = {roof_area: .2f}m^2")
+
+        # st.session_state.load_roof = True
+
+        # st.session_state.top_level = True
     # test_dict = {'Binary IoU loss': [0.65],
     #              'AuC': [0.76],
     #              'Accuracy':[0.89]}
@@ -309,9 +329,6 @@ if selected == 'About the project':
     (IoU) and accuracy where used, as outline by the Inria challenge.
 
     ''')
-
-
-
 
 if selected == 'Contact':
     hugh = 'https://www.linkedin.com/in/hugh-harford/'
