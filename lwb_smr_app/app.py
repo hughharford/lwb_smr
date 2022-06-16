@@ -309,3 +309,18 @@ if selected == 'About the project':
     (IoU) and accuracy where used, as outline by the Inria challenge.
 
     ''')
+
+
+
+
+if selected == 'Contact':
+    hugh = 'https://www.linkedin.com/in/hugh-harford/'
+    josh = 'https://www.linkedin.com/in/joshua-katzenberg'
+    amed = 'https://www.linkedin.com/in/ahmed-abbood'
+    jack = 'https://www.linkedin.com/in/jack-h-79470222a'
+    st.markdown('''# Contact Information''')
+    st.markdown('''## LinkedIn''')
+    st.markdown('[Hugh Harford](%s)' % hugh)
+    st.markdown('[Jack Housego](%s)' % jack)
+    st.markdown('[Josh Katzenberg](%s)' % josh)
+    st.markdown('[Amed Abbood](%s)' % amed)
