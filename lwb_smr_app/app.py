@@ -85,7 +85,7 @@ if selected == 'Solar My Roof!':
                 # Solar My Roof!
                 ''')
     st.session_state.top_level = False
-
+    roof_max = "..."
     post_code = st.text_input(label='Enter Postcode:', max_chars=8)
 
     smr = SolarMyRoof()
@@ -104,7 +104,7 @@ if selected == 'Solar My Roof!':
             # DONE >>> NEED CHANGE: gif to right hand side of RGB
 
             # end_execution = st.button('End
-            st.write("**BEGINNING PREDICTION:**  Getting satellite image from Google Earth API, please wait...")
+            st.write("**BEGINNING PREDICTION:**  Getting satellite image from Google Static Maps Satellite API, please wait...")
             # map = GetMapImage(post_code)
             # im_path_and_filename = map.get_map() # gets image name, and writes it to a file
             colp1, colp2 = st.columns(2)
@@ -152,30 +152,14 @@ if selected == 'Solar My Roof!':
 
     # if "load_roof" not in st.session_state:
     #     st.session_state.load_roof = False
+    if st.session_state.top_level == True:
+        st.write('**Max roof:**')
+        # tra = smr.get_total_roof_area()
+        # st.write(f"Total area of all roofs: {tra} m^2")
 
-    st.write('**List of roof areas:**')
-    # tra = smr.get_total_roof_area()
-    # st.write(f"Total area of all roofs: {tra} m^2")
-
-    roof_df = smr.get_custom_roof_area()
-    st.write(roof_df)
-
-    # roof_number = st.text_input(label='Roof number:', max_chars=3)
-    # roof_button = st.button('Get roof area')
-
-    # if roof_button: # or st.session_state.load_roof:
-    #     roof_area = smr.get_custom_roof_area(roof_number)
-    #     st.write(f"Roof {roof_number} area = {roof_area: .2f}m^2")
-
-        # st.session_state.load_roof = True
-
-        # st.session_state.top_level = True
-    # test_dict = {'Binary IoU loss': [0.65],
-    #              'AuC': [0.76],
-    #              'Accuracy':[0.89]}
-    # test_df = pd.DataFrame.from_dict(test_dict)
-    # st.markdown('''Metrics''')
-    # st.table(test_df)
+        roof_max = smr.get_custom_roof_area()
+        # if roof_max.empty == False:
+        st.write(roof_max)
 
 
 
