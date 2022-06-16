@@ -153,13 +153,26 @@ if selected == 'Solar My Roof!':
     # if "load_roof" not in st.session_state:
     #     st.session_state.load_roof = False
     if st.session_state.top_level == True:
+
+
+
         st.write('**Max roof:**')
         # tra = smr.get_total_roof_area()
         # st.write(f"Total area of all roofs: {tra} m^2")
 
         roof_max = smr.get_custom_roof_area()
+
+        st.markdown("""
+        <style>
+        .big-font {
+            font-size:30px !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+
+        st.markdown('<p class="big-font">'+roof_max+'</p>', unsafe_allow_html=True)
         # if roof_max.empty == False:
-        st.write(roof_max)
+        # st.write(roof_max)
 
 
 
