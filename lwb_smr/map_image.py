@@ -1,6 +1,6 @@
 import googlemaps
 import os
-from env import GoogleMapsAPI
+# from env import GoogleMapsAPI
 import time
 from lwb_smr.params import predict_paths_dict, prediction_path_dict, VM_path_dict
 APIKEY = GoogleMapsAPI
