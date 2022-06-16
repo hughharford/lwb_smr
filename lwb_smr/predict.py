@@ -348,19 +348,36 @@ class PredictRoof():
         px_per_area = 0.25**2 # 25cm/pixel
         list_roof_area = []
         roof_num = []
+        num_panels = []
 
         for i in range(len(cnts_thresh)):
             roof_num.append(f"Roof {i}")
             roof_area = cv2.contourArea(cnts_thresh[i])*px_per_area
-            roof_string_area = f"{roof_area: .2f}"
-            list_roof_area.append(roof_string_area)
+            # roof_string_area = float(f"{roof_area: .2f}")
+            list_roof_area.append(roof_area)
+            num_panels.append(roof_area*.5/1.6)
 
         roof_df = pd.DataFrame({
                     'Roof Number': roof_num,
-                    'Roof Area m^2': list_roof_area
+                    'Roof Area m^2': list_roof_area,
+                    'Number of Panels': num_panels
                     })
 
-        return roof_df #cv2.contourArea(cnts_thresh[roof_num])*px_per_area
+        roof_df.sort_values(by='Roof Area m^2', ascending=False, inplace=True)
+        top_five = roof_df[0:5].copy()
+
+        output_string = "Waiting for first postcode"
+        if roof_df.empty == False:
+            # roof_df.sort_values(by='Roof Area m^2', ascending=False)
+            # top_five = roof_df[0:5].copy()
+
+            roof_max = roof_df['Roof Area m^2'].max()
+            roof_max_num = roof_df['Roof Area m^2'].idxmax()
+            output_string = f"Largest roof is number {roof_max_num} at {int(roof_max)} m^2. This roof could support up to {int(roof_max*.5/1.6)} solar panels!"
+
+        return output_string
+        # return output_string
+        # return roof_df #cv2.contourArea(cnts_thresh[roof_num])*px_per_area
 
 
     # def get_roof_area(self,roof_num):
