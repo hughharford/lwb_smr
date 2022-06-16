@@ -4,6 +4,7 @@
 .DS_Store
 raw_data/
 models/
+lwb_smr/data/
 checkpoints/
 lwb_solarmyroof/data_samples/
 *.csv
@@ -13,6 +14,7 @@ lwb_solarmyroof/data_samples/
 *.tiff
 *.zip
 *.jpeg
+*.jpg
 .vscode
 *.h5
 env.py
