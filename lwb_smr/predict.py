@@ -366,14 +366,20 @@ class PredictRoof():
         roof_df.sort_values(by='Roof Area m^2', ascending=False, inplace=True)
         top_five = roof_df[0:5].copy()
 
-        output_string = "Waiting for first postcode"
+        output_string = "Waiting for max roof area to be calculated.."
+
         if roof_df.empty == False:
             # roof_df.sort_values(by='Roof Area m^2', ascending=False)
             # top_five = roof_df[0:5].copy()
 
             roof_max = roof_df['Roof Area m^2'].max()
             roof_max_num = roof_df['Roof Area m^2'].idxmax()
-            output_string = f"Largest roof is number {roof_max_num} at {int(roof_max)} m^2. This roof could support up to {int(roof_max*.5/1.6)} solar panels!"
+            # line1 = f"Largest roof is number {roof_max_num} at {int(roof_max)} m^2"
+            # nl = '\n'
+            # line2 = f"This roof could support up to {int(roof_max*.5/1.6)} solar panels!"
+            output_string = f"Largest roof is number {roof_max_num} at {int(roof_max)} m^2. \
+                {chr(10)}This roof could support up to {int(roof_max*.5/1.6)} solar panels!"
+            # output_string = f"{line1}.{nl}{line2}"
 
         return output_string
         # return output_string
