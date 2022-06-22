@@ -19,13 +19,13 @@ RUN cd lwb_smr && pip install -e .
 
 RUN pip install matplotlib
 RUN apt-get update
-# to cover
-RUN apt-get install ffmpeg libsm6 libxext6  -y
 
+# to cover dependency issues
+#RUN apt-get install ffmpeg libsm6 libxext6  -y
 
 # USE THESE INSTEAD:
 # RUN apt-get update && apt-get install -y opencv-python-headless
-# RUN pip install opencv-python-headless
+RUN pip install opencv-python-headless
 
 # Launch our app with streamlit
 # use when ready...
