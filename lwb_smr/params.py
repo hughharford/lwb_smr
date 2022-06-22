@@ -38,10 +38,10 @@ LOSS = possibleLOSS[2]
 Experiment_name_base = 'UK Lon lwb_smr'
 EXPERIMENT_NAME = Experiment_name_base + " test_run_02" # template
 EXPERIMENT_TAGS = {
-    'USER': 'hsth',
-    'RUN NAME': 'test_vertex2, ops check',
+    'USER': 'hsth_day10',
+    'RUN NAME': 'TEST_evaluation of models',
     'VERSION': 'M2_R04_15',
-    'DESCRIPTION': 'test_Model VGG16 UNet',
+    'DESCRIPTION': 'TEST_Models x2',
     'LOSS': LOSS,
     'METRICS': 'accuracy, binaryIoU, AUC'
 }
