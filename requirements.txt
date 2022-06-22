@@ -47,6 +47,6 @@ googlemaps
 Pillow # for PIL
 # python3-opencv
 # opencv-python # for cv2
-# opencv-python-headless
+opencv-python-headless
 python-dotenv
 python-decouple
