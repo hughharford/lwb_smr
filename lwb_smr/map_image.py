@@ -1,9 +1,11 @@
 import googlemaps
+import streamlit as st
 import os
-from env import GoogleMapsAPI
 import time
 from lwb_smr.params import predict_paths_dict, prediction_path_dict, VM_path_dict
-APIKEY = GoogleMapsAPI
+# from env import GoogleMapsAPI
+# APIKEY = GoogleMapsAPI
+
 # from decouple import config #library to use
 # APIKEY = config('GoogleMapsAPI') #how you access a env variable
 
@@ -39,6 +41,8 @@ class GetMapImage():
             time.sleep(2)
             return self.im_path_and_filename
 
+        # overwrite APIKEY using Streamlit secrets
+        APIKEY = st.secrets["GoogleMapsAPI"]
         # get map
         map_client = googlemaps.Client(APIKEY)
         response = map_client.static_map(size=(1024,1024),scale=2,maptype ="satellite" ,center=(self.address),zoom= 17)

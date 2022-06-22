@@ -7,7 +7,8 @@ wheel>=0.29
 # data science
 numpy
 pandas
-matplotlib # this doesn't seem to install properly
+# this doesn't seem to install properly
+matplotlib==3.4.3
 scikit-learn
 scikit-image
 tensorflow
