@@ -1,3 +1,4 @@
+.streamlit/secrets.toml
 *.egg-info
 .coverage
 .ipynb_checkpoints
