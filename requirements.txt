@@ -7,6 +7,8 @@ wheel>=0.29
 # data science
 numpy
 pandas
+# this doesn't seem to install properly
+matplotlib==3.4.3
 scikit-learn
 scikit-image
 tensorflow
@@ -38,11 +40,14 @@ joblib
 memoized-property
 termcolor
 
+
 # web and bits
 streamlit
 streamlit_option_menu
 googlemaps
 Pillow # for PIL
-opencv-python # for cv2
+# python3-opencv
+# opencv-python # for cv2
+# opencv-python-headless
 python-dotenv
 python-decouple
