@@ -2,7 +2,7 @@ import googlemaps
 import streamlit as st
 import os
 import time
-from lwb_smr.params import predict_paths_dict, prediction_path_dict, VM_path_dict
+from params import prediction_path_dict
 # from env import GoogleMapsAPI
 # APIKEY = GoogleMapsAPI
 
