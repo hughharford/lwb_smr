@@ -156,4 +156,4 @@ pypi:
 # 	-@streamlit run lwb_smr_app/app.py
 # --server.address 0.0.0.0
 streamlit:
-	@streamlit run lwb_smr_app/app.py --server.port 8000
+	@streamlit run lwb_smr/app.py --server.port 8000
