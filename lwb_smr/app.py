@@ -2,15 +2,12 @@
 import streamlit as st
 import pandas as pd
 from streamlit_option_menu import option_menu
-from lwb_smr.map_image import GetMapImage
-from lwb_smr.params import predict_paths_dict
-from lwb_smr.predict import PredictRoof
 from PIL import Image
 import os
 
-from lwb_smr.map_image import GetMapImage
-from lwb_smr.params import predict_paths_dict, prediction_path_dict
-from lwb_smr.solar_my_roof import SolarMyRoof
+from map_image import GetMapImage
+from params import prediction_path_dict
+from solar_my_roof import SolarMyRoof
 # Code to loaded images, make prediction
 
 ### st.write(os. getcwd())

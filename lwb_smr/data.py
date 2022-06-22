@@ -4,8 +4,8 @@ import os
 from pathlib import Path
 import tensorflow as tf
 
-from lwb_smr.params import TEST_RUN, BATCH_SIZE, IMAGE_SQ_SIZE, VM_path_dict
-from lwb_smr.utils import  aug_flip_l_r, aug_flip_u_d, aug_rotate
+from params import TEST_RUN, BATCH_SIZE, IMAGE_SQ_SIZE, VM_path_dict
+from utils import  aug_flip_l_r, aug_flip_u_d, aug_rotate
 
 class GetData():
     '''

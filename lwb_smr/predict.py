@@ -7,11 +7,11 @@ from PIL import Image
 import cv2
 import os
 import glob
-from lwb_smr.params import prediction_path_dict, MODEL_FOR_PREDICTION
 from skimage.transform import resize
 
-cnts_thresh = []
+from params import prediction_path_dict, MODEL_FOR_PREDICTION
 
+cnts_thresh = []
 class PredictRoof():
     '''
     Tile and convert an imput image from tif to jpeg
