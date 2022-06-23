@@ -1,5 +1,6 @@
 import pandas as pd
-from lwb_smr.predict import PredictRoof
+
+from predict import PredictRoof
 
 
 
