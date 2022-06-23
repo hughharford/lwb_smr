@@ -1,4 +1,7 @@
 .streamlit/secrets.toml
+.env
+env.py
+
 *.egg-info
 .coverage
 .ipynb_checkpoints
@@ -9,13 +12,7 @@ checkpoints/
 lwb_solarmyroof/data_samples/
 
 **/__pycache__/
-.env
-
 *.zip
-
-
 .vscode
 
-env.py
-.env
 le-wagon-bootcamp-347615_gcp_google_cloud.json
