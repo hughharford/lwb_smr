@@ -1,3 +1,14 @@
+# NOTE
+# you will need git lfs installed for Large File Storage
+# see:
+#     https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage
+#     https://git-lfs.github.com/
+#
+#   NOTE ON git lfs billing:
+#        https://docs.github.com/en/billing/managing-billing-for-git-large-file-storage/about-billing-for-git-large-file-storage
+#
+
+
 # packaging
 pip>=9
 setuptools>=26
@@ -7,6 +18,7 @@ wheel>=0.29
 # data science
 numpy
 pandas
+# NOT NEEDED matplotlib # this doesn't seem to install properly
 scikit-learn
 scikit-image
 tensorflow
@@ -38,11 +50,14 @@ joblib
 memoized-property
 termcolor
 
+
 # web and bits
 streamlit
 streamlit_option_menu
 googlemaps
 Pillow # for PIL
-opencv-python # for cv2
+# python3-opencv
+# opencv-python # for cv2
+opencv-python-headless
 python-dotenv
 python-decouple
