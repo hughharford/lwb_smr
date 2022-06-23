@@ -74,7 +74,7 @@ VM_path_dict = {
     'path_x': "../../raw_data/train_RGB_tiles_jpeg/",
     'path_y': "../../raw_data/train_mask_tiles_jpeg/"
 }
-# ~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~ testing only
 test_pred_root_path = 'lwb_smr/data/demo_files_2/'
 # ~~~~~~~~~~~~~
 
