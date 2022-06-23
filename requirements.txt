@@ -3,6 +3,11 @@
 # see:
 #     https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage
 #     https://git-lfs.github.com/
+#
+#   NOTE ON git lfs billing:
+#        https://docs.github.com/en/billing/managing-billing-for-git-large-file-storage/about-billing-for-git-large-file-storage
+#
+
 
 # packaging
 pip>=9
