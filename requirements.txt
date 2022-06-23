@@ -1,3 +1,9 @@
+# NOTE
+# you will need git lfs installed for Large File Storage
+# see:
+#     https://docs.github.com/en/repositories/working-with-files/managing-large-files/installing-git-large-file-storage
+#     https://git-lfs.github.com/
+
 # packaging
 pip>=9
 setuptools>=26
