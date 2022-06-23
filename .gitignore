@@ -7,7 +7,7 @@ raw_data/
 models/
 checkpoints/
 lwb_solarmyroof/data_samples/
-
+lwb_smr/data/demo_files/prediction/raw_image_tiles/
 **/__pycache__/
 .env
 
