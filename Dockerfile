@@ -12,6 +12,7 @@ RUN git clone https://github.com/hughharford/lwb_smr.git
 
 # copy files across to the new container
 COPY env.py     lwb_smr/env.py
+COPY .streamlit/secrets.toml     lwb_smr/.streamlit/secrets.toml
 COPY lwb_smr/data/demo_files        lwb_smr/lwb_smr/data/demo_files
 # OR USE GCP... let's see
 
