@@ -3,7 +3,6 @@ import streamlit as st
 import pandas as pd
 from streamlit_option_menu import option_menu
 from PIL import Image
-import os
 
 from map_image import GetMapImage
 from params import prediction_path_dict
@@ -13,15 +12,6 @@ from solar_my_roof import SolarMyRoof
 ### st.write(os. getcwd())
 
 # raw_data/data_samples/train_examples
-
-# train_test = Image.open('raw_data/data_samples/train_examples/austin1.tif')
-# mask_test = Image.open('raw_data/data_samples/train_examples/austin2.tif')
-# layover_test = Image.open('raw_data/data_samples/train_examples/austin3.tif')
-
-# train_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/train_examples/austin1.tif')
-# mask_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/gt_examples/austin1.tif')
-# layover_test = Image.open('/Users/jackhousego/code/hughharford/lwb_smr/raw_data/data_samples/input_with_mask.jpg')
-
 
 # ABOUT THESE PATHS:
 #                  download the following file and then unzip in your lwb_smr/data folder:
