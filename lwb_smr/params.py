@@ -10,7 +10,7 @@ AND, of course, set TEST_RUN to false, to do an actual run
 
 """
 
-MODEL_FOR_PREDICTION = "220612_Josh_model_vertexAI_07_FULL_dataset_dice.h5" # must reside in the path:
+MODEL_FOR_PREDICTION = "220622_model_selected.h5" # must reside in the path:
 #                           lwb_smr/lwb_smr/data/demo_files/prediction
 
 # NB: this sets variables below, so only set this to True/False
@@ -61,6 +61,7 @@ BUCKET_FOLDER='data'
 BUCKET_TRAIN_DATA_FOLDER='train'
 BUCKET_TEST_DATA_FOLDER='test'
 BUCKET_MODEL_FOLDER = 'models'
+BUCKET_DEMO_FILES_FOLDER = 'demo_files'
 # BUCKET_CHECKPOINT_FOLDER = checkpoints
 BUCKET_EE_DATA_OUTPUT = 'ee-data-output'
 
@@ -73,6 +74,9 @@ VM_path_dict = {
     'path_x': "../../raw_data/train_RGB_tiles_jpeg/",
     'path_y': "../../raw_data/train_mask_tiles_jpeg/"
 }
+# ~~~~~~~~~~~~~
+test_pred_root_path = 'lwb_smr/data/demo_files_2/'
+# ~~~~~~~~~~~~~
 
 pred_root_path = 'lwb_smr/data/demo_files/'
 prediction_path_dict = {

@@ -4,9 +4,9 @@ import os
 
 import tensorflow as tf
 
-from lwb_smr.custom_data_loader import CustomDataLoader
-from lwb_smr.model import SMR_Model
-from lwb_smr.utils import PushMLFlow
+from custom_data_loader import CustomDataLoader
+from model import SMR_Model
+from utils import PushMLFlow
 
 from tensorflow.keras.utils import plot_model
 from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
