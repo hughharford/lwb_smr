@@ -280,7 +280,7 @@ if selected == 'About the project':
 if selected == 'Contact':
     hugh = 'https://www.linkedin.com/in/hugh-harford/'
     josh = 'https://www.linkedin.com/in/joshua-katzenberg-5b1a7a62/'
-    ahmed = 'https://www.linkedin.com/in/ahmed-abbood'
+    ahmed = 'https://www.linkedin.com/in/ahmed-abbood-74639577/'
     jack = 'https://www.linkedin.com/in/jack-h-79470222a'
     st.markdown('''# Contact Information''')
     st.markdown('''## LinkedIn''')
