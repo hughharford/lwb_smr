@@ -29,7 +29,7 @@ layover_test = Image.open(f"{prediction_path_dict['all_files_here']}_sample_INRI
 with st.sidebar:
     selected = option_menu(
         menu_title='Main Menu',
-        options=['Solar My Roof!','Home Page', 'Preselected', 'About the project','Contact']
+        options=['Solar My Roof!','Home Page', 'About the project','Contact']
     )
 
 
@@ -40,7 +40,6 @@ if selected == 'Home Page':
     ## User Guide
     - Select page from menu on left hand side
     - Post code: enter a postcode you want to map roofs
-    - Preselected: select a location from list
     - About the project: background to project, method to implement and information of Convolutional Neural Network
     - Contact: contact information of team
     ''')
@@ -160,42 +159,6 @@ if selected == 'Solar My Roof!':
         st.markdown('<p class="big-font">'+roof_max+'</p>', unsafe_allow_html=True)
         # if roof_max.empty == False:
         # st.write(roof_max)
-
-
-
-
-# ----------------------------------------------
-# Preloaded images:
-# ----------------------------------------------
-if selected == 'Preselected':
-    st.markdown('''
-                # Preselected location
-                ''')
-    st.markdown('''
-                # WORK IN PROGRESS
-                ''')
-    option = st.selectbox(
-        'Please select a preloaded example location',
-        ('Le Wagon London - E2 8DY') # include next line once NEED IMAGE completed
-        #, 'Finnieston, Glasgow - G3 8LX')
-    )
-
-    image_dict_path = {
-        'Le Wagon London - E2 8DY':f"{prediction_path_dict['all_files_here']}_sample_lewagon_london.jpg",
-        # 'Finnieston, Glasgow - G3 8LX': f"{prediction_path_dict['all_files_here']}glasgow_test.png"
-        # NEED IMAGE: glasgow image into the all files here path: glasgow_test.png
-    }
-    st.write('You selected: ', option)
-
-    if st.button('Show me the roofs'):
-        col3, col4 = st.columns(2)
-        col3.subheader('Raw RGB Image')
-        with col3:
-            option_image = Image.open(image_dict_path[option])
-            st.image(option_image)
-        col4.subheader('Laid over image')
-        with col4:
-            st.image(layover_test)
 
 
 
