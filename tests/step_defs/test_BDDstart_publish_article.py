@@ -2,10 +2,8 @@ from pytest_bdd import scenarios, given, when, then
 
 from src.BDDstart import BDDstart_publish_article
 
-        
+
 scenarios('../features/BDDstart_publish_article.feature')
-def test_publish():
-    pass #assert 11 == 1
 
 @given("JimmyJimmy")
 def author_user():
