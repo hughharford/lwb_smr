@@ -19,16 +19,41 @@ from utils import dice_loss
 LOCAL_DEMO_FILES = test_pred_root_path
 APIKEY = st.secrets["GoogleMapsAPI"]
 
+PROJECT_ID = st.secrets["project_id"]
 PRIVATE_KEY_ID = st.secrets["private_key_id"]
 PRIVATE_KEY  = st.secrets["private_key"]
 CLIENT_EMAIL = st.secrets["client_email"]
 CLIENT_ID = st.secrets["client_id"]
 
-
-
 class GCP_Machine():
     def __init__(self):
         pass
+
+    def run_gsutil_command(self):
+        # RUN THIS
+        # gsutil cp gs://lwb-solar-my-roof/data/demo_files.zip demo_files.zip
+        path_to_service_account_json = 'lwb-solar-my-roof-78f93e325dbc.json'
+        # storage_client = storage.Client.from_service_account_json(path_to_service_account_json)
+        # this WORKS!
+
+        storage_client = storage.client.Client(project="lwb-solar-my-roof")
+
+
+        buckets = storage_client.list_buckets()
+        for bucket in buckets:
+            print(bucket.name)
+
+    def list_buckets(self):
+        """Lists all buckets."""
+        try:
+            storage_client = storage.Client()
+            buckets = storage_client.list_buckets()
+
+            for bucket in buckets:
+                print(bucket.name)
+        except Exception as e:
+            print(e)
+
 
     def get_storage_client(self):
 
@@ -83,8 +108,8 @@ class GCP_Machine():
             # blob.download_to_filename(LOCAL_DEMO_FILES + 'demo_files.zip')
 
             with open(local_demo_files_zip, 'wb') as file_obj:
-                storage_client.download_blob_to_file(blob, file_obj)
+                client.download_blob_to_file(blob, file_obj)
 
 if __name__ == '__main__':
     gcp = GCP_Machine()
-    gcp.check_demo_files_in_place()
+    gcp.run_gsutil_command()

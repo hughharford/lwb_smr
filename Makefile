@@ -5,8 +5,7 @@
 
 PROJECT_ID=lwb-solar-my-roof
 # le-wagon-bootcamp-347615
-## cannot set PROJECT (with set_project) to:
-#
+
 IMAGE=lwb-smr:latest
 REGION=europe-west1
 MULTI_REGION=eu.gcr.io
@@ -39,6 +38,9 @@ see_gcloud_config:
 
 set_project:
 	@gcloud config set project ${PROJECT_ID}
+
+set_account:
+	@gcloud config set account ${ACCOUNT}
 
 # create_bucket:
 # 		@gsutil mb -l ${REGION} -p ${PROJECT_ID} gs://${BUCKET_NAME}
