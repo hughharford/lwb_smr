@@ -6,7 +6,7 @@
 PROJECT_ID=lwb-solar-my-roof
 # le-wagon-bootcamp-347615
 
-IMAGE=tbc___XXX
+IMAGE=lwb-smr:latest
 REGION=europe-west1
 MULTI_REGION=eu.gcr.io
 BUCKET_NAME=lwb-solar-my-roof
