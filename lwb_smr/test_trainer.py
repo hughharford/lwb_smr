@@ -31,7 +31,7 @@ MODEL_NAME = "test_model_01.h5" # requires .h5 to end
 ### MLFLOW PARAMETERS
 if MODEL_TYPE == 'reset':
 	EXPERIMENT_NAME = "UK Lon lwb_smr ResNet50"
-else MODEL_TYPE == 'vgg16'
+elif MODEL_TYPE == 'vgg16':
 	EXPERIMENT_NAME = "UK Lon lwb_smr VGG16 mk99"
 assert EXPERIMENT_NAME
 

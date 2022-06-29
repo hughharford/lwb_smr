@@ -1,0 +1,4 @@
+day6_nb_ is the start of filenames for .h5 files that were here
+
+NOW IN:
+/media/hsth/hh_Extr_SSD/AllData/100G/OTHER_LARGE/lwb_SMR_data/raw_data/models

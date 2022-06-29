@@ -377,7 +377,7 @@ class PredictRoof():
             # line1 = f"Largest roof is number {roof_max_num} at {int(roof_max)} m^2"
             # nl = '\n'
             # line2 = f"This roof could support up to {int(roof_max*.5/1.6)} solar panels!"
-            output_string = f"Largest roof is number {roof_max_num} at {int(roof_max)} m². \
+            output_string = f"We just calculated: \n Largest roof is number {roof_max_num} at {int(roof_max)} m². \
                 {chr(10)}This roof could support up to {int(roof_max*.5/1.6)} solar panels!"
             # output_string = f"{line1}.{nl}{line2}"
 
