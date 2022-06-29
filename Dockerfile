@@ -36,7 +36,8 @@ RUN pip install opencv-python-headless
 # CMD streamlit run lwb_smr_app/app.py --server.address 0.0.0.0 --port $PORT
 ## didn't work with --server.address ...
 
-CMD "/bin/bash"
+# CMD "/bin/bash" # for local running
+CMD streamlit run lwb_smr_app/app.py --host 0.0.0.0 --port $PORT
 # streamlit run lwb_smr_app/app.py
 
 # RUN THESE COMMANDS IN TERMINAL:
@@ -65,6 +66,13 @@ CMD "/bin/bash"
 # sudo docker run -e PORT=8501 -p 8501:8501 smr:latest
 # sudo docker run -e PORT=8501 -p 8501:8501 eu.gcr.io/lwb-solar-my-roof/smr:latest
 
+
+
+# EXERCISE recommended:
+# export GCR_REGION="europe-west1"  # replace with the appropriate region
+# echo $GCR_REGION
+
+# docker build -t $GCR_MULTI_REGION/$GCP_PROJECT_ID/$DOCKER_IMAGE_NAME .
 
 # ➜  TFM_PredictInProd git:(master) ✗ export DOCKER_IMAGE_NAME=smr:latest                                                                                                                       [🐍 lewagon]
 # ➜  TFM_PredictInProd git:(master) ✗ echo $DOCKER_IMAGE_NAME                                                                                                                                   [🐍 lewagon]
