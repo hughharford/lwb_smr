@@ -1,4 +1,7 @@
 .streamlit/secrets.toml
+.env
+env.py
+
 *.egg-info
 .coverage
 .ipynb_checkpoints
@@ -9,13 +12,10 @@ checkpoints/
 lwb_solarmyroof/data_samples/
 
 **/__pycache__/
-.env
-
 *.zip
-
-
 .vscode
 
-env.py
-.env
 220622-lwb-solar-my-roof-cbf810927e81.json
+le-wagon-bootcamp-347615_gcp_google_cloud.json
+lwb-solar-my-roof-78f93e325dbc.json
+
