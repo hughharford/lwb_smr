@@ -1,0 +1,22 @@
+
+############# dealing with this issue:
+### denied: Token exchange failed for project 'lwb-solar-my-roof'.
+### Caller does not have permission 'storage.buckets.create'.
+### To configure permissions, follow instructions at:
+### https://cloud.google.com/container-registry/docs/access-control
+#
+# recieved when trying:
+#
+# sudo docker push eu.gcr.io/lwb-solar-my-roof/smr:latest
+
+
+# ensure the gcp service account has the permissions needed:
+gcloud projects add-iam-policy-binding $PROJECT_ID \
+    --member=serviceAccount:$ACCOUNT_EMAIL \
+    --role=roles/storage.admin
+
+### with a fully authorised service account,
+### and the correct email and project_id this assigns correctly
+
+# login docker to gcp:
+sudo docker login -u _json_key --password-stdin https://gcr.io < $account.json
