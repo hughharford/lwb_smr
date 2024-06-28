@@ -1,6 +1,7 @@
 .streamlit/secrets.toml
 .env
 env.py
+build/ 
 
 *.egg-info
 .coverage
