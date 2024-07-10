@@ -1,7 +1,7 @@
 # Data analysis
 - Document here the project: lwb_solarmyroof
 - Description:
-- - This project was the keystone project from #900 batch Le Wagon data-science bootcamp, June-Apr 2022
+- - This project was our keystone project from #900 batch Le Wagon data-science bootcamp, June-Apr 2022
   - A team of 4 worked on this for 10 days, fairly intensively, and a 10 minute presentation was made
   - The presentation was lead by Hugh Harford and included a live demo.
   - Usage of the SolarMyRoof functionality involves these steps (steps done internally only in brackets):
@@ -12,7 +12,8 @@
 - Data Source:
 - - Inria Aerial Imaging Dataset: https://project.inria.fr/aerialimagelabeling/
 - Type of analysis:
-- - Neural Network (UNet with VGG-16 transfer learning) run on a GCP Vertex machine
+- - Neural Network (16 million parameter UNet with VGG-16 transfer learning) run on a GCP Vertex machine
+  - The model was designed, implemented, and trained by the team on the Vertex instance
 
 Please document the project the better you can.
 
