@@ -9,6 +9,9 @@ REMOVE test_ when doing a proper run
 AND, of course, set TEST_RUN to false, to do an actual run
 
 """
+import os.path
+
+
 # 24 07 11: model for testing:
 string_test_model_name = "models_220615_tbc__v7_UNET_VGG16_Dice_input_shape_224x224x3.h5"
 nope = "220611_v7_UNET_VGG16_Dice_input_shape_224x224x3.h5"
@@ -76,30 +79,30 @@ MLFLOW_URI = "https://mlflow.lewagon.ai/"
 
 # Dictionary containing paths to VM_folders for training, validation and test data
 VM_path_dict = {
-    'path_x': "../../raw_data/train_RGB_tiles_jpeg/",
-    'path_y': "../../raw_data/train_mask_tiles_jpeg/"
+    'path_x': os.path.join("..", "..", "raw_data", "train_RGB_tiles_jpeg"),
+    'path_y': os.path.join("..", "..", "raw_data", "train_mask_tiles_jpeg"),
 }
 # ~~~~~~~~~~~~~ testing only
-test_pred_root_path = 'lwb_smr/data/demo_files_2/'
+test_pred_root_path = os.path.join('lwb_smr', 'data' ,'demo_files_2')
 # ~~~~~~~~~~~~~
 
-pred_root_path = 'lwb_smr/data/demo_files/'
+pred_root_path = os.path.join('lwb_smr', 'data' ,'demo_files')
 prediction_path_dict = {
     'all_files_here': pred_root_path, # NOT!: '../lwb_smr/data/demo_files/'
     # N_OTE BENE this is used from lwb_smr_app => please DO NOT alter
-    # USE 'all_files_here' instead (hilariouly named) 'input_image': pred_root_path+"prediction/google_map_images/",
-    'model_path': pred_root_path+"prediction/",
-    'output_tiles_path': pred_root_path+"prediction/raw_image_tiles/",
-    'prediction_output_images_path': pred_root_path+"prediction/predicted_tiles_output/",
+
+    'model_path': os.path.join(pred_root_path, "prediction"),
+    'output_tiles_path': os.path.join(pred_root_path, "prediction", "raw_image_tiles"),
+    'prediction_output_images_path': os.path.join(pred_root_path, "prediction", "predicted_tiles_output"),
 }
 
 
 
 # SET NAMES OF 3 .csv FILES
 csv_path_dict = {
-    'train_csv': "image_datasets_csv/train_dataset.csv",
-    'val_csv': "image_datasets_csv/validation_dataset.csv",
-    'test_csv': "image_datasets_csv/test_dataset.csv"
+    'train_csv': os.path.join("image_datasets_csv", "train_dataset.csv"),
+    'val_csv': os.path.join("image_datasets_csv", "validation_dataset.csv"),
+    'test_csv': os.path.join("image_datasets_csv", "test_dataset.csv"),
 }
 
 
