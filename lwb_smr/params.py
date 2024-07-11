@@ -83,17 +83,17 @@ VM_path_dict = {
     'path_y': os.path.join("..", "..", "raw_data", "train_mask_tiles_jpeg"),
 }
 # ~~~~~~~~~~~~~ testing only
-test_pred_root_path = os.path.join('lwb_smr', 'data' ,'demo_files_2')
+test_pred_root_path = os.path.join('lwb_smr', 'data' ,'demo_files_2/')
 # ~~~~~~~~~~~~~
 
-pred_root_path = os.path.join('lwb_smr', 'data' ,'demo_files')
+pred_root_path = os.path.join('lwb_smr', 'data' ,'demo_files/')
 prediction_path_dict = {
     'all_files_here': pred_root_path, # NOT!: '../lwb_smr/data/demo_files/'
     # N_OTE BENE this is used from lwb_smr_app => please DO NOT alter
 
-    'model_path': os.path.join(pred_root_path, "prediction"),
-    'output_tiles_path': os.path.join(pred_root_path, "prediction", "raw_image_tiles"),
-    'prediction_output_images_path': os.path.join(pred_root_path, "prediction", "predicted_tiles_output"),
+    'model_path': os.path.join(pred_root_path, "prediction/"),
+    'output_tiles_path': os.path.join(pred_root_path, "prediction", "raw_image_tiles/"),
+    'prediction_output_images_path': os.path.join(pred_root_path, "prediction", "predicted_tiles_output/"),
 }
 
 
