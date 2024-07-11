@@ -9,9 +9,14 @@ REMOVE test_ when doing a proper run
 AND, of course, set TEST_RUN to false, to do an actual run
 
 """
+# 24 07 11: model for testing:
+string_test_model_name = "models_220615_tbc__v7_UNET_VGG16_Dice_input_shape_224x224x3.h5"
+nope = "220611_v7_UNET_VGG16_Dice_input_shape_224x224x3.h5"
+string_demo_model_name = "220622_model_selected.h5"
 
-MODEL_FOR_PREDICTION = "220622_model_selected.h5" # must reside in the path:
+MODEL_FOR_PREDICTION = string_test_model_name  # must reside in the path:
 #                           lwb_smr/lwb_smr/data/demo_files/prediction
+
 
 # NB: this sets variables below, so only set this to True/False
 TEST_RUN = True
@@ -83,9 +88,9 @@ prediction_path_dict = {
     'all_files_here': pred_root_path, # NOT!: '../lwb_smr/data/demo_files/'
     # N_OTE BENE this is used from lwb_smr_app => please DO NOT alter
     # USE 'all_files_here' instead (hilariouly named) 'input_image': pred_root_path+"prediction/google_map_images/",
+    'model_path': pred_root_path+"prediction/",
     'output_tiles_path': pred_root_path+"prediction/raw_image_tiles/",
     'prediction_output_images_path': pred_root_path+"prediction/predicted_tiles_output/",
-    'model_path': pred_root_path+"prediction/",
 }
 
 

@@ -1,7 +1,11 @@
 .streamlit/secrets.toml
 .env
 env.py
-build/ 
+build/*
+
+*.hd5
+*.h5
+# do not want to commit massive GB size models!
 
 *.egg-info
 .coverage
@@ -19,4 +23,3 @@ lwb_solarmyroof/data_samples/
 220622-lwb-solar-my-roof-cbf810927e81.json
 le-wagon-bootcamp-347615_gcp_google_cloud.json
 lwb-solar-my-roof-78f93e325dbc.json
-
