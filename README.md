@@ -1,7 +1,5 @@
-# Data analysis
-- Document here the project: lwb_solarmyroof
-- Description:
-- - This project was our keystone project from #900 batch Le Wagon data-science bootcamp, June-Apr 2022
+# Project Description: lwb_solarmyroof
+- This project was our keystone project from #900 batch Le Wagon data-science bootcamp, June-Apr 2022
   - A team of 4 worked on this for 10 days, fairly intensively, and a 10 minute presentation was made
   - The project was lead by Hugh Harford (with huge help from Jack, Josh and Ahmed) and included a live demo.
   - Usage of the SolarMyRoof functionality involves these steps (steps done internally only in brackets):
@@ -16,11 +14,10 @@
   - The model was designed, implemented, and trained by the team on the Vertex instance
 
 # NOTE BENE
-## This will run a local website, using Streamlit
-## What will NOT work is the loading the historical trained model file (.h5)
-## This is unavoidable for now...
+- - This will run a local website, using Streamlit
+- - What will NOT work is the loading the historical trained model file (.h5)
+- - This is unavoidable (for now)...
 
-#
 
 # Startup the project
 
